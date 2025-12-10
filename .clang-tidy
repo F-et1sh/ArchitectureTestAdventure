@@ -44,5 +44,7 @@ CheckOptions:
 WarningsAsErrors: ''
 HeaderFileExtensions:         ['h','hpp']
 ImplementationFileExtensions: ['c','cpp']
-HeaderFilterRegex: '.*SkeletonAnimationTestAdventure/Code/.*'
+HeaderFilterRegex: '.*ArchitectureTestAdventure/Code/.*'
+ExcludePaths:
+  - '.*ArchitectureTestAdventure/Code/Core/.*'
 FormatStyle: none

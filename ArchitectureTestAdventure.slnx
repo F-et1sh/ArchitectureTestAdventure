@@ -11,5 +11,5 @@
     <File Path="README.md" />
     <File Path="settings.json" />
   </Folder>
-  <Project Path="ArchitectureTestAdventure/ArchitectureTestAdventure.vcxproj" />
+  <Project Path="ArchitectureTestAdventure/ArchitectureTestAdventure.vcxproj" Id="a7b134a4-5467-45e4-a191-4449512019ca" />
 </Solution>
