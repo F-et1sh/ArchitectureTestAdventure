@@ -5,10 +5,11 @@
     This source is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
-    File : pch.cpp
+    File : ResourceManager.cpp
     
-    Content : PCH source
+    Content : GPU Resource Manager
 
 =================================================*/
 
 #include "pch.hpp"
+#include "ResourceManager.hpp"

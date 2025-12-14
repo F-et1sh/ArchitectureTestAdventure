@@ -3,9 +3,18 @@
   <ItemGroup>
     <ClCompile Include="Code\main.cpp" />
     <ClCompile Include="Code\PCH\pch.cpp" />
+    <ClCompile Include="Code\Renderer\GPUResourceManager\GPUResourceManager.cpp" />
+    <ClCompile Include="Code\Renderer\ResourceManager\ResourceManager.cpp" />
+    <ClCompile Include="Code\Renderer\Backends\OpenGL\Texture.cpp" />
+    <ClCompile Include="Code\Renderer\Renderer\Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\PCH\pch.hpp" />
     <ClInclude Include="Code\Core\pointer.hpp" />
+    <ClInclude Include="Code\Renderer\Renderer\Renderer.hpp" />
+    <ClInclude Include="Code\Renderer\GPUResourceManager\GPUResourceManager.h" />
+    <ClInclude Include="Code\Renderer\ResourceManager\ResourceManager.hpp" />
+    <ClInclude Include="Code\Renderer\Backends\OpenGL\Texture.hpp" />
+    <ClInclude Include="Code\Common\resource.h" />
   </ItemGroup>
 </Project>

@@ -142,10 +142,19 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Code\Renderer\Backends\OpenGL\Texture.cpp" />
+    <ClCompile Include="Code\Renderer\GPUResourceManager\GPUResourceManager.cpp" />
+    <ClCompile Include="Code\Renderer\Renderer\Renderer.cpp" />
+    <ClCompile Include="Code\Renderer\ResourceManager\ResourceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\Common\resource.h" />
     <ClInclude Include="Code\Core\pointer.hpp" />
     <ClInclude Include="Code\PCH\pch.hpp" />
+    <ClInclude Include="Code\Renderer\Backends\OpenGL\Texture.hpp" />
+    <ClInclude Include="Code\Renderer\Renderer\Renderer.hpp" />
+    <ClInclude Include="Code\Renderer\GPUResourceManager\GPUResourceManager.h" />
+    <ClInclude Include="Code\Renderer\ResourceManager\ResourceManager.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

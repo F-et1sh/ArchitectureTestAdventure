@@ -5,17 +5,21 @@
     This source is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
-    File : pch.hpp
+    File : ResourceManager.hpp
     
-    Content : PCH header
+    Content : GPU Resource Manager
 
 =================================================*/
 
 #pragma once
 
-// std
-#include <iostream>
-#include <memory>
+namespace ata::render {
+    class ResourceManager {
+    public:
+        ResourceManager()  = default;
+        ~ResourceManager() = default;
 
-// ata
-#include <pointer.hpp>
+    private:
+        
+    };
+} // namespace ata::render

@@ -5,10 +5,20 @@
     This source is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
-    File : pch.cpp
+    File : Texture.hpp
     
-    Content : PCH source
+    Content : OpenGL Texture ( GPU data )
 
 =================================================*/
 
-#include "pch.hpp"
+#pragma once
+
+namespace ata::render::opengl {
+    class Texture {
+    public:
+        Texture()  = default;
+        ~Texture() = default;
+
+    private:
+    };
+} // namespace ata::render::opengl
