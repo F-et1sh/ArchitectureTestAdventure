@@ -4,17 +4,27 @@
     <ClCompile Include="Code\main.cpp" />
     <ClCompile Include="Code\PCH\pch.cpp" />
     <ClCompile Include="Code\Renderer\GPUResourceManager\GPUResourceManager.cpp" />
-    <ClCompile Include="Code\Renderer\ResourceManager\ResourceManager.cpp" />
-    <ClCompile Include="Code\Renderer\Backends\OpenGL\Texture.cpp" />
     <ClCompile Include="Code\Renderer\Renderer\Renderer.cpp" />
+    <ClCompile Include="Code\ResourceManager\ResourceManager.cpp" />
+    <ClCompile Include="ThirdParty\glad\src\glad.c" />
+    <ClCompile Include="Code\Renderer\Backends\Vulkan\Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\PCH\pch.hpp" />
     <ClInclude Include="Code\Core\pointer.hpp" />
     <ClInclude Include="Code\Renderer\Renderer\Renderer.hpp" />
     <ClInclude Include="Code\Renderer\GPUResourceManager\GPUResourceManager.h" />
-    <ClInclude Include="Code\Renderer\ResourceManager\ResourceManager.hpp" />
-    <ClInclude Include="Code\Renderer\Backends\OpenGL\Texture.hpp" />
-    <ClInclude Include="Code\Common\resource.h" />
+    <ClInclude Include="Code\Common\resource.hpp" />
+    <ClInclude Include="Code\ResourceManager\ResourceManager.hpp" />
+    <ClInclude Include="Code\Window\Window.hpp" />
+    <ClInclude Include="Code\Renderer\Backends\Vulkan\Renderer.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="ThirdParty\glad\GLAD_LICENSE" />
+    <CopyFileToFolders Include="ThirdParty\GLFW\GLFW_LICENSE.md" />
+    <CopyFileToFolders Include="ThirdParty\GLM\GLM_COPYING.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Code\Window\Window.cpp" />
   </ItemGroup>
 </Project>

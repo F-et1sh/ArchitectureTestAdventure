@@ -108,11 +108,13 @@
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)ArchitectureTestAdventure\Code;$(SolutionDir)ArchitectureTestAdventure\Code\PCH;$(SolutionDir)ArchitectureTestAdventure\Code\Core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\Code;$(SolutionDir)$(ProjectName)\Code\PCH;$(SolutionDir)$(ProjectName)\Code\Core;$(SolutionDir)$(ProjectName)\ThirdParty\glad\include;$(SolutionDir)$(ProjectName)\ThirdParty\GLFW\include;$(SolutionDir)$(ProjectName)\ThirdParty\GLM\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(ProjectName)\ThirdParty\GLFW\win64\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -127,11 +129,13 @@
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)ArchitectureTestAdventure\Code;$(SolutionDir)ArchitectureTestAdventure\Code\PCH;$(SolutionDir)ArchitectureTestAdventure\Code\Core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\Code;$(SolutionDir)$(ProjectName)\Code\PCH;$(SolutionDir)$(ProjectName)\Code\Core;$(SolutionDir)$(ProjectName)\ThirdParty\glad\include;$(SolutionDir)$(ProjectName)\ThirdParty\GLFW\include;$(SolutionDir)$(ProjectName)\ThirdParty\GLM\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(ProjectName)\ThirdParty\GLFW\win64\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -142,19 +146,37 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="Code\Renderer\Backends\OpenGL\Texture.cpp" />
+    <ClCompile Include="Code\Renderer\Backends\Vulkan\Renderer.cpp" />
     <ClCompile Include="Code\Renderer\GPUResourceManager\GPUResourceManager.cpp" />
     <ClCompile Include="Code\Renderer\Renderer\Renderer.cpp" />
-    <ClCompile Include="Code\Renderer\ResourceManager\ResourceManager.cpp" />
+    <ClCompile Include="Code\ResourceManager\ResourceManager.cpp" />
+    <ClCompile Include="ThirdParty\glad\src\glad.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\Common\resource.h" />
+    <ClInclude Include="Code\Common\resource.hpp" />
     <ClInclude Include="Code\Core\pointer.hpp" />
     <ClInclude Include="Code\PCH\pch.hpp" />
-    <ClInclude Include="Code\Renderer\Backends\OpenGL\Texture.hpp" />
+    <ClInclude Include="Code\Renderer\Backends\Vulkan\Renderer.hpp" />
     <ClInclude Include="Code\Renderer\Renderer\Renderer.hpp" />
     <ClInclude Include="Code\Renderer\GPUResourceManager\GPUResourceManager.h" />
-    <ClInclude Include="Code\Renderer\ResourceManager\ResourceManager.hpp" />
+    <ClInclude Include="Code\ResourceManager\ResourceManager.hpp" />
+    <ClInclude Include="Code\Window\Window.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="ThirdParty\glad\GLAD_LICENSE">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="ThirdParty\GLFW\GLFW_LICENSE.md">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="ThirdParty\GLM\GLM_COPYING.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Code\Window\Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

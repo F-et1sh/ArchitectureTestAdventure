@@ -12,7 +12,6 @@
 =================================================*/
 
 #include "pch.hpp"
-//#include <wrl/client.h>
 
 int main() {
 

@@ -12,20 +12,8 @@
 =================================================*/
 
 #pragma once
-#include "Renderer/ResourceManager/ResourceManager.hpp"
+#include "Window/Window.hpp"
 
 namespace ata {
-    using namespace ata::render;
 
-    class Renderer {
-    public:
-        Renderer()  = default;
-        ~Renderer() = default;
-
-        void Release();
-        void Initialize();
-
-    private:
-        ResourceManager m_resourceManager;
-    };
 } // namespace ata
