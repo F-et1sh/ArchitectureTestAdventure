@@ -12,6 +12,7 @@
 =================================================*/
 
 #pragma once
+#include "Renderer/Common/resource.hpp"
 
 namespace ata {
     namespace rhi {
@@ -86,12 +87,6 @@ namespace ata {
 
             ATA_NODISCARD int width() const { return maxX - minX; }
             ATA_NODISCARD int height() const { return maxY - minY; }
-        };
-
-        enum class GraphicsAPI : uint8_t {
-            D3D11,
-            D3D12,
-            VULKAN
         };
 
         enum class Format : uint8_t {

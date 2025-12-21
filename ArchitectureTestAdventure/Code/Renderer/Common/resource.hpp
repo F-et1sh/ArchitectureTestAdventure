@@ -29,29 +29,29 @@ namespace ata {
         //   bb is layer, 0 for native Graphics API objects, 1 for reference of backend, 2 for user-defined backends
         //   cc is a sequential number
 
+        enum class GraphicsAPI : uint8_t {
+            None   = 0,
+            Vulkan = 1,
+            OpenGL = 2
+        };
+
+        enum class Layer : uint8_t {
+            Native    = 0,
+            Reference = 1,
+            User      = 2
+        };
+
+        constexpr ObjectType make_object_type(
+            GraphicsAPI api,
+            Layer       layer,
+            uint16_t    id) {
+
+            return (uint32_t(api) << 16) |
+                   (uint32_t(layer) << 8) |
+                   id;
+        }
+
         namespace object_types {
-            enum class GraphicsAPI : uint8_t {
-                None   = 0,
-                Vulkan = 1,
-                OpenGL = 2
-            };
-
-            enum class Layer : uint8_t {
-                Native    = 0,
-                Reference = 1,
-                User      = 2
-            };
-
-            constexpr ObjectType make_object_type(
-                GraphicsAPI api,
-                Layer       layer,
-                uint16_t    id) {
-
-                return (uint32_t(api) << 16) |
-                       (uint32_t(layer) << 8) |
-                       id;
-            }
-
             constexpr ObjectType SharedHandle = make_object_type(GraphicsAPI::None, Layer::Native, 0);
 
             constexpr ObjectType VK_Device                   = make_object_type(GraphicsAPI::Vulkan, Layer::Native, 1);
@@ -340,7 +340,7 @@ namespace ata {
         //////////////////////////////////////////////////////////////////////////
         // Handles
         //////////////////////////////////////////////////////////////////////////
-        
+
         using ResourceHandle = RefCountPtr<IResource>;
 
     } // namespace rhi
