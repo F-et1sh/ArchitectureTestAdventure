@@ -17,6 +17,7 @@
     <ClInclude Include="Code\Window\Window.hpp" />
     <ClInclude Include="Code\Renderer\Backends\Vulkan\Renderer.hpp" />
     <ClInclude Include="Code\Core\attributes.hpp" />
+    <ClInclude Include="Code\Common\misc.hpp" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="ThirdParty\glad\GLAD_LICENSE" />
