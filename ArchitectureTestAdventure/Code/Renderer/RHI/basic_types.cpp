@@ -18,7 +18,7 @@ namespace ata {
     namespace rhi {
         // format mapping table. The rows must be in the exactly same order as Format enum members are defined.
         // clang-format off
-        static constexpr FormatInfo c_formatInfo[] = {
+        static constexpr FormatInfo C_FORMAT_INFO[] = {
             //    format                   name             bytes blk         kind               red   green   blue  alpha  depth  stencl signed  srgb
             { Format::UNKNOWN,           "UNKNOWN",           0,   0, FormatKind::Integer,      false, false, false, false, false, false, false, false },
             { Format::R8_UINT,           "R8_UINT",           1,   1, FormatKind::Integer,      true,  false, false, false, false, false, false, false },
@@ -94,13 +94,14 @@ namespace ata {
         // clang-format on
 
         const FormatInfo& getFormatInfo(Format format) {
-            static_assert(sizeof(c_formatInfo) / sizeof(FormatInfo) == size_t(Format::COUNT),
+            static_assert(sizeof(C_FORMAT_INFO) / sizeof(FormatInfo) == size_t(Format::COUNT),
                           "The format info table doesn't have the right number of elements");
 
-            if (uint32_t(format) >= uint32_t(Format::COUNT))
-                return c_formatInfo[0]; // UNKNOWN
+            if (uint32_t(format) >= uint32_t(Format::COUNT)) {
+                return C_FORMAT_INFO[0]; // UNKNOWN
+            }
 
-            const FormatInfo& info = c_formatInfo[uint32_t(format)];
+            const FormatInfo& info = C_FORMAT_INFO[uint32_t(format)];
             assert(info.format == format);
             return info;
         }

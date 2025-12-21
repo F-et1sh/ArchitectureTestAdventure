@@ -15,3 +15,4 @@
 
 #include "basic_types.hpp"
 #include "heap.hpp"
+#include "texture.hpp"

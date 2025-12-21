@@ -149,6 +149,7 @@
     <ClCompile Include="Code\Renderer\RHI\basic_types.cpp" />
     <ClCompile Include="Code\Renderer\RHI\heap.cpp" />
     <ClCompile Include="Code\Renderer\RHI\rhi.cpp" />
+    <ClCompile Include="Code\Renderer\RHI\texture.cpp" />
     <ClCompile Include="Code\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="ThirdParty\glad\src\glad.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -164,6 +165,7 @@
     <ClInclude Include="Code\Renderer\RHI\basic_types.hpp" />
     <ClInclude Include="Code\Renderer\RHI\heap.hpp" />
     <ClInclude Include="Code\Renderer\RHI\rhi.hpp" />
+    <ClInclude Include="Code\Renderer\RHI\texture.hpp" />
     <ClInclude Include="Code\ResourceManager\ResourceManager.hpp" />
     <ClInclude Include="Code\Window\Window.hpp" />
   </ItemGroup>

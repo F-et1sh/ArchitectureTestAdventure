@@ -90,7 +90,7 @@ namespace ata {
 
             constexpr Object() = default;
             constexpr Object(uint64_t value) : value(value) {}
-            constexpr Object(void* pointer) : value(reinterpret_cast<uint64_t>(pointer)) {}
+            Object(void* pointer) : value(reinterpret_cast<uint64_t>(pointer)) {}
 
             template <typename T>
             T* as() const { return reinterpret_cast<T*>(value); }

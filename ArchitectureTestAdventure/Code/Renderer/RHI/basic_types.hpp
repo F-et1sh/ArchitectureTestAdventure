@@ -40,12 +40,12 @@ namespace ata {
         struct Color {
             float r, g, b, a;
 
-            Color() : r(0.f), g(0.f), b(0.f), a(0.f) {}
+            Color() : r(0.F), g(0.F), b(0.F), a(0.F) {}
             Color(float c) : r(c), g(c), b(c), a(c) {}
-            Color(float _r, float _g, float _b, float _a) : r(_r), g(_g), b(_b), a(_a) {}
+            Color(float r, float g, float b, float a) : r(r), g(g), b(b), a(a) {}
 
-            bool operator==(const Color& _b) const { return r == _b.r && g == _b.g && b == _b.b && a == _b.a; }
-            bool operator!=(const Color& _b) const { return !(*this == _b); }
+            bool operator==(const Color& b) const { return r == b.r && g == b.g && b == b.b && a == b.a; }
+            bool operator!=(const Color& b) const { return !(*this == b); }
         };
 
         struct Viewport {
@@ -53,12 +53,12 @@ namespace ata {
             float minY, maxY;
             float minZ, maxZ;
 
-            Viewport() : minX(0.f), maxX(0.f), minY(0.f), maxY(0.f), minZ(0.f), maxZ(1.f) {}
+            Viewport() : minX(0.F), maxX(0.F), minY(0.F), maxY(0.F), minZ(0.F), maxZ(1.F) {}
 
-            Viewport(float width, float height) : minX(0.f), maxX(width), minY(0.f), maxY(height), minZ(0.f), maxZ(1.f) {}
+            Viewport(float width, float height) : minX(0.F), maxX(width), minY(0.F), maxY(height), minZ(0.F), maxZ(1.F) {}
 
-            Viewport(float _minX, float _maxX, float _minY, float _maxY, float _minZ, float _maxZ)
-                : minX(_minX), maxX(_maxX), minY(_minY), maxY(_maxY), minZ(_minZ), maxZ(_maxZ) {}
+            Viewport(float min_x, float max_x, float min_y, float max_y, float min_z, float max_z)
+                : minX(min_x), maxX(max_x), minY(min_y), maxY(max_y), minZ(min_z), maxZ(max_z) {}
 
             bool operator==(const Viewport& b) const {
                 return minX == b.minX && minY == b.minY && minZ == b.minZ && maxX == b.maxX && maxY == b.maxY && maxZ == b.maxZ;
@@ -75,7 +75,7 @@ namespace ata {
 
             Rect() : minX(0), maxX(0), minY(0), maxY(0) {}
             Rect(int width, int height) : minX(0), maxX(width), minY(0), maxY(height) {}
-            Rect(int _minX, int _maxX, int _minY, int _maxY) : minX(_minX), maxX(_maxX), minY(_minY), maxY(_maxY) {}
+            Rect(int min_x, int max_x, int min_y, int max_y) : minX(min_x), maxX(max_x), minY(min_y), maxY(max_y) {}
             explicit Rect(const Viewport& viewport)
                 : minX(int(floorf(viewport.minX))), maxX(int(ceilf(viewport.maxX))), minY(int(floorf(viewport.minY))), maxY(int(ceilf(viewport.maxY))) {
             }
@@ -213,7 +213,7 @@ namespace ata {
 
         ATA_ENUM_CLASS_FLAG_OPERATORS(FormatSupport)
 
-        enum class CPU_AccessMode : uint8_t {
+        enum class CpuAccessMode : uint8_t {
             None,
             Read,
             Write

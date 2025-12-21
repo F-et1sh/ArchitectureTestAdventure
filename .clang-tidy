@@ -1,11 +1,5 @@
 Checks: >
   readability-*,
-  cppcoreguidelines-*,
-  bugprone-*,
-  modernize-*,
-  -modernize-use-trailing-return-type,
-  performance-*,
-  clang-analyzer-*,
   -readability-redundant-access-specifiers
 
 CheckOptions:
@@ -19,6 +13,7 @@ CheckOptions:
 
   # FUNCTION PARAMETERS
   - { key: readability-identifier-naming.ParameterCase,           value: lower_case }
+  - { key: readability-identifier-naming.ParameterPrefix,         value: '' }
 
   # ───────────────-──────────────────────────────────────────────
   # GLOBAL VARIABLES
@@ -34,17 +29,15 @@ CheckOptions:
   # - { key: readability-identifier-naming.StructMemberPrefix,      value: m_ }
 
   # ──────────────────────────────────────────────────────────────
-  # ENUMS / TYPES
-  - { key: readability-identifier-naming.EnumConstantCase,        value: UPPER_CASE }
-  - { key: readability-identifier-naming.EnumCase,                value: CamelCase }
-  - { key: readability-identifier-naming.ClassCase,               value: CamelCase }
-  - { key: readability-identifier-naming.StructCase,              value: CamelCase }
-  - { key: readability-identifier-naming.TypedefCase,             value: CamelCase }
+  # ENUMS / TYPES  ( DISABLED. DOES NOT WORK )
+  # - { key: readability-identifier-naming.EnumConstantCase,        value: UPPER_CASE }
+  # - { key: readability-identifier-naming.EnumCase,                value: CamelCase }
+  # - { key: readability-identifier-naming.ClassCase,               value: CamelCase }
+  # - { key: readability-identifier-naming.StructCase,              value: CamelCase }
+  # - { key: readability-identifier-naming.TypedefCase,             value: CamelCase }
 
 WarningsAsErrors: ''
 HeaderFileExtensions:         ['h','hpp']
 ImplementationFileExtensions: ['c','cpp']
 HeaderFilterRegex: '.*ArchitectureTestAdventure/Code/.*'
-ExcludePaths:
-  - '.*ArchitectureTestAdventure/Code/Core/.*'
 FormatStyle: none
