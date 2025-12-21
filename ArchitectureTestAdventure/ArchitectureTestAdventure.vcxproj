@@ -146,8 +146,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="Code\Renderer\Backends\Vulkan\Renderer.cpp" />
-    <ClCompile Include="Code\Renderer\Renderer\Renderer.cpp" />
+    <ClCompile Include="Code\Renderer\RHI\basic_types.cpp" />
+    <ClCompile Include="Code\Renderer\RHI\rhi.cpp" />
     <ClCompile Include="Code\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="ThirdParty\glad\src\glad.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -155,13 +155,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\Common\misc.hpp" />
-    <ClInclude Include="Code\Common\resource.hpp" />
+    <ClInclude Include="Code\Renderer\Common\misc.hpp" />
+    <ClInclude Include="Code\Renderer\Common\resource.hpp" />
     <ClInclude Include="Code\Core\attributes.hpp" />
     <ClInclude Include="Code\Core\pointer.hpp" />
     <ClInclude Include="Code\PCH\pch.hpp" />
-    <ClInclude Include="Code\Renderer\Backends\Vulkan\Renderer.hpp" />
-    <ClInclude Include="Code\Renderer\Renderer\Renderer.hpp" />
+    <ClInclude Include="Code\Renderer\RHI\basic_types.hpp" />
+    <ClInclude Include="Code\Renderer\RHI\rhi.hpp" />
     <ClInclude Include="Code\ResourceManager\ResourceManager.hpp" />
     <ClInclude Include="Code\Window\Window.hpp" />
   </ItemGroup>

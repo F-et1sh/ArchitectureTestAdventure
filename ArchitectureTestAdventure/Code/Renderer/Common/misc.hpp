@@ -7,7 +7,7 @@
     
     File : misc.hpp
     
-    Content : Some useful functions
+    Content : Some useful functions. Mostly a copy of NVRHI ( https://github.com/NVIDIA-RTX/NVRHI )
 
 =================================================*/
 

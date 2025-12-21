@@ -5,11 +5,11 @@
     This source is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
-    File : Renderer.cpp
+    File : rhi.cpp
     
-    Content : Vulkan Renderer
+    Content : Master include for whole RHI
 
 =================================================*/
 
 #include "pch.hpp"
-#include "Renderer.hpp"
+#include "rhi.hpp"

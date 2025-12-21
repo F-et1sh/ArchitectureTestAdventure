@@ -5,15 +5,12 @@
     This source is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
-    File : Renderer.hpp
+    File : rhi.hpp
     
-    Content : Universal Renderer API
+    Content : Master include for whole RHI
 
 =================================================*/
 
 #pragma once
-#include "Window/Window.hpp"
 
-namespace ata {
-
-} // namespace ata
+#include "basic_types.hpp"
