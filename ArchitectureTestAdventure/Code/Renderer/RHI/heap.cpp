@@ -5,13 +5,11 @@
     This source is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
-    File : rhi.hpp
+    File : heap.cpp
     
-    Content : Master include for whole RHI
+    Content : Heap - Part of RHI. Mostly a copy of NVRHI ( https://github.com/NVIDIA-RTX/NVRHI )
 
 =================================================*/
 
-#pragma once
-
-#include "basic_types.hpp"
+#include "pch.hpp"
 #include "heap.hpp"

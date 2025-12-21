@@ -5,9 +5,9 @@
     This source is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
-    File : basic_types.cpp
+    File : basic_types.hpp
     
-    Content : Part of RHI. Basic Types. Mostly a copy of NVRHI ( https://github.com/NVIDIA-RTX/NVRHI )
+    Content : Basic Types - Part of RHI. Mostly a copy of NVRHI ( https://github.com/NVIDIA-RTX/NVRHI )
 
 =================================================*/
 

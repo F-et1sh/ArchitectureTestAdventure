@@ -7,6 +7,7 @@
     <ClCompile Include="ThirdParty\glad\src\glad.c" />
     <ClCompile Include="Code\Renderer\RHI\rhi.cpp" />
     <ClCompile Include="Code\Renderer\RHI\basic_types.cpp" />
+    <ClCompile Include="Code\Renderer\RHI\heap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\PCH\pch.hpp" />
@@ -18,6 +19,7 @@
     <ClInclude Include="Code\Renderer\Common\misc.hpp" />
     <ClInclude Include="Code\Renderer\RHI\rhi.hpp" />
     <ClInclude Include="Code\Renderer\RHI\basic_types.hpp" />
+    <ClInclude Include="Code\Renderer\RHI\heap.hpp" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="ThirdParty\glad\GLAD_LICENSE" />

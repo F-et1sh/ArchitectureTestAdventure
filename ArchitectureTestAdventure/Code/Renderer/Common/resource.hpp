@@ -119,11 +119,7 @@ namespace ata {
             IResource& operator=(const IResource&&) = delete;
         };
 
-        //////////////////////////////////////////////////////////////////////////
-        // RefCountPtr
         // Mostly a copy of Microsoft::WRL::ComPtr<T>
-        //////////////////////////////////////////////////////////////////////////
-
         template <typename T>
         class RefCountPtr {
         public:
@@ -303,13 +299,9 @@ namespace ata {
             friend class RefCountPtr;
         };
 
-        //////////////////////////////////////////////////////////////////////////
-        // RefCounter<T>
         // A class that implements reference counting in a way compatible with RefCountPtr.
         // Intended usage is to use it as a base class for interface implementations, like so :
         // class Texture : public RefCounter<ITexture> { ... }
-        //////////////////////////////////////////////////////////////////////////
-
         template <class T>
         class RefCounter : public T {
         protected:
@@ -336,10 +328,6 @@ namespace ata {
         private:
             std::atomic<unsigned long> m_referenceCount{ 1 };
         };
-
-        //////////////////////////////////////////////////////////////////////////
-        // Handles
-        //////////////////////////////////////////////////////////////////////////
 
         using ResourceHandle = RefCountPtr<IResource>;
 

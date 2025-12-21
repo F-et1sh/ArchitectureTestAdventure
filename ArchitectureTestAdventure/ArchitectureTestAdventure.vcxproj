@@ -147,6 +147,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="Code\Renderer\RHI\basic_types.cpp" />
+    <ClCompile Include="Code\Renderer\RHI\heap.cpp" />
     <ClCompile Include="Code\Renderer\RHI\rhi.cpp" />
     <ClCompile Include="Code\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="ThirdParty\glad\src\glad.c">
@@ -161,6 +162,7 @@
     <ClInclude Include="Code\Core\pointer.hpp" />
     <ClInclude Include="Code\PCH\pch.hpp" />
     <ClInclude Include="Code\Renderer\RHI\basic_types.hpp" />
+    <ClInclude Include="Code\Renderer\RHI\heap.hpp" />
     <ClInclude Include="Code\Renderer\RHI\rhi.hpp" />
     <ClInclude Include="Code\ResourceManager\ResourceManager.hpp" />
     <ClInclude Include="Code\Window\Window.hpp" />
