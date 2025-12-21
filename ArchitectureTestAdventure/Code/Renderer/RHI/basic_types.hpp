@@ -195,22 +195,70 @@ namespace ata {
         enum class FormatSupport : uint32_t {
             None = 0,
 
-            Buffer       = 0x00000001,
-            IndexBuffer  = 0x00000002,
-            VertexBuffer = 0x00000004,
+            Buffer       = 1u << 0,
+            IndexBuffer  = 1u << 1,
+            VertexBuffer = 1u << 2,
 
-            Texture      = 0x00000008,
-            DepthStencil = 0x00000010,
-            RenderTarget = 0x00000020,
-            Blendable    = 0x00000040,
+            Texture      = 1u << 3,
+            DepthStencil = 1u << 4,
+            RenderTarget = 1u << 5,
+            Blendable    = 1u << 6,
 
-            ShaderLoad     = 0x00000080,
-            ShaderSample   = 0x00000100,
-            ShaderUavLoad  = 0x00000200,
-            ShaderUavStore = 0x00000400,
-            ShaderAtomic   = 0x00000800,
+            ShaderLoad     = 1u << 7,
+            ShaderSample   = 1u << 8,
+            ShaderUavLoad  = 1u << 9,
+            ShaderUavStore = 1u << 10,
+            ShaderAtomic   = 1u << 11,
         };
 
         ATA_ENUM_CLASS_FLAG_OPERATORS(FormatSupport)
+
+        enum class CPU_AccessMode : uint8_t {
+            None,
+            Read,
+            Write
+        };
+
+        enum class ResourceStates : uint32_t {
+            Unknown                    = 0,
+            Common                     = 1u << 0,
+            ConstantBuffer             = 1u << 1,
+            VertexBuffer               = 1u << 2,
+            IndexBuffer                = 1u << 3,
+            IndirectArgument           = 1u << 4,
+            ShaderResource             = 1u << 5,
+            UnorderedAccess            = 1u << 6,
+            RenderTarget               = 1u << 7,
+            DepthWrite                 = 1u << 8,
+            DepthRead                  = 1u << 9,
+            StreamOut                  = 1u << 10,
+            CopyDest                   = 1u << 11,
+            CopySource                 = 1u << 12,
+            ResolveDest                = 1u << 13,
+            ResolveSource              = 1u << 14,
+            Present                    = 1u << 15,
+            AccelStructRead            = 1u << 16,
+            AccelStructWrite           = 1u << 17,
+            AccelStructBuildInput      = 1u << 18,
+            AccelStructBuildBlas       = 1u << 19,
+            ShadingRateSurface         = 1u << 20,
+            OpacityMicromapWrite       = 1u << 21,
+            OpacityMicromapBuildInput  = 1u << 22,
+            ConvertCoopVecMatrixInput  = 1u << 23,
+            ConvertCoopVecMatrixOutput = 1u << 24,
+        };
+
+        ATA_ENUM_CLASS_FLAG_OPERATORS(ResourceStates)
+
+        // flags for resources that need to be shared with other graphics APIs or other GPU devices.
+        enum class SharedResourceFlags : uint32_t {
+            None = 0,
+
+            // Vulkan : adds vk::ExternalMemoryImageCreateInfo and vk::ExportMemoryAllocateInfo/vk::ExternalMemoryBufferCreateInfo
+            // OpenGL : ignored
+            Shared = 0x01
+        };
+
+        ATA_ENUM_CLASS_FLAG_OPERATORS(SharedResourceFlags)
     } // namespace rhi
 } // namespace ata
