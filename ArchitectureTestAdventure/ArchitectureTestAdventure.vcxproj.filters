@@ -26,6 +26,7 @@
     <ClInclude Include="Code\Renderer\RHI\texture.hpp" />
     <ClInclude Include="Code\Renderer\RHI\input_layout.hpp" />
     <ClInclude Include="Code\Renderer\RHI\buffer.hpp" />
+    <ClInclude Include="Code\Renderer\RHI\rhiHLSL.hpp" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="ThirdParty\glad\GLAD_LICENSE" />

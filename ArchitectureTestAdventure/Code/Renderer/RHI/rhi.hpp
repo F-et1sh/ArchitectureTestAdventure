@@ -18,3 +18,4 @@
 #include "texture.hpp"
 #include "input_layout.hpp"
 #include "buffer.hpp"
+#include "rhiHLSL.hpp"

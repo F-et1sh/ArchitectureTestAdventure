@@ -13,6 +13,7 @@
 
 #pragma once
 #include "Renderer/RHI/basic_types.hpp"
+#include "Renderer/RHI/rhiHLSL.hpp"
 
 namespace ata {
     namespace rhi {
