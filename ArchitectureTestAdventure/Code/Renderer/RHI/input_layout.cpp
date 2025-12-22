@@ -5,15 +5,11 @@
     This source is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
-    File : rhi.hpp
+    File : input_layout.cpp
     
-    Content : Master include for whole RHI
+    Content : Input Layout - Part of RHI. Mostly a copy of NVRHI ( https://github.com/NVIDIA-RTX/NVRHI )
 
 =================================================*/
 
-#pragma once
-
-#include "basic_types.hpp"
-#include "heap.hpp"
-#include "texture.hpp"
+#include "pch.hpp"
 #include "input_layout.hpp"

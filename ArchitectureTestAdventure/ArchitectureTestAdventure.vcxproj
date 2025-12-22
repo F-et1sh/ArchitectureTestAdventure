@@ -148,6 +148,7 @@
     </ClCompile>
     <ClCompile Include="Code\Renderer\RHI\basic_types.cpp" />
     <ClCompile Include="Code\Renderer\RHI\heap.cpp" />
+    <ClCompile Include="Code\Renderer\RHI\input_layout.cpp" />
     <ClCompile Include="Code\Renderer\RHI\rhi.cpp" />
     <ClCompile Include="Code\Renderer\RHI\texture.cpp" />
     <ClCompile Include="Code\ResourceManager\ResourceManager.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="Code\PCH\pch.hpp" />
     <ClInclude Include="Code\Renderer\RHI\basic_types.hpp" />
     <ClInclude Include="Code\Renderer\RHI\heap.hpp" />
+    <ClInclude Include="Code\Renderer\RHI\input_layout.hpp" />
     <ClInclude Include="Code\Renderer\RHI\rhi.hpp" />
     <ClInclude Include="Code\Renderer\RHI\texture.hpp" />
     <ClInclude Include="Code\ResourceManager\ResourceManager.hpp" />
