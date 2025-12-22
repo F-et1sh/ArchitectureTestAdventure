@@ -62,6 +62,6 @@ namespace ata {
             ATA_NODISCARD virtual const VertexAttributeDesc* getAttributeDesc(uint32_t index) const = 0;
         };
 
-        typedef RefCountPtr<IInputLayout> InputLayoutHandle;
+        using InputLayoutHandle = RefCountPtr<IInputLayout>;
     } // namespace rhi
 } // namespace ata
