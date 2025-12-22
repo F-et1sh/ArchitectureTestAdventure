@@ -5,16 +5,11 @@
     This source is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
-    File : rhi.hpp
+    File : buffer.cpp
     
-    Content : Master include for whole RHI
+    Content : Buffer - Part of RHI. Mostly a copy of NVRHI ( https://github.com/NVIDIA-RTX/NVRHI )
 
 =================================================*/
 
-#pragma once
-
-#include "basic_types.hpp"
-#include "heap.hpp"
-#include "texture.hpp"
-#include "input_layout.hpp"
+#include "pch.hpp"
 #include "buffer.hpp"

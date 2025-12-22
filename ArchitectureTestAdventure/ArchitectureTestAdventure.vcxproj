@@ -147,6 +147,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="Code\Renderer\RHI\basic_types.cpp" />
+    <ClCompile Include="Code\Renderer\RHI\buffer.cpp" />
     <ClCompile Include="Code\Renderer\RHI\heap.cpp" />
     <ClCompile Include="Code\Renderer\RHI\input_layout.cpp" />
     <ClCompile Include="Code\Renderer\RHI\rhi.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="Code\Core\pointer.hpp" />
     <ClInclude Include="Code\PCH\pch.hpp" />
     <ClInclude Include="Code\Renderer\RHI\basic_types.hpp" />
+    <ClInclude Include="Code\Renderer\RHI\buffer.hpp" />
     <ClInclude Include="Code\Renderer\RHI\heap.hpp" />
     <ClInclude Include="Code\Renderer\RHI\input_layout.hpp" />
     <ClInclude Include="Code\Renderer\RHI\rhi.hpp" />
