@@ -11,5 +11,7 @@
 ::
 ::=================================================
 
+@echo off
+
 build_submodule.bat
 copy_to_third_party.bat

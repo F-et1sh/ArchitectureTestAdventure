@@ -11,6 +11,8 @@
 ::
 ::=================================================
 
+@echo off
+
 pushd "%~dp0\..\..\External\NVRHI"
 
 rmdir /q /s build

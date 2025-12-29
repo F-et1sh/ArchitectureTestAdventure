@@ -12,12 +12,14 @@
 ::
 ::=================================================
 
-xcopy /y /i /s "..\\..\\External\\NVRHI\\include" "..\\..\\ThirdParty\\NVRHI\\include"
-xcopy /y /i /s "..\\..\\External\\NVRHI\\build\\Release" "..\\..\\ThirdParty\\NVRHI\\win64"
+@echo off
 
-copy "..\\..\\External\\NVRHI\\rtxmu\\LICENSE.txt" "..\\..\\ThirdParty\\NVRHI\\NVRHI_RTXMU_LICENSE.txt"
-copy "..\\..\\External\\NVRHI\\thirdparty\\DirectX-Headers\\LICENSE" "..\\..\\ThirdParty\\NVRHI\\NVRHI_DIRECT_X_LICENSE.txt"
-copy "..\\..\\External\\NVRHI\\thirdparty\\Vulkan-Headers\\LICENSES\\MIT.txt" "..\\..\\ThirdParty\\NVRHI\\NVRHI_VULKAN_LICENSE_MIT.txt"
+xcopy /y /i /s "..\\..\\External\\NVRHI\\include" "..\\..\\ThirdParty\\NVRHI\\include" >nul
+xcopy /y /i /s "..\\..\\External\\NVRHI\\build\\Release" "..\\..\\ThirdParty\\NVRHI\\win64" >nul
 
-copy "..\\..\\External\\NVRHI\\LICENSE.txt" "..\\..\\ThirdParty\\NVRHI\\NVRHI_LICENSE.txt"
-copy "..\\..\\External\\NVRHI\\ThirdPartyLicenses.txt" "..\\..\\ThirdParty\\NVRHI\\NVRHI_ThirdPartyLicenses.txt"
+copy "..\\..\\External\\NVRHI\\rtxmu\\LICENSE.txt" "..\\..\\ThirdParty\\NVRHI\\NVRHI_RTXMU_LICENSE.txt" >nul
+copy "..\\..\\External\\NVRHI\\thirdparty\\DirectX-Headers\\LICENSE" "..\\..\\ThirdParty\\NVRHI\\NVRHI_DIRECT_X_LICENSE.txt" >nul
+copy "..\\..\\External\\NVRHI\\thirdparty\\Vulkan-Headers\\LICENSES\\MIT.txt" "..\\..\\ThirdParty\\NVRHI\\NVRHI_VULKAN_LICENSE_MIT.txt" >nul
+
+copy "..\\..\\External\\NVRHI\\LICENSE.txt" "..\\..\\ThirdParty\\NVRHI\\NVRHI_LICENSE.txt" >nul
+copy "..\\..\\External\\NVRHI\\ThirdPartyLicenses.txt" "..\\..\\ThirdParty\\NVRHI\\NVRHI_ThirdPartyLicenses.txt" >nul
