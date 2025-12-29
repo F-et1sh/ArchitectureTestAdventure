@@ -4,34 +4,13 @@
     <ClCompile Include="Code\main.cpp" />
     <ClCompile Include="Code\PCH\pch.cpp" />
     <ClCompile Include="Code\ResourceManager\ResourceManager.cpp" />
-    <ClCompile Include="ThirdParty\glad\src\glad.c" />
-    <ClCompile Include="Code\Renderer\RHI\rhi.cpp" />
-    <ClCompile Include="Code\Renderer\RHI\basic_types.cpp" />
-    <ClCompile Include="Code\Renderer\RHI\heap.cpp" />
-    <ClCompile Include="Code\Renderer\RHI\texture.cpp" />
-    <ClCompile Include="Code\Renderer\RHI\input_layout.cpp" />
-    <ClCompile Include="Code\Renderer\RHI\buffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\PCH\pch.hpp" />
     <ClInclude Include="Code\Core\pointer.hpp" />
-    <ClInclude Include="Code\Renderer\Common\resource.hpp" />
     <ClInclude Include="Code\ResourceManager\ResourceManager.hpp" />
     <ClInclude Include="Code\Window\Window.hpp" />
     <ClInclude Include="Code\Core\attributes.hpp" />
-    <ClInclude Include="Code\Renderer\Common\misc.hpp" />
-    <ClInclude Include="Code\Renderer\RHI\rhi.hpp" />
-    <ClInclude Include="Code\Renderer\RHI\basic_types.hpp" />
-    <ClInclude Include="Code\Renderer\RHI\heap.hpp" />
-    <ClInclude Include="Code\Renderer\RHI\texture.hpp" />
-    <ClInclude Include="Code\Renderer\RHI\input_layout.hpp" />
-    <ClInclude Include="Code\Renderer\RHI\buffer.hpp" />
-    <ClInclude Include="Code\Renderer\RHI\rhiHLSL.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="ThirdParty\glad\GLAD_LICENSE" />
-    <CopyFileToFolders Include="ThirdParty\GLFW\GLFW_LICENSE.md" />
-    <CopyFileToFolders Include="ThirdParty\GLM\GLM_COPYING.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Code\Window\Window.cpp" />

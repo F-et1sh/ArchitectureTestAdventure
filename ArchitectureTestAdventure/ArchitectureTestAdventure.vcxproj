@@ -42,15 +42,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -108,12 +108,12 @@
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\Code;$(SolutionDir)$(ProjectName)\Code\PCH;$(SolutionDir)$(ProjectName)\Code\Core;$(SolutionDir)$(ProjectName)\ThirdParty\glad\include;$(SolutionDir)$(ProjectName)\ThirdParty\GLFW\include;$(SolutionDir)$(ProjectName)\ThirdParty\GLM\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\Code;$(SolutionDir)$(ProjectName)\Code\PCH;$(SolutionDir)$(ProjectName)\Code\Core;$(SolutionDir)ThirdParty\glad\include;$(SolutionDir)ThirdParty\GLFW\include;$(SolutionDir)ThirdParty\GLM\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(ProjectName)\ThirdParty\GLFW\win64\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\GLFW\win64\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -129,12 +129,12 @@
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\Code;$(SolutionDir)$(ProjectName)\Code\PCH;$(SolutionDir)$(ProjectName)\Code\Core;$(SolutionDir)$(ProjectName)\ThirdParty\glad\include;$(SolutionDir)$(ProjectName)\ThirdParty\GLFW\include;$(SolutionDir)$(ProjectName)\ThirdParty\GLM\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\Code;$(SolutionDir)$(ProjectName)\Code\PCH;$(SolutionDir)$(ProjectName)\Code\Core;$(SolutionDir)ThirdParty\glad\include;$(SolutionDir)ThirdParty\GLFW\include;$(SolutionDir)ThirdParty\GLM\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(ProjectName)\ThirdParty\GLFW\win64\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\GLFW\win64\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -146,49 +146,22 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="Code\Renderer\RHI\basic_types.cpp" />
-    <ClCompile Include="Code\Renderer\RHI\buffer.cpp" />
-    <ClCompile Include="Code\Renderer\RHI\heap.cpp" />
-    <ClCompile Include="Code\Renderer\RHI\input_layout.cpp" />
-    <ClCompile Include="Code\Renderer\RHI\rhi.cpp" />
-    <ClCompile Include="Code\Renderer\RHI\texture.cpp" />
     <ClCompile Include="Code\ResourceManager\ResourceManager.cpp" />
-    <ClCompile Include="ThirdParty\glad\src\glad.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\Renderer\Common\misc.hpp" />
-    <ClInclude Include="Code\Renderer\Common\resource.hpp" />
     <ClInclude Include="Code\Core\attributes.hpp" />
     <ClInclude Include="Code\Core\pointer.hpp" />
     <ClInclude Include="Code\PCH\pch.hpp" />
-    <ClInclude Include="Code\Renderer\RHI\basic_types.hpp" />
-    <ClInclude Include="Code\Renderer\RHI\buffer.hpp" />
-    <ClInclude Include="Code\Renderer\RHI\heap.hpp" />
-    <ClInclude Include="Code\Renderer\RHI\rhiHLSL.hpp" />
-    <ClInclude Include="Code\Renderer\RHI\input_layout.hpp" />
-    <ClInclude Include="Code\Renderer\RHI\rhi.hpp" />
-    <ClInclude Include="Code\Renderer\RHI\texture.hpp" />
     <ClInclude Include="Code\ResourceManager\ResourceManager.hpp" />
     <ClInclude Include="Code\Window\Window.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="ThirdParty\glad\GLAD_LICENSE">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="ThirdParty\GLFW\GLFW_LICENSE.md">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="ThirdParty\GLM\GLM_COPYING.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Code\Window\Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RHI\RHI.vcxproj">
+      <Project>{3773c38a-a77e-467b-8b19-be1a94fadcc2}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

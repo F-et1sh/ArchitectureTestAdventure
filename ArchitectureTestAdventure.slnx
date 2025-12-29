@@ -6,10 +6,13 @@
   <Folder Name="/Solution Items/">
     <File Path=".clang-format" />
     <File Path=".clang-tidy" />
+    <File Path=".gitattributes" />
     <File Path=".gitignore" />
+    <File Path=".gitmodules" />
     <File Path="LICENSE.txt" />
     <File Path="README.md" />
     <File Path="settings.json" />
   </Folder>
   <Project Path="ArchitectureTestAdventure/ArchitectureTestAdventure.vcxproj" Id="a7b134a4-5467-45e4-a191-4449512019ca" />
+  <Project Path="RHI/RHI.vcxproj" Id="3773c38a-a77e-467b-8b19-be1a94fadcc2" />
 </Solution>
