@@ -5,15 +5,10 @@
     This source is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
-    File : Window.hpp
+    File : RHI.cpp
     
-    Content : Window of the application
+    Content : master include of the RHI
 
 =================================================*/
 
-#pragma once
-
-namespace ata {
-    class Window {
-    };
-} // namespace ata
+#include "RHI.hpp"

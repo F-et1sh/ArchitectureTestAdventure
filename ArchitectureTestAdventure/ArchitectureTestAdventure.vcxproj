@@ -108,7 +108,7 @@
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\Code;$(SolutionDir)$(ProjectName)\Code\PCH;$(SolutionDir)$(ProjectName)\Code\Core;$(SolutionDir)ThirdParty\glad\include;$(SolutionDir)ThirdParty\GLFW\include;$(SolutionDir)ThirdParty\GLM\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Code;$(ProjectDir)Code\PCH;$(ProjectDir)Code\Core;$(SolutionDir)ThirdParty\glad\include;$(SolutionDir)ThirdParty\GLFW\include;$(SolutionDir)ThirdParty\GLM\include;$(SolutionDir)RHI\Code;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,7 +132,7 @@
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\Code;$(SolutionDir)$(ProjectName)\Code\PCH;$(SolutionDir)$(ProjectName)\Code\Core;$(SolutionDir)ThirdParty\glad\include;$(SolutionDir)ThirdParty\GLFW\include;$(SolutionDir)ThirdParty\GLM\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Code;$(ProjectDir)Code\PCH;$(ProjectDir)Code\Core;$(SolutionDir)ThirdParty\glad\include;$(SolutionDir)ThirdParty\GLFW\include;$(SolutionDir)ThirdParty\GLM\include;$(SolutionDir)RHI\Code;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

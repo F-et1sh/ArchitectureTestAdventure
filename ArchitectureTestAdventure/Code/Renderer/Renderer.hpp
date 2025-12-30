@@ -12,14 +12,18 @@
 =================================================*/
 
 #pragma once
+#include "RHI.hpp"
 
 namespace ata {
     class Renderer {
     public:
-        Renderer() = default;
+        Renderer()  = default;
         ~Renderer() = default;
 
-    private:
+        void Release();
+        void Initialize();
 
+    private:
+        //rhi::DeviceHandle m_deviceHandle{};
     };
-}
+} // namespace ata

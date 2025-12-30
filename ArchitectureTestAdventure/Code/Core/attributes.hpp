@@ -14,9 +14,9 @@
 #pragma once
 
 #if __cplusplus >= 201703L // C++17
-    #define ATA_MAYBE_UNUSED [[maybe_unused]]
+#define ATA_MAYBE_UNUSED [[maybe_unused]]
 #else
-    #define ATA_MAYBE_UNUSED
+#define ATA_MAYBE_UNUSED
 #endif
 
 #define ATA_NODISCARD [[nodiscard]]
