@@ -4,6 +4,7 @@
     <ClCompile Include="Code\main.cpp" />
     <ClCompile Include="Code\PCH\pch.cpp" />
     <ClCompile Include="Code\ResourceManager\ResourceManager.cpp" />
+    <ClCompile Include="Code\Renderer\Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\PCH\pch.hpp" />
@@ -11,6 +12,7 @@
     <ClInclude Include="Code\ResourceManager\ResourceManager.hpp" />
     <ClInclude Include="Code\Window\Window.hpp" />
     <ClInclude Include="Code\Core\attributes.hpp" />
+    <ClInclude Include="Code\Renderer\Renderer.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Code\Window\Window.cpp" />
