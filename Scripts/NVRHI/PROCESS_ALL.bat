@@ -5,7 +5,7 @@
 ::   This source is a part of ArchitectureTestAdventure.
 ::   Check README.md for more information.
 ::   
-::   File : configure.bat
+::   File : PROCESS_ALL.bat
 ::   
 ::   Content : run all scripts in queue
 ::
