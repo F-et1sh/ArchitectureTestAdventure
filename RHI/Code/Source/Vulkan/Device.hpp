@@ -5,11 +5,16 @@
     This file is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
-    File : ResourceManager.cpp
+    File : Device.hpp
     
-    Content : CPU Resource Manager
+        Content : Implementation of Vulkan Device. A part of RHI.
 
 =================================================*/
 
-#include "pch.hpp"
-#include "ResourceManager.hpp"
+#pragma once
+#include "RHI/Device.hpp"
+
+namespace rhi::vulkan {
+    class Device final : rhi::Device {
+    };
+} // namespace rhi::vulkan

@@ -4,7 +4,7 @@
 
 Copyright (c) 2025 Farrakh Fattakhov
 
-This source code is provided for informational and demonstration purposes only.
+This file code is provided for informational and demonstration purposes only.
 Any use, reproduction, modification, distribution, or commercial exploitation 
 of this code, in whole or in part, is strictly prohibited.
 

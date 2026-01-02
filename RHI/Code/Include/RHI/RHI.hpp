@@ -2,13 +2,15 @@
 
     Copyright (C) 2025 Farrakh.  All Rights Reserved.
     
-    This source is a part of ArchitectureTestAdventure.
+    This file is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
-    File : RHI.cpp
+    File : RHI.hpp
     
     Content : master include of the RHI
 
 =================================================*/
 
-#include "RHI.hpp"
+#pragma once
+
+#include "Device.hpp"

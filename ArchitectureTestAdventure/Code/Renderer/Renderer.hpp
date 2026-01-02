@@ -2,7 +2,7 @@
 
     Copyright (C) 2025 Farrakh.  All Rights Reserved.
     
-    This source is a part of ArchitectureTestAdventure.
+    This file is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
     File : Renderer.hpp
@@ -12,7 +12,7 @@
 =================================================*/
 
 #pragma once
-#include "RHI.hpp"
+#include "RHI/RHI.hpp"
 
 namespace ata {
     class Renderer {
