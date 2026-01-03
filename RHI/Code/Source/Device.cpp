@@ -14,9 +14,7 @@
 #include "RHI/Device.hpp"
 #include "Vulkan/Device.hpp"
 
-using namespace rhi;
-
-std::unique_ptr<Device> Device::Create(GraphicsAPI backend) {
+std::unique_ptr<rhi::Device> rhi::Device::Create(GraphicsAPI backend) {
     switch (backend) {
         case GraphicsAPI::VULKAN:
             return std::make_unique<rhi::vulkan::Device>();
@@ -25,6 +23,4 @@ std::unique_ptr<Device> Device::Create(GraphicsAPI backend) {
             return nullptr;
             break;
     }
-
-
 }

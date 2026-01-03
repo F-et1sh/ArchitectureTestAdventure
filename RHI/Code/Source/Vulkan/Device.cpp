@@ -5,24 +5,16 @@
     This file is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
-    File : Device.hpp
+    File : Device.cpp
     
         Content : Implementation of Vulkan Device. A part of RHI.
 
 =================================================*/
 
-#pragma once
-#include "RHI/Device.hpp"
+#include "Device.hpp"
 
-namespace rhi::vulkan {
-    class Device final : public rhi::Device {
-    public:
-        Device()  = default;
-        ~Device() = default;
+void rhi::vulkan::Device::BeginFrame() {
+}
 
-        void BeginFrame() override;
-        void EndFrame() override;
-
-    private:
-    };
-} // namespace rhi::vulkan
+void rhi::vulkan::Device::EndFrame() {
+}

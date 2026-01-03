@@ -24,6 +24,6 @@ namespace ata {
         void Initialize();
 
     private:
-        //rhi::DeviceHandle m_deviceHandle{};
+        std::unique_ptr<rhi::Device> m_device{};
     };
 } // namespace ata

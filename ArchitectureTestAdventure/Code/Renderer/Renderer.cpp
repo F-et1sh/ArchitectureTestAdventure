@@ -13,3 +13,11 @@
 
 #include "pch.hpp"
 #include "Renderer.hpp"
+
+void ata::Renderer::Release() {
+
+}
+
+void ata::Renderer::Initialize() {
+    m_device = rhi::Device::Create(rhi::GraphicsAPI::VULKAN);
+}
