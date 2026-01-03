@@ -21,5 +21,7 @@ namespace rhi {
 
         virtual void BeginFrame() = 0;
         virtual void EndFrame()   = 0;
+
+        virtual std::unique_ptr<rhi::CommandList> CreateCommandList() = 0;
     };
 } // namespace rhi

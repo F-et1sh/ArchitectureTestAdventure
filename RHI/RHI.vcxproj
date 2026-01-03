@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\Include\RHI\CommandList.hpp" />
     <ClInclude Include="Code\Include\RHI\Device.hpp" />
     <ClInclude Include="Code\Include\RHI\DeviceManager.hpp" />
     <ClInclude Include="Code\Include\RHI\RHI.hpp" />

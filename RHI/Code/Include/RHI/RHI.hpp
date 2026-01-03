@@ -13,5 +13,6 @@
 
 #pragma once
 
+#include "CommandList.hpp"
 #include "Device.hpp"
 #include "DeviceManager.hpp"

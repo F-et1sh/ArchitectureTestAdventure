@@ -7,7 +7,7 @@
     
     File : DeviceManager.hpp
     
-    Content : DeviceManager
+    Content : device manager
 
 =================================================*/
 
