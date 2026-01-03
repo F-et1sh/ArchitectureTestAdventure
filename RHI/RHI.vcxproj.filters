@@ -4,6 +4,7 @@
     <ClInclude Include="Code\Include\RHI\RHI.hpp" />
     <ClInclude Include="Code\Source\Vulkan\VulkanBackend.hpp" />
     <ClInclude Include="Code\Include\RHI\DeviceManager.hpp" />
+    <ClInclude Include="Code\Include\RHI\Device.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Source\Vulkan\VulkanBackend.cpp" />

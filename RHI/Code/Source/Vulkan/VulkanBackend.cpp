@@ -13,8 +13,27 @@
 
 #include "VulkanBackend.hpp"
 
-// defenition of rhi::DeviceManager's member, not rhi::vulkan::DeviceManager
-rhi::DeviceManager* rhi::DeviceManager::CreateVK() {
-    return new rhi::vulkan::DeviceManager();
+#include <nvrhi/vulkan.h>
+
+struct rhi::vulkan::Device::Impl {
+    nvrhi::vulkan::DeviceHandle m_Device;
+    VkQueue                     m_GraphicsQueue;
+
+    // swapchain, fences, etc..
+};
+
+rhi::vulkan::Device::Device() {
+    m_Impl = new Impl();
 }
 
+rhi::vulkan::Device::~Device() {
+    delete m_Impl;
+}
+
+void rhi::vulkan::Device::BeginFrame() {
+    // m_Impl->m_Device...
+}
+
+void rhi::vulkan::Device::EndFrame() {
+    // m_Impl->m_Device...
+}

@@ -7,18 +7,19 @@
     
     File : DeviceManager.cpp
     
-    Content : Interface of DeviceManager
+    Content : DeviceManager
 
 =================================================*/
 
 #include "RHI/RHI.hpp"
+#include "Vulkan/VulkanBackend.hpp"
 
-rhi::DeviceManager* rhi::DeviceManager::Create(GraphicsAPI backend) {
+std::unique_ptr<rhi::Device> rhi::DeviceManager::Create(GraphicsAPI backend) {
     switch (backend) {
         case GraphicsAPI::VK:
-            return rhi::DeviceManager::CreateVK();
+            return std::make_unique<rhi::vulkan::Device>();
         default:
-            // TODO : Add logging //log::error("DeviceManager::Create : Unsupported Graphics API (%d)", backend);
+            // TODO : ERROR LOGGING
             return nullptr;
     }
 }

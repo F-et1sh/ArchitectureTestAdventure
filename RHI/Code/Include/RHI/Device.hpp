@@ -5,13 +5,21 @@
     This file is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
-    File : RHI.hpp
+    File : Device.hpp
     
-    Content : Master include of RHI project
+    Content : Interface of Device
 
 =================================================*/
 
 #pragma once
 
-#include "Device.hpp"
-#include "DeviceManager.hpp"
+namespace rhi {
+    class Device {
+    public:
+        Device()          = default;
+        virtual ~Device() = default;
+
+        virtual void BeginFrame() = 0;
+        virtual void EndFrame()   = 0;
+    };
+} // namespace rhi

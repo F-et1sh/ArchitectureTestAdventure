@@ -7,13 +7,14 @@
     
     File : DeviceManager.hpp
     
-    Content : Interface of DeviceManager
+    Content : DeviceManager
 
 =================================================*/
 
 #pragma once
 
 #include <memory>
+#include "Device.hpp"
 
 namespace rhi {
     enum class GraphicsAPI : uint8_t {
@@ -25,13 +26,8 @@ namespace rhi {
     class DeviceManager {
     public:
         DeviceManager()  = default;
-        virtual ~DeviceManager() = default;
+        ~DeviceManager() = default;
 
-        static DeviceManager* Create(GraphicsAPI backend);
-
-    private:
-        // TODO : static DeviceManager* CreateD3D11();
-        // TODO : static DeviceManager* CreateD3D12();
-        static DeviceManager* CreateVK();
+        std::unique_ptr<Device> Create(GraphicsAPI backend);
     };
 } // namespace rhi

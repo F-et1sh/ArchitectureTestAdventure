@@ -20,8 +20,8 @@ CheckOptions:
   - { key: readability-identifier-naming.GlobalVariableCase,      value: UPPER_CASE }
 
   # ──────────────────────────────────────────────────────────────
-  # CLASS MEMBERS ( DISABLED. DOES NOT WORK )
-  # - { key: readability-identifier-naming.MemberCase,              value: camelBack }
+  # CLASS MEMBERS ( DISABLED. WORKDS BAD )
+  # - { key: readability-identifier-naming.MemberCase,              value: CamelCase }
   # - { key: readability-identifier-naming.MemberPrefix,            value: m_ }
 
   # STRUCT MEMBERS ( DISABLED. DOES NOT WORK )
@@ -29,7 +29,7 @@ CheckOptions:
   # - { key: readability-identifier-naming.StructMemberPrefix,      value: m_ }
 
   # ──────────────────────────────────────────────────────────────
-  # ENUMS / TYPES  ( DISABLED. DOES NOT WORK )
+  # ENUMS / TYPES  ( DISABLED. WORKDS BAD )
   # - { key: readability-identifier-naming.EnumConstantCase,        value: UPPER_CASE }
   # - { key: readability-identifier-naming.EnumCase,                value: CamelCase }
   # - { key: readability-identifier-naming.ClassCase,               value: CamelCase }

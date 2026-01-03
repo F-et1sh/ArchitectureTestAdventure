@@ -13,15 +13,19 @@
 
 #pragma once
 
-#include "RHI/RHI.hpp"
+#include "RHI/Device.hpp"
 
 namespace rhi::vulkan {
-    class DeviceManager final : public rhi::DeviceManager {
+    class Device final : public rhi::Device {
     public:
-        DeviceManager()  = default;
-        ~DeviceManager() = default;
+        Device();
+        ~Device();
+
+        void BeginFrame() override;
+        void EndFrame() override;
 
     private:
-
+        struct Impl;
+        Impl* m_Impl;
     };
 } // namespace rhi::vulkan
