@@ -1,6 +1,6 @@
 /*=================================================
 
-    Copyright (C) 2025 Farrakh.  All Rights Reserved.
+    Copyright (C) 2025 Farrakh. All Rights Reserved.
     
     This file is a part of ArchitectureTestAdventure.
     Check README.md for more information.
@@ -32,9 +32,7 @@ namespace rhi {
         virtual void setVertexBuffer(const Buffer* buffer) = 0;
         virtual void setIndexBuffer(const Buffer* buffer)  = 0;
 
-        virtual void DrawIndexed(uint32_t index_count,
-                                 uint32_t first_index   = 0,
-                                 uint32_t vertex_offset = 0) = 0;
+        virtual void DrawIndexed(uint32_t instance_count, uint32_t first_index, uint32_t first_instance, uint32_t first_vertex, uint32_t vertex_count) = 0;
 
     private:
     };

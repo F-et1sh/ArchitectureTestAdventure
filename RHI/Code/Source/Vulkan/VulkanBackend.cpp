@@ -1,6 +1,6 @@
 /*=================================================
 
-    Copyright (C) 2025 Farrakh.  All Rights Reserved.
+    Copyright (C) 2025 Farrakh. All Rights Reserved.
     
     This file is a part of ArchitectureTestAdventure.
     Check README.md for more information.
@@ -13,6 +13,13 @@
 =================================================*/
 
 #include "VulkanBackend.hpp"
+
+#include <unordered_set>
+#include <string>
+#include <queue>
+
+#include <nvrhi/vulkan.h>
+#include <vulkan/vulkan.hpp>
 
 struct rhi::vulkan::Device::Impl {
     struct VulkanExtensionSet {
@@ -86,20 +93,6 @@ struct rhi::vulkan::Device::Impl {
     vk::Queue  m_TransferQueue;
     vk::Queue  m_PresentQueue;
 
-    vk::SurfaceKHR m_WindowSurface;
-
-    vk::SurfaceFormatKHR m_SwapChainFormat;
-    vk::SwapchainKHR     m_SwapChain;
-    bool                 m_SwapChainMutableFormatSupported = false;
-
-    struct SwapChainImage {
-        vk::Image            image;
-        nvrhi::TextureHandle rhi_handle;
-    };
-
-    std::vector<SwapChainImage> m_SwapChainImages;
-    uint32_t                    m_SwapChainIndex = uint32_t(-1);
-
     nvrhi::vulkan::DeviceHandle m_NVRHIDevice;
     nvrhi::DeviceHandle         m_ValidationLayer;
 
@@ -129,28 +122,23 @@ rhi::vulkan::Device::~Device() {
     delete m_Impl;
 }
 
-void rhi::vulkan::Device::BeginFrame() {
-    
-}
-
-void rhi::vulkan::Device::EndFrame() {
-
-}
-
 std::unique_ptr<rhi::CommandList> rhi::vulkan::Device::CreateCommandList() {
     auto cmd = m_Impl->m_NVRHIDevice->createCommandList();
     return std::make_unique<rhi::vulkan::CommandList>(cmd);
 }
 
+void rhi::vulkan::Device::Submit(rhi::CommandList* cmd) {
+}
+
 void rhi::vulkan::CommandList::BeginFrame() {
-    
+    m_NVRHICommandList->open();
 }
 
 void rhi::vulkan::CommandList::EndFrame() {
+    m_NVRHICommandList->close();
 }
 
 void rhi::vulkan::CommandList::setPipeline(const Pipeline* pipeline) {
-    
 }
 
 void rhi::vulkan::CommandList::setVertexBuffer(const Buffer* buffer) {
@@ -159,6 +147,55 @@ void rhi::vulkan::CommandList::setVertexBuffer(const Buffer* buffer) {
 void rhi::vulkan::CommandList::setIndexBuffer(const Buffer* buffer) {
 }
 
-void rhi::vulkan::CommandList::DrawIndexed(uint32_t index_count, uint32_t first_index, uint32_t vertex_offset) {
-    
+void rhi::vulkan::CommandList::DrawIndexed(uint32_t instance_count, uint32_t first_index, uint32_t first_instance, uint32_t first_vertex, uint32_t vertex_count) {
+    nvrhi::DrawArguments args{};
+    args.setInstanceCount(instance_count);
+    args.setStartIndexLocation(first_index);
+    args.setStartInstanceLocation(first_instance);
+    args.setStartVertexLocation(first_vertex);
+    args.setVertexCount(vertex_count);
+
+    m_NVRHICommandList->drawIndexed(args);
+}
+
+struct rhi::vulkan::Swapchain::Impl {
+    vk::SurfaceKHR m_WindowSurface;
+
+    vk::SurfaceFormatKHR m_SwapchainFormat;
+    vk::SwapchainKHR     m_Swapchain;
+    bool                 m_SwapchainMutableFormatSupported = false;
+
+    struct SwapChainImage {
+        vk::Image            image;
+        nvrhi::TextureHandle rhi_handle;
+    };
+
+    std::vector<SwapChainImage> m_SwapchainImages;
+    uint32_t                    m_SwapchainIndex = uint32_t(-1);
+};
+
+rhi::vulkan::Swapchain::Swapchain() {
+    m_Impl = new Impl();
+}
+
+rhi::vulkan::Swapchain::~Swapchain() {
+    delete m_Impl;
+}
+
+rhi::TextureHandle rhi::vulkan::Swapchain::Acquire() {
+    return {};
+}
+
+void rhi::vulkan::Swapchain::Present() {
+}
+
+void rhi::vulkan::Swapchain::Resize(uint32_t width, uint32_t height) {
+}
+
+uint32_t rhi::vulkan::Swapchain::getWidth() const {
+    return 0;
+}
+
+uint32_t rhi::vulkan::Swapchain::getHeight() const {
+    return 0;
 }

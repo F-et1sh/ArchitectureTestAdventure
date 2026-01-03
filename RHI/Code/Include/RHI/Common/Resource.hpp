@@ -5,20 +5,16 @@
     This file is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
-    File : pch.hpp
+    File : Resource.hpp
     
-    Content : PCH header
+    Content : some useful structures and handle declarations
 
 =================================================*/
 
 #pragma once
 
-// std
-#include <iostream>
-#include <memory>
+#include <cstdint>
 
-// ata
-#include <pointer.hpp>
-#include <attributes.hpp>
-
-#include <GLFW/glfw3.h>
+namespace rhi {
+    using TextureHandle = uint32_t;
+}
