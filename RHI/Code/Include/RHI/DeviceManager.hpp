@@ -1,3 +1,16 @@
+/*=================================================
+
+    Copyright (C) 2025 Farrakh.  All Rights Reserved.
+    
+    This file is a part of ArchitectureTestAdventure.
+    Check README.md for more information.
+    
+    File : DeviceManager.hpp
+    
+    Content : Interface of DeviceManager
+
+=================================================*/
+
 #pragma once
 
 #include <memory>
