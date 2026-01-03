@@ -12,7 +12,7 @@
 =================================================*/
 
 #pragma once
-#include "RHI/RHI.hpp"
+//#include "RHI/RHI.hpp"
 
 namespace ata {
     class Renderer {
@@ -24,6 +24,6 @@ namespace ata {
         void Initialize();
 
     private:
-        std::unique_ptr<rhi::Device> m_device{};
+        //std::unique_ptr<rhi::Device> m_device{};
     };
 } // namespace ata

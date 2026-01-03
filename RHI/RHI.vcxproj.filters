@@ -1,12 +1,2 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup>
-    <ClCompile Include="Code\Source\Device.cpp" />
-    <ClCompile Include="Code\Source\Vulkan\Device.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Code\Include\RHI\RHI.hpp" />
-    <ClInclude Include="Code\Include\RHI\Device.hpp" />
-    <ClInclude Include="Code\Source\Vulkan\Device.hpp" />
-  </ItemGroup>
-</Project>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" />
