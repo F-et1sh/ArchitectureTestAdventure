@@ -28,6 +28,6 @@ namespace rhi {
         DeviceManager()  = default;
         ~DeviceManager() = default;
 
-        std::unique_ptr<Device> Create(GraphicsAPI backend);
+        static std::unique_ptr<Device> Create(GraphicsAPI backend);
     };
 } // namespace rhi
