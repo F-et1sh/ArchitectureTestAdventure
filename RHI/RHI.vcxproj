@@ -18,6 +18,15 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Code\Include\RHI\DeviceManager.hpp" />
+    <ClInclude Include="Code\Include\RHI\RHI.hpp" />
+    <ClInclude Include="Code\Source\Vulkan\VulkanBackend.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Code\Source\DeviceManager.cpp" />
+    <ClCompile Include="Code\Source\Vulkan\VulkanBackend.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
