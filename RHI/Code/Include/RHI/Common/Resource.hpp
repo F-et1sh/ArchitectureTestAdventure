@@ -15,6 +15,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 
 namespace rhi {
 #define RHI_ENUM_CLASS_FLAG_OPERATORS(T)      \
@@ -122,14 +123,17 @@ namespace rhi {
     };
 
     struct Color {
+    public:
         float r, g, b, a;
-
-        Color() : r(0.f), g(0.f), b(0.f), a(0.f) {}
-        Color(float c) : r(c), g(c), b(c), a(c) {}
-        Color(float _r, float _g, float _b, float _a) : r(_r), g(_g), b(_b), a(_a) {}
 
         bool operator==(const Color& _b) const { return r == _b.r && g == _b.g && b == _b.b && a == _b.a; }
         bool operator!=(const Color& _b) const { return !(*this == _b); }
+
+        Color() : r(0.f), g(0.f), b(0.f), a(0.f) {}
+        ~Color() = default;
+
+        Color(float c) : r(c), g(c), b(c), a(c) {}
+        Color(float _r, float _g, float _b, float _a) : r(_r), g(_g), b(_b), a(_a) {}
     };
 
     //////////////////////////////////////////////////////////////////////////
@@ -203,6 +207,7 @@ namespace rhi {
     RHI_ENUM_CLASS_FLAG_OPERATORS(SharedResourceFlags)
 
     struct TextureDesc {
+    public:
         uint32_t         width          = 1;
         uint32_t         height         = 1;
         uint32_t         depth          = 1;
@@ -266,6 +271,23 @@ namespace rhi {
             this->keep_initial_state = true;
             return *this;
         }
+
+        TextureDesc()  = default;
+        ~TextureDesc() = default;
+    };
+
+    // this is a GPU Texture - POD resource, which is managed by rhi::ResourceManager
+    struct Texture {
+    public:
+        uint32_t width;
+        uint32_t height;
+        Format   format;
+
+        // backend-private storage
+        void* backend_handle = nullptr;
+
+        Texture()  = default;
+        ~Texture() = default;
     };
 
 } // namespace rhi
