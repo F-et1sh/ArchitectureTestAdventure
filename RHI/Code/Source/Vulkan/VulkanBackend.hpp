@@ -21,15 +21,34 @@
 #include "RHI/Swapchain.hpp"
 
 #include <nvrhi/nvrhi.h>
+#include <nvrhi/vulkan.h>
+#include <vulkan/vulkan_raii.hpp>
 
 namespace rhi::vulkan {
+    struct VulkanContext {
+    public:
+        VkInstance       instance;
+        VkPhysicalDevice physical_device;
+        VkDevice         device;
+        VkQueue          graphics_queue;
+        VkQueue          present_queue;
+        VkQueue          compute_queue;
+        VkQueue          transfer_queue;
+
+        VulkanContext()  = default;
+        ~VulkanContext() = default;
+    };
+
+    class Swapchain; // forward declaration
+
     class Device final : public rhi::Device {
     public:
         Device();
         ~Device();
 
         RHI_NODISCARD std::unique_ptr<rhi::CommandList> CreateCommandList() override;
-        void                                            Submit(rhi::CommandList* cmd) override;
+        RHI_NODISCARD std::unique_ptr<rhi::Swapchain> CreateSwapchain() override;
+        void                                          Submit(rhi::CommandList* cmd) override;
 
         RHI_NODISCARD void* CreateBackendTexture(const rhi::TextureDesc& desc) override;
         void                DestroyBackendTexture(void* backend_handle) override;
@@ -37,6 +56,8 @@ namespace rhi::vulkan {
     private:
         struct Impl;
         Impl* m_Impl;
+
+        friend class rhi::vulkan::Swapchain;
     };
 
     class CommandList final : public rhi::CommandList {
@@ -52,16 +73,19 @@ namespace rhi::vulkan {
         void setVertexBuffer(const Buffer* buffer) override;
         void setIndexBuffer(const Buffer* buffer) override;
 
+        void setRenderTarget(TextureHandle handle) override;
+
         void DrawIndexed(uint32_t instance_count, uint32_t first_index, uint32_t first_instance, uint32_t first_vertex, uint32_t vertex_count) override;
 
     private:
         // No PIMPL because it's too small
         nvrhi::CommandListHandle m_NVRHICommandList;
+        vk::CommandBuffer        m_CommandBuffer;
     };
 
     class Swapchain final : public rhi::Swapchain {
     public:
-        Swapchain();
+        explicit Swapchain(rhi::vulkan::Device* device);
         ~Swapchain();
 
         RHI_NODISCARD rhi::TextureHandle Acquire() override;

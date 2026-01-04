@@ -19,6 +19,7 @@ void ata::Renderer::Release() {
 }
 
 void ata::Renderer::Initialize() {
-    m_Device = rhi::DeviceManager::Create(rhi::GraphicsAPI::VULKAN);
+    m_Device          = rhi::DeviceManager::Create(rhi::GraphicsAPI::VULKAN);
     m_ResourceManager = std::make_unique<rhi::ResourceManager>(*m_Device);
+    m_Swapchain       = m_Device->CreateSwapchain();
 }

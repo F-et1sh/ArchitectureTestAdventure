@@ -20,9 +20,6 @@
 #include <string>
 #include <queue>
 
-#include <nvrhi/vulkan.h>
-#include <vulkan/vulkan.hpp>
-
 struct rhi::vulkan::Device::Impl {
     struct VulkanExtensionSet {
         std::unordered_set<std::string> instance;
@@ -80,20 +77,14 @@ struct rhi::vulkan::Device::Impl {
 
     std::string m_RendererString;
 
-    vk::Instance               m_VulkanInstance;
     vk::DebugReportCallbackEXT m_DebugReportCallback;
 
-    vk::PhysicalDevice m_VulkanPhysicalDevice;
-    int                m_GraphicsQueueFamily = -1;
-    int                m_ComputeQueueFamily  = -1;
-    int                m_TransferQueueFamily = -1;
-    int                m_PresentQueueFamily  = -1;
+    VulkanContext m_Context;
 
-    vk::Device m_VulkanDevice;
-    vk::Queue  m_GraphicsQueue;
-    vk::Queue  m_ComputeQueue;
-    vk::Queue  m_TransferQueue;
-    vk::Queue  m_PresentQueue;
+    int m_GraphicsQueueFamily = -1;
+    int m_ComputeQueueFamily  = -1;
+    int m_TransferQueueFamily = -1;
+    int m_PresentQueueFamily  = -1;
 
     nvrhi::vulkan::DeviceHandle m_NVRHIDevice;
     nvrhi::DeviceHandle         m_ValidationLayer;
@@ -117,28 +108,32 @@ struct rhi::vulkan::Device::Impl {
 };
 
 rhi::vulkan::Device::Device() {
-    this->m_Impl = new Impl();
+    m_Impl = new Impl();
 }
 
 rhi::vulkan::Device::~Device() {
-    delete this->m_Impl;
+    delete m_Impl;
 }
 
 std::unique_ptr<rhi::CommandList> rhi::vulkan::Device::CreateCommandList() {
-    auto cmd = this->m_Impl->m_NVRHIDevice->createCommandList();
+    auto cmd = m_Impl->m_NVRHIDevice->createCommandList();
     return std::make_unique<rhi::vulkan::CommandList>(cmd);
+}
+
+RHI_NODISCARD std::unique_ptr<rhi::Swapchain> rhi::vulkan::Device::CreateSwapchain() {
+    return std::make_unique<rhi::vulkan::Swapchain>(this);
 }
 
 void rhi::vulkan::Device::Submit(rhi::CommandList* cmd) {
 }
 
 RHI_NODISCARD void* rhi::vulkan::Device::CreateBackendTexture(const rhi::TextureDesc& desc) {
-    nvrhi::TextureHandle handle = this->m_Impl->m_NVRHIDevice->createTexture(rhi::to_nvrhi(desc));
+    nvrhi::TextureHandle handle = m_Impl->m_NVRHIDevice->createTexture(rhi::to_nvrhi(desc));
     return static_cast<void*>(handle.Get());
 }
 
 void rhi::vulkan::Device::DestroyBackendTexture(void* backend_handle) {
-     if (!backend_handle) return;
+    if (!backend_handle) return;
 
     static_cast<nvrhi::ITexture*>(backend_handle)->Release();
     backend_handle = nullptr;
@@ -161,6 +156,9 @@ void rhi::vulkan::CommandList::setVertexBuffer(const Buffer* buffer) {
 void rhi::vulkan::CommandList::setIndexBuffer(const Buffer* buffer) {
 }
 
+void rhi::vulkan::CommandList::setRenderTarget(TextureHandle handle) {
+}
+
 void rhi::vulkan::CommandList::DrawIndexed(uint32_t instance_count, uint32_t first_index, uint32_t first_instance, uint32_t first_vertex, uint32_t vertex_count) {
     nvrhi::DrawArguments args{};
     args.setInstanceCount(instance_count);
@@ -173,30 +171,37 @@ void rhi::vulkan::CommandList::DrawIndexed(uint32_t instance_count, uint32_t fir
 }
 
 struct rhi::vulkan::Swapchain::Impl {
+    rhi::vulkan::Device* p_Device;
+
     vk::SurfaceKHR m_WindowSurface;
 
-    vk::SurfaceFormatKHR m_SwapchainFormat;
-    vk::SwapchainKHR     m_Swapchain;
-    bool                 m_SwapchainMutableFormatSupported = false;
+    VkSurfaceFormatKHR m_SwapchainFormat;
+    VkSwapchainKHR     m_Swapchain;
+    bool               m_SwapchainMutableFormatSupported = false;
 
     struct SwapChainImage {
-        vk::Image            image;
-        nvrhi::TextureHandle rhi_handle;
+        VkImage              image;
+        nvrhi::TextureHandle nvrhi_handle;
+        rhi::TextureHandle   rhi_handle;
     };
 
-    std::vector<SwapChainImage> m_SwapchainImages;
-    uint32_t                    m_SwapchainIndex = uint32_t(-1);
+    std::vector<SwapChainImage> m_Images;
+    uint32_t                    m_Index = uint32_t(-1);
 };
 
-rhi::vulkan::Swapchain::Swapchain() {
-    this->m_Impl = new Impl();
+rhi::vulkan::Swapchain::Swapchain(rhi::vulkan::Device* device) {
+    m_Impl           = new Impl();
+    m_Impl->p_Device = device;
 }
 
 rhi::vulkan::Swapchain::~Swapchain() {
-    delete this->m_Impl;
+    delete m_Impl;
 }
 
 RHI_NODISCARD rhi::TextureHandle rhi::vulkan::Swapchain::Acquire() {
+    VkResult result = vkAcquireNextImageKHR(m_Impl->p_Device->m_Impl->m_Context.device, m_Impl->m_Swapchain, std::numeric_limits<uint64_t>::max(), m_Impl->p_Device->m_Impl->m_PresentSemaphores[0], vk::Fence(), &m_Impl->m_Index);
+    assert(result == VkResult::VK_SUCCESS);
+    m_Impl->p_Device->m_Impl->m_NVRHIDevice->queueWaitForSemaphore(nvrhi::CommandQueue::Graphics, m_Impl->p_Device->m_Impl->m_PresentSemaphores[0], 0);
     return {};
 }
 

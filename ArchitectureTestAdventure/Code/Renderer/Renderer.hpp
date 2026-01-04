@@ -17,14 +17,15 @@
 namespace ata {
     class Renderer {
     public:
-        Renderer()  = default;
+        Renderer() = default;
         ~Renderer() { this->Release(); }
 
         void Release();
         void Initialize();
 
     private:
-        std::unique_ptr<rhi::Device> m_Device{};
+        std::unique_ptr<rhi::Device>          m_Device{};
         std::unique_ptr<rhi::ResourceManager> m_ResourceManager{};
+        std::unique_ptr<rhi::Swapchain>       m_Swapchain{};
     };
 } // namespace ata
