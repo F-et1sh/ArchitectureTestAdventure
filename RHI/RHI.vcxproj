@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Include\RHI\CommandList.hpp" />
+    <ClInclude Include="Code\Include\RHI\Common\Attributes.hpp" />
     <ClInclude Include="Code\Include\RHI\Common\Resource.hpp" />
     <ClInclude Include="Code\Include\RHI\Device.hpp" />
     <ClInclude Include="Code\Include\RHI\DeviceManager.hpp" />
@@ -29,6 +30,7 @@
     <ClInclude Include="Code\Source\Vulkan\VulkanBackend.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\Source\ResourceManager.cpp" />
     <ClCompile Include="Code\Source\DeviceManager.cpp" />
     <ClCompile Include="Code\Source\Vulkan\VulkanBackend.cpp" />
   </ItemGroup>

@@ -9,9 +9,11 @@
     <ClInclude Include="Code\Include\RHI\Swapchain.hpp" />
     <ClInclude Include="Code\Include\RHI\Common\Resource.hpp" />
     <ClInclude Include="Code\Include\RHI\ResourceManager.hpp" />
+    <ClInclude Include="Code\Include\RHI\Common\Attributes.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Source\Vulkan\VulkanBackend.cpp" />
     <ClCompile Include="Code\Source\DeviceManager.cpp" />
+    <ClCompile Include="Code\Source\ResourceManager.cpp" />
   </ItemGroup>
 </Project>
