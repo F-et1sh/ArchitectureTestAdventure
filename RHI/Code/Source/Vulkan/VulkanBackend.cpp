@@ -138,7 +138,10 @@ RHI_NODISCARD void* rhi::vulkan::Device::CreateBackendTexture(const rhi::Texture
 }
 
 void rhi::vulkan::Device::DestroyBackendTexture(void* backend_handle) {
-    
+     if (!backend_handle) return;
+
+    static_cast<nvrhi::ITexture*>(backend_handle)->Release();
+    backend_handle = nullptr;
 }
 
 void rhi::vulkan::CommandList::BeginFrame() {

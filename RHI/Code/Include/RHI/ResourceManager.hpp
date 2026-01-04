@@ -18,19 +18,21 @@
 
 #include "Device.hpp"
 
+#include <cassert>
 #include <vector>
 
 namespace rhi {
     class ResourceManager {
     public:
         ResourceManager() = default;
-        ~ResourceManager() { this->Release(); }
-        
+        ~ResourceManager() { assert(m_Textures.empty() && "ResourceManager::Release() was not called"); }
+
         ResourceManager(Device& device) : m_Device(device) {}
 
         void Release();
 
         RHI_NODISCARD TextureHandle   CreateTexture(const rhi::TextureDesc& desc);
+        void                          DestroyTexture(TextureHandle handle);
         inline RHI_NODISCARD Texture& getTexture(TextureHandle handle) { return m_Textures[handle]; }
 
         inline ResourceManager& setDevice(Device& device) noexcept {

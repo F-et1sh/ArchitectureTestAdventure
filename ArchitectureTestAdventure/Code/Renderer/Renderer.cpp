@@ -15,7 +15,7 @@
 #include "Renderer.hpp"
 
 void ata::Renderer::Release() {
-
+    m_ResourceManager->Release();
 }
 
 void ata::Renderer::Initialize() {
