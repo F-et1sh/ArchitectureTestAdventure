@@ -39,7 +39,19 @@ namespace rhi::vulkan {
         ~VulkanContext() = default;
     };
 
-    class Swapchain; // forward declaration
+    struct FrameSync {
+    public:
+        VkSemaphore             image_available;
+        VkSemaphore             render_finished;
+        VkFence                 in_flight;
+        nvrhi::EventQueryHandle frame_complete;
+
+        FrameSync()  = default;
+        ~FrameSync() = default;
+    };
+
+    /* forward declarations */
+    class Swapchain;
 
     class Device final : public rhi::Device {
     public:
@@ -77,10 +89,8 @@ namespace rhi::vulkan {
 
         void DrawIndexed(uint32_t instance_count, uint32_t first_index, uint32_t first_instance, uint32_t first_vertex, uint32_t vertex_count) override;
 
-    private:
-        // No PIMPL because it's too small
+    private: // No PIMPL because it's too small
         nvrhi::CommandListHandle m_NVRHICommandList;
-        vk::CommandBuffer        m_CommandBuffer;
     };
 
     class Swapchain final : public rhi::Swapchain {

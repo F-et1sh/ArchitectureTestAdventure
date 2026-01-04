@@ -23,9 +23,11 @@ namespace ata {
         void Release();
         void Initialize();
 
+        void TestLoop();
+
     private:
         std::unique_ptr<rhi::Device>          m_Device{};
-        std::unique_ptr<rhi::ResourceManager> m_ResourceManager{};
         std::unique_ptr<rhi::Swapchain>       m_Swapchain{};
+        std::unique_ptr<rhi::ResourceManager> m_ResourceManager{};
     };
 } // namespace ata

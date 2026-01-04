@@ -89,12 +89,8 @@ struct rhi::vulkan::Device::Impl {
     nvrhi::vulkan::DeviceHandle m_NVRHIDevice;
     nvrhi::DeviceHandle         m_ValidationLayer;
 
-    std::vector<vk::Semaphore> m_AcquireSemaphores;
-    std::vector<vk::Semaphore> m_PresentSemaphores;
-    uint32_t                   m_AcquireSemaphoreIndex = 0;
-
-    std::queue<nvrhi::EventQueryHandle>  m_FramesInFlight;
-    std::vector<nvrhi::EventQueryHandle> m_QueryPool;
+    std::vector<FrameSync> m_Frames;
+    uint32_t               m_FrameIndex;
 
     bool m_BufferDeviceAddressSupported = false;
 
@@ -125,6 +121,27 @@ RHI_NODISCARD std::unique_ptr<rhi::Swapchain> rhi::vulkan::Device::CreateSwapcha
 }
 
 void rhi::vulkan::Device::Submit(rhi::CommandList* cmd) {
+    auto& frame = m_Impl->m_Frames[m_Impl->m_FrameIndex];
+
+    //ICommandList* const* pCommandLists, size_t numCommandLists, CommandQueue executionQueue = CommandQueue::Graphics
+
+    //static_cast<rhi::vulkan::CommandList*>(cmd)
+
+    nvrhi::SubmitInfo submit{};
+    submit.commandLists = { static_cast<rhi::vulkan::CommandList*>(cmd)->getHandle() };
+
+    submit.waitSemaphores.push_back({
+        nvrhi::CommandQueue::Graphics,
+        frame.image_available,
+        0
+    });
+
+    submit.signalSemaphores.push_back(frame.render_finished);
+    submit.signalFence = frame.in_flight;
+
+    m_Impl->m_NVRHIDevice->executeCommandLists(submit);
+
+    m_Impl->m_FrameIndex = (m_Impl->m_FrameIndex + 1) % m_Impl->m_Frames.size();
 }
 
 RHI_NODISCARD void* rhi::vulkan::Device::CreateBackendTexture(const rhi::TextureDesc& desc) {
@@ -199,13 +216,46 @@ rhi::vulkan::Swapchain::~Swapchain() {
 }
 
 RHI_NODISCARD rhi::TextureHandle rhi::vulkan::Swapchain::Acquire() {
-    VkResult result = vkAcquireNextImageKHR(m_Impl->p_Device->m_Impl->m_Context.device, m_Impl->m_Swapchain, std::numeric_limits<uint64_t>::max(), m_Impl->p_Device->m_Impl->m_PresentSemaphores[0], vk::Fence(), &m_Impl->m_Index);
-    assert(result == VkResult::VK_SUCCESS);
-    m_Impl->p_Device->m_Impl->m_NVRHIDevice->queueWaitForSemaphore(nvrhi::CommandQueue::Graphics, m_Impl->p_Device->m_Impl->m_PresentSemaphores[0], 0);
-    return {};
+    auto& device_impl = m_Impl->p_Device->m_Impl;
+    auto& device      = device_impl->m_Context.device;
+
+    auto& frame = device_impl->m_Frames[device_impl->m_FrameIndex];
+
+    vkWaitForFences(device, 1, &frame.in_flight, VK_TRUE, std::numeric_limits<uint64_t>::max());
+    vkResetFences(device, 1, &frame.in_flight);
+
+    VkResult result = vkAcquireNextImageKHR(
+        device,
+        m_Impl->m_Swapchain,
+        std::numeric_limits<uint64_t>::max(),
+        frame.image_available,
+        VK_NULL_HANDLE,
+        &m_Impl->m_Index);
+
+    assert(result == VK_SUCCESS);
+
+    device_impl->m_NVRHIDevice->queueWaitForSemaphore(
+        nvrhi::CommandQueue::Graphics,
+        frame.image_available,
+        0);
+
+    return m_Impl->m_Images[m_Impl->m_Index].rhi_handle;
 }
 
 void rhi::vulkan::Swapchain::Present() {
+    auto& device_impl = m_Impl->p_Device->m_Impl;
+    auto& device      = device_impl->m_Context.device;
+
+    auto& frame = device_impl->m_Frames[device_impl->m_FrameIndex];
+
+    VkPresentInfoKHR info{};
+    info.waitSemaphoreCount = 1;
+    info.pWaitSemaphores    = &frame.render_finished;
+    info.swapchainCount     = 1;
+    info.pSwapchains        = &m_Impl->m_Swapchain;
+    info.pImageIndices      = &m_Impl->m_Index;
+
+    vkQueuePresentKHR(device_impl->m_Context.present_queue, &info);
 }
 
 void rhi::vulkan::Swapchain::Resize(uint32_t width, uint32_t height) {
