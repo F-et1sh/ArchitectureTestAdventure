@@ -120,26 +120,11 @@ RHI_NODISCARD std::unique_ptr<rhi::Swapchain> rhi::vulkan::Device::CreateSwapcha
     return std::make_unique<rhi::vulkan::Swapchain>(this);
 }
 
-void rhi::vulkan::Device::Submit(rhi::CommandList* cmd) {
+void rhi::vulkan::Device::Submit(rhi::CommandList* cmd) { // TODO : WTF ??
     auto& frame = m_Impl->m_Frames[m_Impl->m_FrameIndex];
-
-    //ICommandList* const* pCommandLists, size_t numCommandLists, CommandQueue executionQueue = CommandQueue::Graphics
-
-    //static_cast<rhi::vulkan::CommandList*>(cmd)
-
-    nvrhi::SubmitInfo submit{};
-    submit.commandLists = { static_cast<rhi::vulkan::CommandList*>(cmd)->getHandle() };
-
-    submit.waitSemaphores.push_back({
-        nvrhi::CommandQueue::Graphics,
-        frame.image_available,
-        0
-    });
-
-    submit.signalSemaphores.push_back(frame.render_finished);
-    submit.signalFence = frame.in_flight;
-
-    m_Impl->m_NVRHIDevice->executeCommandLists(submit);
+    
+    rhi::vulkan::CommandList* vk_cmd = static_cast<rhi::vulkan::CommandList*>(cmd);
+    m_Impl->m_NVRHIDevice->executeCommandLists(&vk_cmd->getNVRHICommandListHandle(), 1, nvrhi::CommandQueue::Graphics);
 
     m_Impl->m_FrameIndex = (m_Impl->m_FrameIndex + 1) % m_Impl->m_Frames.size();
 }

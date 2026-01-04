@@ -89,6 +89,8 @@ namespace rhi::vulkan {
 
         void DrawIndexed(uint32_t instance_count, uint32_t first_index, uint32_t first_instance, uint32_t first_vertex, uint32_t vertex_count) override;
 
+        inline RHI_NODISCARD nvrhi::CommandListHandle getNVRHICommandListHandle() const noexcept { return m_NVRHICommandList; }
+
     private: // No PIMPL because it's too small
         nvrhi::CommandListHandle m_NVRHICommandList;
     };
