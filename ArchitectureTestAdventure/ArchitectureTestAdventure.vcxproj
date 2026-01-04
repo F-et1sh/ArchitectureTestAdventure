@@ -108,12 +108,12 @@
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Code;$(ProjectDir)Code\PCH;$(ProjectDir)Code\Core;$(SolutionDir)ThirdParty\glad\include;$(SolutionDir)ThirdParty\GLFW\include;$(SolutionDir)ThirdParty\GLM\include;$(SolutionDir)RHI\Code\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Code;$(ProjectDir)Code\PCH;$(ProjectDir)Code\Core;$(SolutionDir)ThirdParty\glad\include;$(SolutionDir)ThirdParty\glfw\include;$(SolutionDir)ThirdParty\GLM\include;$(SolutionDir)RHI\Code\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\GLFW\win64\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\glfw\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -132,12 +132,12 @@
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Code;$(ProjectDir)Code\PCH;$(ProjectDir)Code\Core;$(SolutionDir)ThirdParty\glad\include;$(SolutionDir)ThirdParty\GLFW\include;$(SolutionDir)ThirdParty\GLM\include;$(SolutionDir)RHI\Code;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Code;$(ProjectDir)Code\PCH;$(ProjectDir)Code\Core;$(SolutionDir)ThirdParty\glad\include;$(SolutionDir)ThirdParty\glfw\include;$(SolutionDir)ThirdParty\GLM\include;$(SolutionDir)RHI\Code\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\GLFW\win64\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\glfw\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>

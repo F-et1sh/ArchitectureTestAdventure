@@ -13,7 +13,11 @@
 
 #pragma once
 
+#include <GLFW/glfw3.h>
+
 namespace ata {
     class Window {
+    public:
+        GLFWwindow* p_GLFWwindow = nullptr;
     };
 } // namespace ata

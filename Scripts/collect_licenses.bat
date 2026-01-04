@@ -2,12 +2,14 @@
 ::
 ::   Copyright (C) 2025 Farrakh.  All Rights Reserved.
 ::   
-::   This source is a part of ArchitectureTestAdventure.
+::   This file is a part of ArchitectureTestAdventure.
 ::   Check README.md for more information.
 ::   
 ::   File : collect_licenses.bat
 ::   
-::   Content : copy all licenses to the build folder
+::   Content : copy all licenses to the build folder.
+::		this script can't be called from the Explorer.
+::		it must be called from MS Visual Studio when build.
 ::
 ::=================================================
 

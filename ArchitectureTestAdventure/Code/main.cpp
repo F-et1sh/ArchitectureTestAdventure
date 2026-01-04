@@ -13,7 +13,10 @@
 
 #include "pch.hpp"
 
+#include "Window/Window.hpp"
+
 int main() {
+    ata::Window window;
 
     return 0;
 }

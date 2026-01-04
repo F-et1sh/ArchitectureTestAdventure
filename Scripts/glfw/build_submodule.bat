@@ -7,15 +7,15 @@
 ::   
 ::   File : build_submodule.bat
 ::   
-::   Content : NVRHI submodule builder
+::   Content : GLFW submodule builder
 ::
 ::=================================================
 
 @echo off
 
-pushd "%~dp0\..\..\External\NVRHI"
+pushd "%~dp0\..\..\External\glfw"
 
-cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DNVRHI_WITH_DX12=ON -DNVRHI_WITH_DX11=ON -DNVRHI_WITH_VULKAN=ON -DNVRHI_BUILD_SHARED=OFF
+cmake -S . -B build -G "Visual Studio 17 2022" -A x64
 cmake --build build --config MinSizeRel
 
 popd

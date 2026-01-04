@@ -2,7 +2,7 @@
 ::
 ::   Copyright (C) 2025 Farrakh.  All Rights Reserved.
 ::   
-::   This source is a part of ArchitectureTestAdventure.
+::   This file is a part of ArchitectureTestAdventure.
 ::   Check README.md for more information.
 ::   
 ::   File : copy_to_third_party.bat
@@ -15,7 +15,7 @@
 @echo off
 
 xcopy /y /i /s "..\\..\\External\\NVRHI\\include" "..\\..\\ThirdParty\\NVRHI\\include" >nul
-xcopy /y /i /s "..\\..\\External\\NVRHI\\build\\Release" "..\\..\\ThirdParty\\NVRHI\\win64" >nul
+xcopy /y /i /s "..\\..\\External\\NVRHI\\build\\MinSizeRel" "..\\..\\ThirdParty\\NVRHI\\win64" >nul
 
 copy "..\\..\\External\\NVRHI\\rtxmu\\LICENSE.txt" "..\\..\\ThirdParty\\NVRHI\\NVRHI_RTXMU_LICENSE.txt" >nul
 copy "..\\..\\External\\NVRHI\\thirdparty\\DirectX-Headers\\LICENSE" "..\\..\\ThirdParty\\NVRHI\\NVRHI_DIRECT_X_LICENSE.txt" >nul
