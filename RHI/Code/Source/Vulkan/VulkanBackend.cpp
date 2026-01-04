@@ -120,11 +120,18 @@ RHI_NODISCARD std::unique_ptr<rhi::Swapchain> rhi::vulkan::Device::CreateSwapcha
     return std::make_unique<rhi::vulkan::Swapchain>(this);
 }
 
-void rhi::vulkan::Device::Submit(rhi::CommandList* cmd) { // TODO : WTF ??
+void rhi::vulkan::Device::Submit(rhi::CommandList* cmd) {
     auto& frame = m_Impl->m_Frames[m_Impl->m_FrameIndex];
-    
-    rhi::vulkan::CommandList* vk_cmd = static_cast<rhi::vulkan::CommandList*>(cmd);
-    m_Impl->m_NVRHIDevice->executeCommandLists(&vk_cmd->getNVRHICommandListHandle(), 1, nvrhi::CommandQueue::Graphics);
+    auto* vk_cmd = static_cast<rhi::vulkan::CommandList*>(cmd);
+
+    nvrhi::ICommandList* lists[] = {
+        vk_cmd->getNVRHICommandListHandle()
+    };
+
+    m_Impl->m_NVRHIDevice->executeCommandLists(
+        lists,
+        1,
+        nvrhi::CommandQueue::Graphics);
 
     m_Impl->m_FrameIndex = (m_Impl->m_FrameIndex + 1) % m_Impl->m_Frames.size();
 }
