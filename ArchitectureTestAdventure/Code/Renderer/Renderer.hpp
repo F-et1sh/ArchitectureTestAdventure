@@ -25,5 +25,6 @@ namespace ata {
 
     private:
         std::unique_ptr<rhi::Device> m_Device{};
+        std::unique_ptr<rhi::ResourceManager> m_ResourceManager{};
     };
 } // namespace ata

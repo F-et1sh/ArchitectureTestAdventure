@@ -117,15 +117,15 @@ struct rhi::vulkan::Device::Impl {
 };
 
 rhi::vulkan::Device::Device() {
-    m_Impl = new Impl();
+    this->m_Impl = new Impl();
 }
 
 rhi::vulkan::Device::~Device() {
-    delete m_Impl;
+    delete this->m_Impl;
 }
 
 std::unique_ptr<rhi::CommandList> rhi::vulkan::Device::CreateCommandList() {
-    auto cmd = m_Impl->m_NVRHIDevice->createCommandList();
+    auto cmd = this->m_Impl->m_NVRHIDevice->createCommandList();
     return std::make_unique<rhi::vulkan::CommandList>(cmd);
 }
 
@@ -133,10 +133,12 @@ void rhi::vulkan::Device::Submit(rhi::CommandList* cmd) {
 }
 
 RHI_NODISCARD void* rhi::vulkan::Device::CreateBackendTexture(const rhi::TextureDesc& desc) {
-    return static_cast<void*>(&m_Impl->m_NVRHIDevice->createTexture(rhi::to_nvrhi(desc)));
+    nvrhi::TextureHandle handle = this->m_Impl->m_NVRHIDevice->createTexture(rhi::to_nvrhi(desc));
+    return static_cast<void*>(handle.Get());
 }
 
 void rhi::vulkan::Device::DestroyBackendTexture(void* backend_handle) {
+    
 }
 
 void rhi::vulkan::CommandList::BeginFrame() {
@@ -184,11 +186,11 @@ struct rhi::vulkan::Swapchain::Impl {
 };
 
 rhi::vulkan::Swapchain::Swapchain() {
-    m_Impl = new Impl();
+    this->m_Impl = new Impl();
 }
 
 rhi::vulkan::Swapchain::~Swapchain() {
-    delete m_Impl;
+    delete this->m_Impl;
 }
 
 RHI_NODISCARD rhi::TextureHandle rhi::vulkan::Swapchain::Acquire() {

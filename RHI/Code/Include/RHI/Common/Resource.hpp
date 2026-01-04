@@ -217,7 +217,6 @@ namespace rhi {
         uint32_t         sample_quality = 0;
         Format           format         = Format::UNKNOWN;
         TextureDimension dimension      = TextureDimension::Texture2D;
-        std::string      debug_name;
 
         bool is_shader_resource      = true; // Note : is_shader_resource is initialized to 'true' for backward compatibility ( NVRHI )
         bool is_render_target        = false;
@@ -242,6 +241,8 @@ namespace rhi {
         // begin tracking the texture from the initial state and transition it to the initial state
         // on command list close.
         bool keep_initial_state = false;
+
+        std::string debug_name;
 
         // clang-format off
         constexpr TextureDesc& setWidth(uint32_t value) { width = value; return *this; }
@@ -279,12 +280,12 @@ namespace rhi {
     // this is a GPU Texture - POD resource, which is managed by rhi::ResourceManager
     struct Texture {
     public:
+        // backend-private storage
+        void* backend_handle = nullptr;
+
         uint32_t width;
         uint32_t height;
         Format   format;
-
-        // backend-private storage
-        void* backend_handle = nullptr;
 
         Texture()  = default;
         ~Texture() = default;

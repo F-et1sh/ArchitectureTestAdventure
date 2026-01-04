@@ -15,7 +15,7 @@
 
 void rhi::ResourceManager::Release() {
     for (auto& texture : m_Textures)
-        m_Device->DestroyBackendTexture(texture.backend_handle);
+        m_Device.DestroyBackendTexture(texture.backend_handle);
 }
 
 RHI_NODISCARD rhi::TextureHandle rhi::ResourceManager::CreateTexture(const rhi::TextureDesc& desc) {
@@ -24,7 +24,7 @@ RHI_NODISCARD rhi::TextureHandle rhi::ResourceManager::CreateTexture(const rhi::
     texture.height = desc.height;
     texture.format = desc.format;
 
-    texture.backend_handle = m_Device->CreateBackendTexture(desc);
+    texture.backend_handle = m_Device.CreateBackendTexture(desc);
 
     m_Textures.push_back(texture);
     return TextureHandle(m_Textures.size() - 1);
