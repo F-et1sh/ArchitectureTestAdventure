@@ -1,3 +1,6 @@
 [submodule "External/NVRHI"]
 	path = External/NVRHI
 	url = https://github.com/F-et1sh/NVRHI.git
+[submodule "External/glfw"]
+	path = External/glfw
+	url = https://github.com/glfw/glfw.git
