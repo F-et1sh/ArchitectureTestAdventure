@@ -13,6 +13,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "CommandList.hpp"
 
 namespace rhi {

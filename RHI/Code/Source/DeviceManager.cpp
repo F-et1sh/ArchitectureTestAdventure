@@ -16,7 +16,7 @@
 
 std::unique_ptr<rhi::Device> rhi::DeviceManager::Create(GraphicsAPI backend) {
     switch (backend) {
-        case GraphicsAPI::VK:
+        case GraphicsAPI::VULKAN:
             return std::make_unique<rhi::vulkan::Device>();
         default:
             // TODO : ERROR LOGGING

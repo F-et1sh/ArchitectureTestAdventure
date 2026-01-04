@@ -13,8 +13,6 @@
 
 #pragma once
 
-#include <memory>
-
 namespace rhi {
     class Buffer;
     class Pipeline;

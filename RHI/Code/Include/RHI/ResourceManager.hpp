@@ -5,23 +5,23 @@
     This file is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
-    File : DeviceManager.hpp
+    File : ResourceManager.hpp
     
-    Content : device manager
+    Content : GPU Resource Manager
 
 =================================================*/
 
 #pragma once
 
-#include "Common/Resource.hpp"
-#include "Device.hpp"
+#include <vector>
 
 namespace rhi {
-    class DeviceManager {
+    class ResourceManager {
     public:
-        DeviceManager()  = default;
-        ~DeviceManager() = default;
+        ResourceManager() = default;
+        ~ResourceManager() = default;
 
-        static std::unique_ptr<Device> Create(GraphicsAPI backend);
+    private:
+        std::vector<Texture> m_Textures;
     };
-} // namespace rhi
+}

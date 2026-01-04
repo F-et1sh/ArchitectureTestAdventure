@@ -8,7 +8,7 @@
     File : VulkanBackend.cpp
     
     Content : Implementation of Vulkan classes.
-        Based on Donut, MIT copyright ( https://github.com/NVIDIA-RTX/Donut )
+        Based on Donut, MIT License : ( https://github.com/NVIDIA-RTX/Donut )
 
 =================================================*/
 

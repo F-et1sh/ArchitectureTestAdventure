@@ -19,5 +19,5 @@ void ata::Renderer::Release() {
 }
 
 void ata::Renderer::Initialize() {
-    m_Device = rhi::DeviceManager::Create(rhi::GraphicsAPI::VK);
+    m_Device = rhi::DeviceManager::Create(rhi::GraphicsAPI::VULKAN);
 }

@@ -8,6 +8,7 @@
     <ClInclude Include="Code\Include\RHI\CommandList.hpp" />
     <ClInclude Include="Code\Include\RHI\Swapchain.hpp" />
     <ClInclude Include="Code\Include\RHI\Common\Resource.hpp" />
+    <ClInclude Include="Code\Include\RHI\ResourceManager.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Source\Vulkan\VulkanBackend.cpp" />
