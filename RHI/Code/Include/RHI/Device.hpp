@@ -15,6 +15,8 @@
 
 #include <memory>
 
+#include "Common/Attributes.hpp"
+#include "Common/Resource.hpp"
 #include "CommandList.hpp"
 
 namespace rhi {
@@ -23,7 +25,10 @@ namespace rhi {
         Device()          = default;
         virtual ~Device() = default;
 
-        virtual std::unique_ptr<rhi::CommandList> CreateCommandList() = 0;
+        virtual RHI_NODISCARD std::unique_ptr<rhi::CommandList> CreateCommandList() = 0;
         virtual void Submit(rhi::CommandList* cmd) = 0;
+
+        virtual RHI_NODISCARD void* CreateBackendTexture(const rhi::TextureDesc& desc) = 0;
+        virtual void DestroyBackendTexture(void* backend_handle) = 0;
     };
 } // namespace rhi

@@ -28,8 +28,11 @@ namespace rhi::vulkan {
         Device();
         ~Device();
 
-        std::unique_ptr<rhi::CommandList> CreateCommandList() override;
-        void                              Submit(rhi::CommandList* cmd) override;
+        RHI_NODISCARD std::unique_ptr<rhi::CommandList> CreateCommandList() override;
+        void                                            Submit(rhi::CommandList* cmd) override;
+
+        RHI_NODISCARD void* CreateBackendTexture(const rhi::TextureDesc& desc) override;
+        void                DestroyBackendTexture(void* backend_handle) override;
 
     private:
         struct Impl;
@@ -61,13 +64,13 @@ namespace rhi::vulkan {
         Swapchain();
         ~Swapchain();
 
-        rhi::TextureHandle Acquire() override;
-        void               Present() override;
+        RHI_NODISCARD rhi::TextureHandle Acquire() override;
+        void                             Present() override;
 
         void Resize(uint32_t width, uint32_t height) override;
 
-        uint32_t getWidth() const override;
-        uint32_t getHeight() const override;
+        RHI_NODISCARD uint32_t getWidth() const override;
+        RHI_NODISCARD uint32_t getHeight() const override;
 
     private:
         struct Impl;

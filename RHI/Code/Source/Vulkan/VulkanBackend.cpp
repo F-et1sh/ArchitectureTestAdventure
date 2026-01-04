@@ -14,6 +14,8 @@
 
 #include "VulkanBackend.hpp"
 
+#include "Source/Common/Resource.hpp"
+
 #include <unordered_set>
 #include <string>
 #include <queue>
@@ -130,6 +132,13 @@ std::unique_ptr<rhi::CommandList> rhi::vulkan::Device::CreateCommandList() {
 void rhi::vulkan::Device::Submit(rhi::CommandList* cmd) {
 }
 
+RHI_NODISCARD void* rhi::vulkan::Device::CreateBackendTexture(const rhi::TextureDesc& desc) {
+    return static_cast<void*>(&m_Impl->m_NVRHIDevice->createTexture(rhi::to_nvrhi(desc)));
+}
+
+void rhi::vulkan::Device::DestroyBackendTexture(void* backend_handle) {
+}
+
 void rhi::vulkan::CommandList::BeginFrame() {
     m_NVRHICommandList->open();
 }
@@ -182,7 +191,7 @@ rhi::vulkan::Swapchain::~Swapchain() {
     delete m_Impl;
 }
 
-rhi::TextureHandle rhi::vulkan::Swapchain::Acquire() {
+RHI_NODISCARD rhi::TextureHandle rhi::vulkan::Swapchain::Acquire() {
     return {};
 }
 
@@ -192,10 +201,10 @@ void rhi::vulkan::Swapchain::Present() {
 void rhi::vulkan::Swapchain::Resize(uint32_t width, uint32_t height) {
 }
 
-uint32_t rhi::vulkan::Swapchain::getWidth() const {
+RHI_NODISCARD uint32_t rhi::vulkan::Swapchain::getWidth() const {
     return 0;
 }
 
-uint32_t rhi::vulkan::Swapchain::getHeight() const {
+RHI_NODISCARD uint32_t rhi::vulkan::Swapchain::getHeight() const {
     return 0;
 }

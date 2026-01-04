@@ -14,7 +14,7 @@
 #include "RHI/RHI.hpp"
 #include "Vulkan/VulkanBackend.hpp"
 
-std::unique_ptr<rhi::Device> rhi::DeviceManager::Create(GraphicsAPI backend) {
+RHI_NODISCARD std::unique_ptr<rhi::Device> rhi::DeviceManager::Create(GraphicsAPI backend) {
     switch (backend) {
         case GraphicsAPI::VULKAN:
             return std::make_unique<rhi::vulkan::Device>();
