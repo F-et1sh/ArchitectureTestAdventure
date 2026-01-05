@@ -18,6 +18,17 @@
 namespace ata {
     class Window {
     public:
+        Window() = default;
+        ~Window() { this->Release(); }
+
+        void Release();
+        void Initialize();
+
+        void Loop();
+
+        inline ATA_NODISCARD GLFWwindow* getGLFWwindow() const noexcept { return p_GLFWwindow; }
+
+    private:
         GLFWwindow* p_GLFWwindow = nullptr;
     };
 } // namespace ata

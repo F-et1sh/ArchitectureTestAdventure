@@ -20,5 +20,3 @@
 // ata
 #include <pointer.hpp>
 #include <attributes.hpp>
-
-#include <GLFW/glfw3.h>

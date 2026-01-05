@@ -164,7 +164,7 @@
     <ClInclude Include="Code\Window\Window.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Code\Window\Window.cpp" />
+    <ClCompile Include="Code\Window\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RHI\RHI.vcxproj">

@@ -17,6 +17,8 @@
 
 int main() {
     ata::Window window;
-
+    window.Initialize();
+    window.Loop();
+    window.Release();
     return 0;
 }
