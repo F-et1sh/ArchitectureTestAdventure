@@ -13,6 +13,7 @@
 
 #pragma once
 #include "RHI/RHI.hpp"
+#include "Window/Window.hpp"
 
 namespace ata {
     class Renderer {
@@ -26,6 +27,8 @@ namespace ata {
         void TestLoop();
 
     private:
+        Window& m_Window;
+
         std::unique_ptr<rhi::Device>          m_Device{};
         std::unique_ptr<rhi::Swapchain>       m_Swapchain{};
         std::unique_ptr<rhi::ResourceManager> m_ResourceManager{};

@@ -21,13 +21,14 @@ void ata::Window::Release() {
 
 void ata::Window::Initialize() {
     glfwInit();
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+
     p_GLFWwindow = glfwCreateWindow(800, 600, "ArchitectureTestAdventure", NULL, NULL);
     if (!p_GLFWwindow) {
         // TODO : Add normal logging
         std::cout << "ERROR : Failed to create GLFW window" << std::endl;
         glfwTerminate();
     }
-    glfwMakeContextCurrent(p_GLFWwindow);
 }
 
 void ata::Window::Loop() {

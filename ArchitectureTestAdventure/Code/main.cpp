@@ -14,10 +14,15 @@
 #include "pch.hpp"
 
 #include "Window/Window.hpp"
+#include "Renderer/Renderer.hpp"
 
 int main() {
     ata::Window window;
     window.Initialize();
+    
+    ata::Renderer renderer;
+    renderer.Initialize();
+
     window.Loop();
     window.Release();
     return 0;

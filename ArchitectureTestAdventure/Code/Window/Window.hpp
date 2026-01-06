@@ -13,6 +13,7 @@
 
 #pragma once
 
+#define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
 namespace ata {
@@ -27,6 +28,7 @@ namespace ata {
         void Loop();
 
         inline ATA_NODISCARD GLFWwindow* getGLFWwindow() const noexcept { return p_GLFWwindow; }
+        inline ATA_NODISCARD void*       getNativeHandle() const noexcept { return p_GLFWwindow; }
 
     private:
         GLFWwindow* p_GLFWwindow = nullptr;
