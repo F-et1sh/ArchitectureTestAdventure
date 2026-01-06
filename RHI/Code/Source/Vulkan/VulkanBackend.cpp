@@ -20,6 +20,11 @@
 #include <string>
 #include <queue>
 
+#include <iostream>
+
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
+
 struct rhi::vulkan::Device::Impl {
     struct VulkanExtensionSet {
         std::unordered_set<std::string> instance;
@@ -116,12 +121,12 @@ std::unique_ptr<rhi::CommandList> rhi::vulkan::Device::CreateCommandList() {
     return std::make_unique<rhi::vulkan::CommandList>(cmd);
 }
 
-RHI_NODISCARD std::unique_ptr<rhi::Swapchain> rhi::vulkan::Device::CreateSwapchain() {
-    return std::make_unique<rhi::vulkan::Swapchain>(this);
+RHI_NODISCARD std::unique_ptr<rhi::Swapchain> rhi::vulkan::Device::CreateSwapchain(void* window_handle) {
+    return std::make_unique<rhi::vulkan::Swapchain>(this, window_handle);
 }
 
 void rhi::vulkan::Device::Submit(rhi::CommandList* cmd) {
-    auto& frame = m_Impl->m_Frames[m_Impl->m_FrameIndex];
+    auto& frame  = m_Impl->m_Frames[m_Impl->m_FrameIndex];
     auto* vk_cmd = static_cast<rhi::vulkan::CommandList*>(cmd);
 
     nvrhi::ICommandList* lists[] = {
@@ -198,9 +203,19 @@ struct rhi::vulkan::Swapchain::Impl {
     uint32_t                    m_Index = uint32_t(-1);
 };
 
-rhi::vulkan::Swapchain::Swapchain(rhi::vulkan::Device* device) {
+rhi::vulkan::Swapchain::Swapchain(rhi::vulkan::Device* device, void* window_handle) {
     m_Impl           = new Impl();
     m_Impl->p_Device = device;
+
+    GLFWwindow* glfw_window = static_cast<GLFWwindow*>(window_handle);
+
+    // TODO : Add normal logging
+
+    auto&    device_impl = m_Impl->p_Device->m_Impl;
+    VkResult result      = glfwCreateWindowSurface(device_impl->m_Context.instance, glfw_window, nullptr, (VkSurfaceKHR*) &m_Impl->m_WindowSurface);
+    if (result != VK_SUCCESS) {
+        std::cerr << "Err" << std::endl;
+    }
 }
 
 rhi::vulkan::Swapchain::~Swapchain() {

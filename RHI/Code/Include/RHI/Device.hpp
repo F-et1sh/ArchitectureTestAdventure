@@ -26,9 +26,9 @@ namespace rhi {
         Device()          = default;
         virtual ~Device() = default;
 
-        virtual RHI_NODISCARD std::unique_ptr<rhi::CommandList> CreateCommandList()         = 0;
-        virtual RHI_NODISCARD std::unique_ptr<rhi::Swapchain> CreateSwapchain()             = 0;
-        virtual void                                          Submit(rhi::CommandList* cmd) = 0;
+        virtual RHI_NODISCARD std::unique_ptr<rhi::CommandList> CreateCommandList()                = 0;
+        virtual RHI_NODISCARD std::unique_ptr<rhi::Swapchain> CreateSwapchain(void* window_handle) = 0;
+        virtual void                                          Submit(rhi::CommandList* cmd)        = 0;
 
         virtual RHI_NODISCARD void* CreateBackendTexture(const rhi::TextureDesc& desc) = 0;
         virtual void                DestroyBackendTexture(void* backend_handle)        = 0;

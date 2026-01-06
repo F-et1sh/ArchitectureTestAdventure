@@ -59,7 +59,7 @@ namespace rhi::vulkan {
         ~Device();
 
         RHI_NODISCARD std::unique_ptr<rhi::CommandList> CreateCommandList() override;
-        RHI_NODISCARD std::unique_ptr<rhi::Swapchain> CreateSwapchain() override;
+        RHI_NODISCARD std::unique_ptr<rhi::Swapchain> CreateSwapchain(void* window_handle) override;
         void                                          Submit(rhi::CommandList* cmd) override;
 
         RHI_NODISCARD void* CreateBackendTexture(const rhi::TextureDesc& desc) override;
@@ -97,7 +97,7 @@ namespace rhi::vulkan {
 
     class Swapchain final : public rhi::Swapchain {
     public:
-        explicit Swapchain(rhi::vulkan::Device* device);
+        explicit Swapchain(rhi::vulkan::Device* device, void* window_handle);
         ~Swapchain();
 
         RHI_NODISCARD rhi::TextureHandle Acquire() override;
