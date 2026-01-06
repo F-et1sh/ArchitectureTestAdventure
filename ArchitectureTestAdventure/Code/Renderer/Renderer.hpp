@@ -18,7 +18,7 @@
 namespace ata {
     class Renderer {
     public:
-        Renderer() = default;
+        Renderer(Window& window) : m_Window(window) {}
         ~Renderer() { this->Release(); }
 
         void Release();

@@ -20,7 +20,7 @@ int main() {
     ata::Window window;
     window.Initialize();
     
-    ata::Renderer renderer;
+    ata::Renderer renderer(window);
     renderer.Initialize();
 
     window.Loop();
