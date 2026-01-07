@@ -25,6 +25,31 @@
 #include <unordered_set>
 
 namespace rhi::vulkan {
+    DefaultMessageCallback& DefaultMessageCallback::getInstance() {
+        static DefaultMessageCallback instance;
+        return instance;
+    }
+
+    void DefaultMessageCallback::message(nvrhi::MessageSeverity severity, const char* message_text) {
+        switch (severity) {
+            case nvrhi::MessageSeverity::Info:
+                std::cerr << "NVRHI INFO : ";
+                break;
+            case nvrhi::MessageSeverity::Warning:
+                std::cerr << "NVRHI WARNING : ";
+                break;
+            case nvrhi::MessageSeverity::Error:
+                std::cerr << "NVRHI ERROR : ";
+                break;
+            case nvrhi::MessageSeverity::Fatal:
+                std::cerr << "NVRHI FATAL : ";
+                break;
+        }
+
+        std::cerr << message_text << std::endl
+                  << std::endl;
+    }
+
     VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* p_create_info, const VkAllocationCallbacks* p_allocator, VkDebugUtilsMessengerEXT* p_debug_messenger) {
         auto func = (PFN_vkCreateDebugUtilsMessengerEXT) vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
         if (func != nullptr) {
@@ -64,6 +89,7 @@ void rhi::vulkan::Device::InitializeForPresentation(void* window_handle) {
     this->CreateCommandPool();
     this->CreateCommandBuffers();
     this->CreateSyncObjects();
+    this->CreateNVRHIDevice();
 }
 
 std::unique_ptr<rhi::CommandList> rhi::vulkan::Device::CreateCommandList() {
@@ -312,6 +338,24 @@ void rhi::vulkan::Device::CreateSyncObjects() {
 
             std::cerr << "ERROR : Failed to create synchronization objects for a frame" << std::endl;
         }
+    }
+}
+
+void rhi::vulkan::Device::CreateNVRHIDevice() {
+    nvrhi::vulkan::DeviceDesc device_desc;
+    device_desc.errorCB             = &DefaultMessageCallback::getInstance();
+    device_desc.physicalDevice      = m_Context.physical_device;
+    device_desc.device              = m_Context.device;
+    device_desc.graphicsQueue       = m_Context.graphics_queue;
+    device_desc.graphicsQueueIndex  = m_QueueFamilyIndices.graphics_family.value();
+    device_desc.deviceExtensions    = m_EnabledExtensions.device.data();
+    device_desc.numDeviceExtensions = m_EnabledExtensions.device.size();
+
+    m_NVRHIDevice = nvrhi::vulkan::createDevice(device_desc);
+
+    if (ENABLE_VALIDATION_LAYERS) {
+        nvrhi::DeviceHandle nvrhiValidationLayer = nvrhi::validation::createValidationLayer(m_NVRHIDevice);
+        m_ValidationLayer                        = nvrhiValidationLayer; // TODO : make the rest of the application go through the validation layer
     }
 }
 

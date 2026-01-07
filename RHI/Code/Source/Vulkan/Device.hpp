@@ -21,9 +21,16 @@
 #include <vector>
 
 #include <nvrhi/vulkan.h>
+#include <nvrhi/validation.h>
+
 #include <vulkan/vulkan.h>
 
 namespace rhi::vulkan {
+    struct DefaultMessageCallback : public nvrhi::IMessageCallback {
+        static DefaultMessageCallback& getInstance();
+        void                           message(nvrhi::MessageSeverity severity, const char* message_text) override;
+    };
+
     /* forward declarations */
     class Swapchain;
     class CommandList;
@@ -65,6 +72,7 @@ namespace rhi::vulkan {
         void CreateCommandPool();
         void CreateCommandBuffers();
         void CreateSyncObjects();
+        void CreateNVRHIDevice();
 
     private:
         RHI_NODISCARD static bool                     checkValidationLayerSupport();
@@ -171,7 +179,7 @@ namespace rhi::vulkan {
 
         VkDebugUtilsMessengerEXT m_DebugMessenger;
 
-        VkCommandPool                m_CommandPool{};
+        VkCommandPool                m_CommandPool;
         std::vector<VkCommandBuffer> m_CommandBuffers;
 
         nvrhi::vulkan::DeviceHandle m_NVRHIDevice;

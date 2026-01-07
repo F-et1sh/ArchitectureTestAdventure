@@ -205,10 +205,8 @@ VkExtent2D rhi::vulkan::Swapchain::chooseSwapExtent(const VkSurfaceCapabilitiesK
         return capabilities.currentExtent;
     }
 
-    int width  = 0;
-    int height = 0;
-
-    //m_Device.w
+    int width  = m_Device.m_SurfaceWidth;
+    int height = m_Device.m_SurfaceHeight;
 
     VkExtent2D actual_extent = {
         static_cast<uint32_t>(width),
