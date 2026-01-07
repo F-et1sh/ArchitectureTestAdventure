@@ -18,7 +18,7 @@
 #include "Device.hpp"
 
 namespace rhi::vulkan {
-	class Swapchain final : public rhi::Swapchain {
+    class Swapchain final : public rhi::Swapchain {
     public:
         explicit Swapchain(rhi::vulkan::Device& device);
         ~Swapchain();
@@ -32,10 +32,15 @@ namespace rhi::vulkan {
         RHI_NODISCARD uint32_t getHeight() const override;
 
     private:
+        VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& available_formats);
+        VkPresentModeKHR   chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& available_present_modes);
+        VkExtent2D         chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+
+    private:
         rhi::vulkan::Device& m_Device;
 
-        VkSurfaceFormatKHR m_SwapchainFormat;
         VkSwapchainKHR     m_Swapchain;
+        VkSurfaceFormatKHR m_SwapchainFormat;
         bool               m_SwapchainMutableFormatSupported = false;
 
         struct SwapChainImage {
@@ -44,7 +49,10 @@ namespace rhi::vulkan {
             rhi::TextureHandle   rhi_handle;
         };
 
+        uint32_t m_Index = -1;
+
         std::vector<SwapChainImage> m_Images;
-        uint32_t                    m_Index = uint32_t(-1);
+        VkFormat                    m_SwapchainImageFormat;
+        VkExtent2D                  m_SwapchainExtent{};
     };
-}
+} // namespace rhi::vulkan

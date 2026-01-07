@@ -19,7 +19,6 @@
 #include "Misc.hpp"
 
 #include <vector>
-#include <optional>
 
 #include <nvrhi/vulkan.h>
 #include <vulkan/vulkan.h>
@@ -39,32 +38,6 @@ namespace rhi::vulkan {
 
         constexpr static std::array VALIDATION_LAYERS{
             "VK_LAYER_KHRONOS_validation"
-        };
-
-        struct QueueFamilyIndices {
-        public:
-            std::optional<uint32_t> graphics_family;
-            std::optional<uint32_t> present_family;
-            std::optional<uint32_t> compute_family;
-            std::optional<uint32_t> transfer_family;
-
-            RHI_NODISCARD bool is_complete() const noexcept {
-                return graphics_family.has_value() && present_family.has_value() &&
-                       compute_family.has_value() && transfer_family.has_value();
-            }
-
-            QueueFamilyIndices()  = default;
-            ~QueueFamilyIndices() = default;
-        };
-
-        struct SwapChainSupportDetails {
-        public:
-            VkSurfaceCapabilitiesKHR        capabilities{};
-            std::vector<VkSurfaceFormatKHR> formats;
-            std::vector<VkPresentModeKHR>   present_modes;
-
-            SwapChainSupportDetails()  = default;
-            ~SwapChainSupportDetails() = default;
         };
 
     public:
@@ -97,7 +70,7 @@ namespace rhi::vulkan {
         bool                            checkDeviceExtensionSupport(VkPhysicalDevice device);
         bool                            isDeviceSuitable(VkPhysicalDevice device);
         bool                            findQueueFamilies(VkPhysicalDevice physical_device);
-        SwapChainSupportDetails         querySwapChainSupport(VkPhysicalDevice device);
+        void                            findSwapchainSupportDetails(VkPhysicalDevice device);
         VkSampleCountFlagBits           getMaxUsableSampleCount() const;
 
         static VkBool32 VKAPI_CALL DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT      message_severity,
@@ -165,9 +138,12 @@ namespace rhi::vulkan {
         VulkanContext m_Context;
 
         VkSurfaceKHR m_Surface;
+        uint32_t     m_SurfaceWidth  = 0;
+        uint32_t     m_SurfaceHeight = 0;
 
-        VkSampleCountFlagBits m_MSAA_Samples = VK_SAMPLE_COUNT_1_BIT;
-        QueueFamilyIndices    m_QueueFamilyIndices;
+        VkSampleCountFlagBits   m_MSAA_Samples = VK_SAMPLE_COUNT_1_BIT;
+        QueueFamilyIndices      m_QueueFamilyIndices;
+        SwapchainSupportDetails m_SwapchainSupportDetails;
 
         VkDebugUtilsMessengerEXT m_DebugMessenger;
 

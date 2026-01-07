@@ -56,6 +56,7 @@ rhi::vulkan::Device::~Device() {
 void rhi::vulkan::Device::InitializeForPresentation(void* window_handle) {
     this->CreateSurface(window_handle);
     this->PickPhysicalDevice();
+    this->CreateLogicalDevice();
 }
 
 std::unique_ptr<rhi::CommandList> rhi::vulkan::Device::CreateCommandList() {
@@ -160,6 +161,14 @@ void rhi::vulkan::Device::CreateSurface(void* window_handle) {
     if (result != VK_SUCCESS) {
         std::cerr << "ERROR : Surface" << std::endl;
     }
+
+    int width  = 0;
+    int height = 0;
+
+    glfwGetFramebufferSize(glfw_window, &width, &height);
+
+    m_SurfaceWidth = width;
+    m_SurfaceHeight = height;
 }
 
 void rhi::vulkan::Device::PickPhysicalDevice() {
@@ -321,8 +330,8 @@ bool rhi::vulkan::Device::isDeviceSuitable(VkPhysicalDevice device) {
 
     bool swapchain_adequate = false;
     if (extensions_supported) {
-        SwapChainSupportDetails swapchain_support = querySwapChainSupport(device);
-        swapchain_adequate                        = !swapchain_support.formats.empty() && !swapchain_support.present_modes.empty();
+        findSwapchainSupportDetails(device);
+        swapchain_adequate = !m_SwapchainSupportDetails.formats.empty() && !m_SwapchainSupportDetails.present_modes.empty();
     }
 
     VkPhysicalDeviceFeatures supported_features{};
@@ -391,8 +400,8 @@ bool rhi::vulkan::Device::findQueueFamilies(VkPhysicalDevice physical_device) {
     return true;
 }
 
-rhi::vulkan::Device::SwapChainSupportDetails rhi::vulkan::Device::querySwapChainSupport(VkPhysicalDevice device) {
-    SwapChainSupportDetails details;
+void rhi::vulkan::Device::findSwapchainSupportDetails(VkPhysicalDevice device) {
+    SwapchainSupportDetails details{};
 
     vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, m_Surface, &details.capabilities);
 
@@ -412,7 +421,7 @@ rhi::vulkan::Device::SwapChainSupportDetails rhi::vulkan::Device::querySwapChain
         vkGetPhysicalDeviceSurfacePresentModesKHR(device, m_Surface, &present_mode_count, details.present_modes.data());
     }
 
-    return details;
+    m_SwapchainSupportDetails = details;
 }
 
 VkSampleCountFlagBits rhi::vulkan::Device::getMaxUsableSampleCount() const {
