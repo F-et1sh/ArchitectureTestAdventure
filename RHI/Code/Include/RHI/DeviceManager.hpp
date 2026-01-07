@@ -22,6 +22,6 @@ namespace rhi {
         DeviceManager()  = default;
         ~DeviceManager() = default;
 
-        static RHI_NODISCARD std::unique_ptr<Device> Create(GraphicsAPI backend);
+        static RHI_NODISCARD std::unique_ptr<Device> Create(GraphicsAPI backend, void* window_handle);
     };
 } // namespace rhi

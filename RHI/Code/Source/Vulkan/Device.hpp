@@ -7,7 +7,8 @@
     
     File : Device.hpp
     
-    Content : Implementation of Device. A part of Vulkan backend
+    Content : Implementation of Device. A part of Vulkan backend.
+        Based on Donut, MIT License ( https://github.com/NVIDIA-RTX/Donut )
 
 =================================================*/
 
@@ -18,9 +19,10 @@
 #include "Misc.hpp"
 
 #include <unordered_set>
+#include <optional>
 
 #include <nvrhi/vulkan.h>
-#include <vulkan/vulkan.hpp>
+#include <vulkan/vulkan.h>
 
 namespace rhi::vulkan {
     /* forward declarations */
@@ -28,16 +30,78 @@ namespace rhi::vulkan {
     class CommandList;
 
     class Device final : public rhi::Device {
+    private:
+#if !defined(NDEBUG) && defined(RHI_ENABLE_VALIDATION)
+        constexpr inline static bool ENABLE_VALIDATION_LAYERS = true;
+#else
+        constexpr inline static bool ENABLE_VALIDATION_LAYERS = false;
+#endif
+
+        constexpr inline static std::array VALIDATION_LAYERS{
+            "VK_LAYER_KHRONOS_validation"
+        };
+
+        struct QueueFamilyIndices {
+        public:
+            std::optional<uint32_t> graphics_family;
+            std::optional<uint32_t> present_family;
+            std::optional<uint32_t> compute_family;
+            std::optional<uint32_t> transfer_family;
+
+            inline RHI_NODISCARD bool is_complete() const noexcept {
+                return graphics_family.has_value() && present_family.has_value() &&
+                       compute_family.has_value() && transfer_family.has_value();
+            }
+
+            QueueFamilyIndices()  = default;
+            ~QueueFamilyIndices() = default;
+        };
+
+        struct SwapChainSupportDetails {
+        public:
+            VkSurfaceCapabilitiesKHR        capabilities{};
+            std::vector<VkSurfaceFormatKHR> formats;
+            std::vector<VkPresentModeKHR>   present_modes;
+
+            SwapChainSupportDetails()  = default;
+            ~SwapChainSupportDetails() = default;
+        };
+
     public:
-        Device() = default;
+        Device(void* window_handle);
         ~Device();
 
         RHI_NODISCARD std::unique_ptr<rhi::CommandList> CreateCommandList() override;
-        RHI_NODISCARD std::unique_ptr<rhi::Swapchain> CreateSwapchain(void* window_handle) override;
+        RHI_NODISCARD std::unique_ptr<rhi::Swapchain> CreateSwapchain() override;
         void                                          Submit(rhi::CommandList* cmd) override;
 
         RHI_NODISCARD void* CreateBackendTexture(const rhi::TextureDesc& desc) override;
         void                DestroyBackendTexture(void* backend_handle) override;
+
+    private:
+        void CreateInstance();
+        void SetupDebugMessenger();
+        void CreateSurface(void* window_handle);
+        void PickPhysicalDevice();
+        void CreateLogicalDevice();
+        void CreateCommandPool();
+        void CreateCommandBuffers();
+        void CreateSyncObjects();
+
+    private:
+        bool                     checkValidationLayerSupport();
+        std::vector<const char*> getRequiredExtensions();
+        void                     populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& create_info);
+        bool                     checkDeviceExtensionSupport(VkPhysicalDevice device);
+        bool                     isDeviceSuitable(VkPhysicalDevice device);
+        bool                     findQueueFamilies(VkPhysicalDevice physical_device);
+        SwapChainSupportDetails  querySwapChainSupport(VkPhysicalDevice device);
+        VkSampleCountFlagBits    getMaxUsableSampleCount();
+
+        static VkBool32 VKAPI_CALL DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT      message_severity,
+                                                 VkDebugUtilsMessageTypeFlagsEXT             message_types,
+                                                 const VkDebugUtilsMessengerCallbackDataEXT* callback_data,
+                                                 void*                                       user_data);
 
     private:
         struct VulkanExtensionSet {
@@ -50,12 +114,14 @@ namespace rhi::vulkan {
         VulkanExtensionSet m_EnabledExtensions = {
             // instance
             {
-                VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME },
+                VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME,
+            },
             // layers
             {},
             // device
             {
-                VK_KHR_MAINTENANCE1_EXTENSION_NAME },
+                VK_KHR_MAINTENANCE1_EXTENSION_NAME,
+                VK_KHR_SWAPCHAIN_EXTENSION_NAME },
         };
 
         // optional extensions
@@ -94,16 +160,13 @@ namespace rhi::vulkan {
             VK_NV_CLUSTER_ACCELERATION_STRUCTURE_EXTENSION_NAME
         };
 
-        std::string m_RendererString;
-
-        VkDebugReportCallbackEXT m_DebugReportCallback;
-
         VulkanContext m_Context;
 
-        int m_GraphicsQueueFamily = -1;
-        int m_ComputeQueueFamily  = -1;
-        int m_TransferQueueFamily = -1;
-        int m_PresentQueueFamily  = -1;
+        VkSurfaceKHR m_Surface;
+
+        VkSampleCountFlagBits m_MSAA_Samples = VK_SAMPLE_COUNT_1_BIT;
+
+        VkDebugUtilsMessengerEXT m_DebugMessenger;
 
         nvrhi::vulkan::DeviceHandle m_NVRHIDevice;
         nvrhi::DeviceHandle         m_ValidationLayer;
@@ -111,15 +174,13 @@ namespace rhi::vulkan {
         std::vector<FrameSync> m_Frames;
         uint32_t               m_FrameIndex;
 
-        bool m_BufferDeviceAddressSupported = false;
-
-#if VK_HEADER_VERSION >= 301
-        typedef vk::detail::DynamicLoader VulkanDynamicLoader;
-#else
-        typedef VkDynamicLoader VulkanDynamicLoader;
-#endif
-
-        std::unique_ptr<VulkanDynamicLoader> m_DynamicLoader;
+        //#if VK_HEADER_VERSION >= 301
+        //        typedef vk::detail::DynamicLoader VulkanDynamicLoader;
+        //#else
+        //        typedef VkDynamicLoader VulkanDynamicLoader;
+        //#endif
+        //
+        //        std::unique_ptr<VulkanDynamicLoader> m_DynamicLoader;
 
         friend class rhi::vulkan::Swapchain;
     };

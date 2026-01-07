@@ -20,7 +20,7 @@
 namespace rhi::vulkan {
 	class Swapchain final : public rhi::Swapchain {
     public:
-        explicit Swapchain(rhi::vulkan::Device& device, void* window_handle);
+        explicit Swapchain(rhi::vulkan::Device& device);
         ~Swapchain();
 
         RHI_NODISCARD rhi::TextureHandle Acquire() override;
@@ -31,12 +31,8 @@ namespace rhi::vulkan {
         RHI_NODISCARD uint32_t getWidth() const override;
         RHI_NODISCARD uint32_t getHeight() const override;
 
-        RHI_NODISCARD void* getSurface() const override;
-
     private:
         rhi::vulkan::Device& m_Device;
-
-        VkSurfaceKHR m_Surface;
 
         VkSurfaceFormatKHR m_SwapchainFormat;
         VkSwapchainKHR     m_Swapchain;

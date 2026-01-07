@@ -14,10 +14,10 @@
 #include "RHI/RHI.hpp"
 #include "Vulkan/VulkanBackend.hpp"
 
-RHI_NODISCARD std::unique_ptr<rhi::Device> rhi::DeviceManager::Create(GraphicsAPI backend) {
+RHI_NODISCARD std::unique_ptr<rhi::Device> rhi::DeviceManager::Create(GraphicsAPI backend, void* window_handle) {
     switch (backend) {
         case GraphicsAPI::VULKAN:
-            return std::make_unique<rhi::vulkan::Device>();
+            return std::make_unique<rhi::vulkan::Device>(window_handle);
         default:
             // TODO : ERROR LOGGING
             return nullptr;

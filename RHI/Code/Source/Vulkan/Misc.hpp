@@ -18,13 +18,13 @@
 namespace rhi::vulkan {
     struct VulkanContext {
     public:
-        VkInstance       instance;
-        VkPhysicalDevice physical_device;
-        VkDevice         device;
-        VkQueue          graphics_queue;
-        VkQueue          present_queue;
-        VkQueue          compute_queue;
-        VkQueue          transfer_queue;
+        VkInstance               instance;
+        VkPhysicalDevice         physical_device;
+        VkDevice                 device;
+        VkQueue                  graphics_queue;
+        VkQueue                  present_queue;
+        VkQueue                  compute_queue;
+        VkQueue                  transfer_queue;
 
         VulkanContext()  = default;
         ~VulkanContext() = default;

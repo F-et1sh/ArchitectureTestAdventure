@@ -29,7 +29,5 @@ namespace rhi {
 
         virtual RHI_NODISCARD uint32_t getWidth() const  = 0;
         virtual RHI_NODISCARD uint32_t getHeight() const = 0;
-
-        virtual RHI_NODISCARD void* getSurface() const = 0;
     };
 } // namespace rhi

@@ -18,16 +18,7 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
-rhi::vulkan::Swapchain::Swapchain(rhi::vulkan::Device& device, void* window_handle) : m_Device(device) {
-    GLFWwindow* glfw_window = static_cast<GLFWwindow*>(window_handle);
-
-    // TODO : Add normal logging
-
-    VkResult result      = glfwCreateWindowSurface(m_Device.m_Context.instance, glfw_window, nullptr, &m_Surface);
-    if (result != VK_SUCCESS) {
-        std::cerr << "Err : Surface" << std::endl;
-    }
-}
+rhi::vulkan::Swapchain::Swapchain(rhi::vulkan::Device& device) : m_Device(device) {}
 
 rhi::vulkan::Swapchain::~Swapchain() {
 
@@ -82,9 +73,4 @@ RHI_NODISCARD uint32_t rhi::vulkan::Swapchain::getWidth() const {
 
 RHI_NODISCARD uint32_t rhi::vulkan::Swapchain::getHeight() const {
     return 0;
-}
-
-RHI_NODISCARD void* rhi::vulkan::Swapchain::getSurface() const {
-    assert(m_Surface);
-    return static_cast<void*>(m_Surface);
 }
