@@ -241,7 +241,11 @@ bool rhi::vulkan::Device::checkDeviceExtensionSupport(VkPhysicalDevice device) {
 
 bool rhi::vulkan::Device::isDeviceSuitable(VkPhysicalDevice device) {
     bool found = findQueueFamilies(device);
-    assert(found);
+
+    if (!found) {
+        std::cerr << "ERROR : Failed to find queue families" << std::endl;
+        return false;
+    }
 
     bool extensions_supported = checkDeviceExtensionSupport(device);
 
@@ -251,7 +255,7 @@ bool rhi::vulkan::Device::isDeviceSuitable(VkPhysicalDevice device) {
         swapchain_adequate                        = !swapchain_support.formats.empty() && !swapchain_support.present_modes.empty();
     }
 
-    VkPhysicalDeviceFeatures supported_features;
+    VkPhysicalDeviceFeatures supported_features{};
     vkGetPhysicalDeviceFeatures(device, &supported_features);
 
     return extensions_supported && swapchain_adequate && (supported_features.samplerAnisotropy != 0U);
@@ -369,7 +373,7 @@ VkBool32 VKAPI_CALL rhi::vulkan::Device::DebugCallback(VkDebugUtilsMessageSeveri
                                                        VkDebugUtilsMessageTypeFlagsEXT             message_types,
                                                        const VkDebugUtilsMessengerCallbackDataEXT* callback_data,
                                                        void*                                       user_data) {
-    std::cerr << "Validation layer : ";
+    std::cerr << "Validation layer. ";
 
     if (message_severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT) {
         std::cerr << "VERBOSE : ";
@@ -384,7 +388,8 @@ VkBool32 VKAPI_CALL rhi::vulkan::Device::DebugCallback(VkDebugUtilsMessageSeveri
         std::cerr << "ERROR : ";
     }
 
-    std::cerr << callback_data->pMessage << std::endl;
+    std::cerr << callback_data->pMessage << std::endl
+              << std::endl;
 
     return VK_FALSE;
 }
