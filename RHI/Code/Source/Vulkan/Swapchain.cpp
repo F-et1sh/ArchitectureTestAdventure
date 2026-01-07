@@ -89,8 +89,32 @@ void rhi::vulkan::Swapchain::CreateImageViews() {
     m_ImageViews.resize(m_Images.size());
 
     for (uint32_t i = 0; i < m_Images.size(); i++) {
-        m_ImageViews[i] = m_Device.createImageView(m_Images[i].image, m_ImageFormat, VK_IMAGE_ASPECT_COLOR_BIT, 1);
+        m_Device.createImageView(m_Images[i].image, m_ImageFormat, VK_IMAGE_ASPECT_COLOR_BIT, 1, m_ImageViews[i]);
     }
+}
+
+void rhi::vulkan::Swapchain::CreateColorResources() {
+    VkFormat color_format = m_ImageFormat;
+
+    m_Device.createImage(m_Extent.width,
+                         m_Extent.height,
+                         1,
+                         m_Device.m_MSAA_Samples,
+                         color_format,
+                         VK_IMAGE_TILING_OPTIMAL,
+                         VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+                         VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+                         m_ColorImage,
+                         m_ColorImageMemory);
+
+    m_Device.createImageView(m_ColorImage, color_format, VK_IMAGE_ASPECT_COLOR_BIT, 1, m_ColorImageView);
+}
+
+void rhi::vulkan::Swapchain::CreateDepthResources() {
+    VkFormat depth_format = p_DeviceManager->findDepthFormat();
+
+    p_DeviceManager->createImage(m_SwapchainExtent.width, m_SwapchainExtent.height, 1, p_DeviceManager->getMSAASamples(), depth_format, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, m_DepthImage, m_DepthImageMemory);
+    m_DepthImageView = p_DeviceManager->createImageView(m_DepthImage, depth_format, VK_IMAGE_ASPECT_DEPTH_BIT, 1);
 }
 
 RHI_NODISCARD rhi::TextureHandle rhi::vulkan::Swapchain::Acquire() {

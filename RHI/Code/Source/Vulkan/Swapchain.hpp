@@ -34,6 +34,8 @@ namespace rhi::vulkan {
     private:
         void CreateSwapchain();
         void CreateImageViews();
+        void CreateColorResources();
+        void CreateDepthResources();
 
     private:
         VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& available_formats);

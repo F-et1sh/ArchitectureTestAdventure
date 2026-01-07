@@ -315,7 +315,7 @@ void rhi::vulkan::Device::CreateSyncObjects() {
     }
 }
 
-bool rhi::vulkan::Device::checkValidationLayerSupport() {
+RHI_NODISCARD bool rhi::vulkan::Device::checkValidationLayerSupport() {
     uint32_t layer_count = 0;
     vkEnumerateInstanceLayerProperties(&layer_count, nullptr);
 
@@ -340,7 +340,7 @@ bool rhi::vulkan::Device::checkValidationLayerSupport() {
     return true;
 }
 
-std::vector<const char*> rhi::vulkan::Device::getRequiredExtensions() {
+RHI_NODISCARD std::vector<const char*> rhi::vulkan::Device::getRequiredExtensions() {
     uint32_t     glfw_extension_count = 0;
     const char** glfw_extensions      = nullptr;
     glfw_extensions                   = glfwGetRequiredInstanceExtensions(&glfw_extension_count);
@@ -364,7 +364,7 @@ void rhi::vulkan::Device::populateDebugMessengerCreateInfo(VkDebugUtilsMessenger
 
 // TODO : Add Vulkan functions debug checking
 // TODO : Add logic for optional extensions
-bool rhi::vulkan::Device::checkDeviceExtensionSupport(VkPhysicalDevice device) {
+RHI_NODISCARD bool rhi::vulkan::Device::checkDeviceExtensionSupport(VkPhysicalDevice device) {
     uint32_t extension_count = 0;
     vkEnumerateDeviceExtensionProperties(device, nullptr, &extension_count, nullptr);
 
@@ -380,7 +380,7 @@ bool rhi::vulkan::Device::checkDeviceExtensionSupport(VkPhysicalDevice device) {
     return required_extensions.empty();
 }
 
-bool rhi::vulkan::Device::isDeviceSuitable(VkPhysicalDevice device) {
+RHI_NODISCARD bool rhi::vulkan::Device::isDeviceSuitable(VkPhysicalDevice device) {
     bool found = findQueueFamilies(device);
 
     if (!found) {
@@ -402,7 +402,7 @@ bool rhi::vulkan::Device::isDeviceSuitable(VkPhysicalDevice device) {
     return extensions_supported && swapchain_adequate && (supported_features.samplerAnisotropy != 0U); // TODO : change "supported_features.samplerAnisotropy != 0U"
 }
 
-bool rhi::vulkan::Device::findQueueFamilies(VkPhysicalDevice physical_device) {
+RHI_NODISCARD bool rhi::vulkan::Device::findQueueFamilies(VkPhysicalDevice physical_device) {
     QueueFamilyIndices indices{};
 
     uint32_t properties_count = 0;
@@ -486,7 +486,7 @@ void rhi::vulkan::Device::findSwapchainSupportDetails(VkPhysicalDevice device) {
     m_SwapchainSupportDetails = details;
 }
 
-VkSampleCountFlagBits rhi::vulkan::Device::getMaxUsableSampleCount() const {
+RHI_NODISCARD VkSampleCountFlagBits rhi::vulkan::Device::getMaxUsableSampleCount() const {
     VkPhysicalDeviceProperties physical_device_properties;
     vkGetPhysicalDeviceProperties(m_Context.physical_device, &physical_device_properties);
 
@@ -513,7 +513,95 @@ VkSampleCountFlagBits rhi::vulkan::Device::getMaxUsableSampleCount() const {
     return VK_SAMPLE_COUNT_1_BIT;
 }
 
-VkImageView rhi::vulkan::Device::createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspect_flags, uint32_t mip_levels) {
+RHI_NODISCARD uint32_t rhi::vulkan::Device::findMemoryType(uint32_t type_filter, VkMemoryPropertyFlags properties) {
+    VkPhysicalDeviceMemoryProperties memory_properties;
+    vkGetPhysicalDeviceMemoryProperties(m_Context.physical_device, &memory_properties);
+
+    for (uint32_t i = 0; i < memory_properties.memoryTypeCount; i++) {
+        if (((type_filter & (1 << i)) != 0U) && (memory_properties.memoryTypes[i].propertyFlags & properties) == properties) {
+            return i;
+        }
+    }
+
+    assert(false && "ERROR : Failed to find suitable memory type");
+}
+
+RHI_NODISCARD VkFormat rhi::vulkan::Device::findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features) {
+    for (VkFormat format : candidates) {
+        VkFormatProperties properties{};
+        vkGetPhysicalDeviceFormatProperties(m_Context.physical_device, format, &properties);
+
+        if (tiling == VK_IMAGE_TILING_LINEAR && (properties.linearTilingFeatures & features) == features) {
+            return format;
+        }
+        if (tiling == VK_IMAGE_TILING_OPTIMAL && (properties.optimalTilingFeatures & features) == features) {
+            return format;
+        }
+    }
+
+    assert(false && "ERROR : Failed to find supported format");
+}
+
+RHI_NODISCARD VkFormat rhi::vulkan::Device::findDepthFormat() {
+    return findSupportedFormat({ VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT },
+                               VK_IMAGE_TILING_OPTIMAL,
+                               VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT);
+}
+
+void rhi::vulkan::Device::createImage(uint32_t              width,
+                                      uint32_t              height,
+                                      uint32_t              mip_levels,
+                                      VkSampleCountFlagBits num_samples,
+                                      VkFormat              format,
+                                      VkImageTiling         tiling,
+                                      VkImageUsageFlags     usage,
+                                      VkMemoryPropertyFlags properties,
+                                      VkImage&              image,
+                                      VkDeviceMemory&       image_memory) {
+
+    VkImageCreateInfo image_info{};
+    image_info.sType         = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+    image_info.imageType     = VK_IMAGE_TYPE_2D;
+    image_info.extent.width  = width;
+    image_info.extent.height = height;
+    image_info.extent.depth  = 1;
+    image_info.mipLevels     = mip_levels;
+    image_info.arrayLayers   = 1;
+    image_info.format        = format;
+    image_info.tiling        = tiling;
+    image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+    image_info.usage         = usage;
+    image_info.samples       = num_samples;
+    image_info.sharingMode   = VK_SHARING_MODE_EXCLUSIVE;
+
+    VkResult result = vkCreateImage(m_Context.device, &image_info, nullptr, &image);
+
+    if (result != VK_SUCCESS) {
+        std::cerr << "ERROR : Failed to create image" << std::endl;
+    }
+
+    VkMemoryRequirements memory_requirements;
+    vkGetImageMemoryRequirements(m_Context.device, image, &memory_requirements);
+
+    VkMemoryAllocateInfo allocate_info{};
+    allocate_info.sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+    allocate_info.allocationSize  = memory_requirements.size;
+    allocate_info.memoryTypeIndex = this->findMemoryType(memory_requirements.memoryTypeBits, properties);
+
+    result = vkAllocateMemory(m_Context.device, &allocate_info, nullptr, &image_memory);
+
+    if (result != VK_SUCCESS) {
+        std::cerr << "ERROR : Failed to allocate image memory" << std::endl;
+    }
+
+    vkBindImageMemory(m_Context.device, image, image_memory, 0);
+}
+
+void rhi::vulkan::Device::createImageView(VkImage            image,
+                                          VkFormat           format,
+                                          VkImageAspectFlags aspect_flags,
+                                          uint32_t           mip_levels,
+                                          VkImageView&       image_view) {
     VkImageViewCreateInfo view_info{};
     view_info.sType                           = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
     view_info.image                           = image;
@@ -525,12 +613,11 @@ VkImageView rhi::vulkan::Device::createImageView(VkImage image, VkFormat format,
     view_info.subresourceRange.baseArrayLayer = 0;
     view_info.subresourceRange.layerCount     = 1;
 
-    VkImageView image_view = nullptr;
-    if (vkCreateImageView(m_Context.device, &view_info, nullptr, &image_view) != VK_SUCCESS) {
+    VkResult result = vkCreateImageView(m_Context.device, &view_info, nullptr, &image_view);
+
+    if (result != VK_SUCCESS) {
         std::cerr << "ERROR : Failed to create image view" << std::endl;
     }
-
-    return image_view;
 }
 
 VkBool32 VKAPI_CALL rhi::vulkan::Device::DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT      message_severity,
