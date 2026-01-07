@@ -30,6 +30,8 @@ namespace rhi::vulkan {
 
     class Device final : public rhi::Device {
     private:
+        constexpr inline static int MAX_FRAMES_IN_FLIGHT = 2;
+
 #if !defined(NDEBUG) && defined(RHI_ENABLE_VALIDATION)
         constexpr static bool ENABLE_VALIDATION_LAYERS = true;
 #else
@@ -149,6 +151,9 @@ namespace rhi::vulkan {
         SwapchainSupportDetails m_SwapchainSupportDetails;
 
         VkDebugUtilsMessengerEXT m_DebugMessenger;
+
+        VkCommandPool                m_CommandPool{};
+        std::vector<VkCommandBuffer> m_CommandBuffers;
 
         nvrhi::vulkan::DeviceHandle m_NVRHIDevice;
         nvrhi::DeviceHandle         m_ValidationLayer;

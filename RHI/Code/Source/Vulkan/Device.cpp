@@ -43,8 +43,7 @@ namespace rhi::vulkan {
 } // namespace rhi::vulkan
 
 rhi::vulkan::Device::Device() {
-    this->CreateInstance();
-    this->SetupDebugMessenger();
+    this->Initialize();
 }
 
 rhi::vulkan::Device::~Device() {
@@ -53,10 +52,18 @@ rhi::vulkan::Device::~Device() {
     vkDestroyInstance(m_Context.instance, nullptr);
 }
 
+void rhi::vulkan::Device::Initialize() {
+    this->CreateInstance();
+    this->SetupDebugMessenger();
+}
+
 void rhi::vulkan::Device::InitializeForPresentation(void* window_handle) {
     this->CreateSurface(window_handle);
     this->PickPhysicalDevice();
     this->CreateLogicalDevice();
+    this->CreateCommandPool();
+    this->CreateCommandBuffers();
+    this->CreateSyncObjects();
 }
 
 std::unique_ptr<rhi::CommandList> rhi::vulkan::Device::CreateCommandList() {
@@ -167,7 +174,7 @@ void rhi::vulkan::Device::CreateSurface(void* window_handle) {
 
     glfwGetFramebufferSize(glfw_window, &width, &height);
 
-    m_SurfaceWidth = width;
+    m_SurfaceWidth  = width;
     m_SurfaceHeight = height;
 }
 
@@ -251,6 +258,61 @@ void rhi::vulkan::Device::CreateLogicalDevice() {
 
     vkGetDeviceQueue(m_Context.device, m_QueueFamilyIndices.graphics_family.value(), 0, &m_Context.graphics_queue);
     vkGetDeviceQueue(m_Context.device, m_QueueFamilyIndices.present_family.value(), 0, &m_Context.present_queue);
+}
+
+void rhi::vulkan::Device::CreateCommandPool() {
+    VkCommandPoolCreateInfo pool_info{};
+    pool_info.sType            = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+    pool_info.flags            = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+    pool_info.queueFamilyIndex = m_QueueFamilyIndices.graphics_family.value();
+
+    VkResult result = vkCreateCommandPool(m_Context.device, &pool_info, nullptr, &m_CommandPool);
+
+    if (result != VK_SUCCESS) {
+        std::cerr << "ERROR : Failed to create graphics command pool" << std::endl;
+    }
+}
+
+void rhi::vulkan::Device::CreateCommandBuffers() {
+    m_CommandBuffers.resize(MAX_FRAMES_IN_FLIGHT);
+
+    VkCommandBufferAllocateInfo alloc_info{};
+    alloc_info.sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    alloc_info.commandPool        = m_CommandPool;
+    alloc_info.level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    alloc_info.commandBufferCount = (uint32_t) m_CommandBuffers.size();
+
+    VkResult result = vkAllocateCommandBuffers(m_Context.device, &alloc_info, m_CommandBuffers.data());
+
+    if (result != VK_SUCCESS) {
+        std::cerr << "ERROR : Failed to allocate command buffers" << std::endl;
+    }
+}
+
+void rhi::vulkan::Device::CreateSyncObjects() {
+    m_Frames.resize(MAX_FRAMES_IN_FLIGHT);
+
+    VkSemaphoreCreateInfo semaphore_info{};
+    semaphore_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+
+    VkFenceCreateInfo fence_info{};
+    fence_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+    fence_info.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+
+    for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
+        VkResult image_available_semaphore_result = vkCreateSemaphore(m_Context.device, &semaphore_info, nullptr, &m_Frames[i].image_available);
+        VkResult render_finished_semaphore_result = vkCreateSemaphore(m_Context.device, &semaphore_info, nullptr, &m_Frames[i].render_finished);
+        VkResult in_flight_fence_result           = vkCreateFence(m_Context.device, &fence_info, nullptr, &m_Frames[i].in_flight);
+
+        // TODO : Add m_Frames[i].frame_complete creation
+
+        if (image_available_semaphore_result != VK_SUCCESS ||
+            render_finished_semaphore_result != VK_SUCCESS ||
+            in_flight_fence_result != VK_SUCCESS) {
+
+            std::cerr << "ERROR : Failed to create synchronization objects for a frame" << std::endl;
+        }
+    }
 }
 
 bool rhi::vulkan::Device::checkValidationLayerSupport() {
