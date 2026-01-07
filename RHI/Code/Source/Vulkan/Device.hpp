@@ -18,7 +18,7 @@
 
 #include "Misc.hpp"
 
-#include <unordered_set>
+#include <vector>
 #include <optional>
 
 #include <nvrhi/vulkan.h>
@@ -32,12 +32,12 @@ namespace rhi::vulkan {
     class Device final : public rhi::Device {
     private:
 #if !defined(NDEBUG) && defined(RHI_ENABLE_VALIDATION)
-        constexpr inline static bool ENABLE_VALIDATION_LAYERS = true;
+        constexpr static bool ENABLE_VALIDATION_LAYERS = true;
 #else
         constexpr inline static bool ENABLE_VALIDATION_LAYERS = false;
 #endif
 
-        constexpr inline static std::array VALIDATION_LAYERS{
+        constexpr static std::array VALIDATION_LAYERS{
             "VK_LAYER_KHRONOS_validation"
         };
 
@@ -48,7 +48,7 @@ namespace rhi::vulkan {
             std::optional<uint32_t> compute_family;
             std::optional<uint32_t> transfer_family;
 
-            inline RHI_NODISCARD bool is_complete() const noexcept {
+            RHI_NODISCARD bool is_complete() const noexcept {
                 return graphics_family.has_value() && present_family.has_value() &&
                        compute_family.has_value() && transfer_family.has_value();
             }
@@ -68,8 +68,10 @@ namespace rhi::vulkan {
         };
 
     public:
-        Device(void* window_handle);
+        Device();
         ~Device();
+
+        void InitializeForPresentation(void* window_handle);
 
         RHI_NODISCARD std::unique_ptr<rhi::CommandList> CreateCommandList() override;
         RHI_NODISCARD std::unique_ptr<rhi::Swapchain> CreateSwapchain() override;
@@ -89,14 +91,14 @@ namespace rhi::vulkan {
         void CreateSyncObjects();
 
     private:
-        bool                     checkValidationLayerSupport();
-        std::vector<const char*> getRequiredExtensions();
-        void                     populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& create_info);
-        bool                     checkDeviceExtensionSupport(VkPhysicalDevice device);
-        bool                     isDeviceSuitable(VkPhysicalDevice device);
-        bool                     findQueueFamilies(VkPhysicalDevice physical_device);
-        SwapChainSupportDetails  querySwapChainSupport(VkPhysicalDevice device);
-        VkSampleCountFlagBits    getMaxUsableSampleCount();
+        static bool                     checkValidationLayerSupport();
+        static std::vector<const char*> getRequiredExtensions();
+        static void                     populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& create_info);
+        bool                            checkDeviceExtensionSupport(VkPhysicalDevice device);
+        bool                            isDeviceSuitable(VkPhysicalDevice device);
+        bool                            findQueueFamilies(VkPhysicalDevice physical_device);
+        SwapChainSupportDetails         querySwapChainSupport(VkPhysicalDevice device);
+        VkSampleCountFlagBits           getMaxUsableSampleCount() const;
 
         static VkBool32 VKAPI_CALL DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT      message_severity,
                                                  VkDebugUtilsMessageTypeFlagsEXT             message_types,
@@ -105,9 +107,9 @@ namespace rhi::vulkan {
 
     private:
         struct VulkanExtensionSet {
-            std::unordered_set<std::string> instance;
-            std::unordered_set<std::string> layers;
-            std::unordered_set<std::string> device;
+            std::vector<const char*> instance;
+            std::vector<const char*> layers;
+            std::vector<const char*> device;
         };
 
         // minimal set of required extensions
@@ -151,7 +153,7 @@ namespace rhi::vulkan {
             },
         };
 
-        std::unordered_set<std::string> m_RayTracingExtensions = {
+        std::vector<const char*> m_RayTracingExtensions = {
             VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME,
             VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME,
             VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME,
@@ -165,6 +167,7 @@ namespace rhi::vulkan {
         VkSurfaceKHR m_Surface;
 
         VkSampleCountFlagBits m_MSAA_Samples = VK_SAMPLE_COUNT_1_BIT;
+        QueueFamilyIndices    m_QueueFamilyIndices;
 
         VkDebugUtilsMessengerEXT m_DebugMessenger;
 

@@ -22,15 +22,40 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+#include <unordered_set>
 
-rhi::vulkan::Device::Device(void* window_handle) {
+namespace rhi::vulkan {
+    VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* p_create_info, const VkAllocationCallbacks* p_allocator, VkDebugUtilsMessengerEXT* p_debug_messenger) {
+        auto func = (PFN_vkCreateDebugUtilsMessengerEXT) vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
+        if (func != nullptr) {
+            return func(instance, p_create_info, p_allocator, p_debug_messenger);
+        }
+
+        return VK_ERROR_EXTENSION_NOT_PRESENT;
+    }
+
+    void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debug_messenger, const VkAllocationCallbacks* p_allocator) {
+        auto func = (PFN_vkDestroyDebugUtilsMessengerEXT) vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
+        if (func != nullptr) {
+            func(instance, debug_messenger, p_allocator);
+        }
+    }
+} // namespace rhi::vulkan
+
+rhi::vulkan::Device::Device() {
     this->CreateInstance();
     this->SetupDebugMessenger();
-    this->CreateSurface(window_handle);
-    this->PickPhysicalDevice();
 }
 
 rhi::vulkan::Device::~Device() {
+    DestroyDebugUtilsMessengerEXT(m_Context.instance, m_DebugMessenger, nullptr);
+    vkDestroySurfaceKHR(m_Context.instance, m_Surface, nullptr);
+    vkDestroyInstance(m_Context.instance, nullptr);
+}
+
+void rhi::vulkan::Device::InitializeForPresentation(void* window_handle) {
+    this->CreateSurface(window_handle);
+    this->PickPhysicalDevice();
 }
 
 std::unique_ptr<rhi::CommandList> rhi::vulkan::Device::CreateCommandList() {
@@ -64,7 +89,9 @@ RHI_NODISCARD void* rhi::vulkan::Device::CreateBackendTexture(const rhi::Texture
 }
 
 void rhi::vulkan::Device::DestroyBackendTexture(void* backend_handle) {
-    if (!backend_handle) return;
+    if (backend_handle == nullptr) {
+        return;
+    }
 
     static_cast<nvrhi::ITexture*>(backend_handle)->Release();
     backend_handle = nullptr;
@@ -81,7 +108,7 @@ void rhi::vulkan::Device::CreateInstance() { // TODO : Add normal logging
     app_info.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
     app_info.pEngineName        = "No Engine";
     app_info.engineVersion      = VK_MAKE_VERSION(1, 0, 0);
-    app_info.apiVersion         = VK_API_VERSION_1_4;
+    app_info.apiVersion         = VK_API_VERSION_1_3;
 
     auto extensions = getRequiredExtensions();
 
@@ -106,23 +133,6 @@ void rhi::vulkan::Device::CreateInstance() { // TODO : Add normal logging
 
     if (vkCreateInstance(&create_info, nullptr, &m_Context.instance) != VK_SUCCESS) {
         std::cerr << "ERROR : Failed to create instance" << std::endl;
-    }
-}
-
-VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger) {
-    auto func = (PFN_vkCreateDebugUtilsMessengerEXT) vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
-    if (func != nullptr) {
-        return func(instance, pCreateInfo, pAllocator, pDebugMessenger);
-    }
-    else {
-        return VK_ERROR_EXTENSION_NOT_PRESENT;
-    }
-}
-
-void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator) {
-    auto func = (PFN_vkDestroyDebugUtilsMessengerEXT) vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
-    if (func != nullptr) {
-        func(instance, debugMessenger, pAllocator);
     }
 }
 
@@ -176,6 +186,64 @@ void rhi::vulkan::Device::PickPhysicalDevice() {
     }
 }
 
+void rhi::vulkan::Device::CreateLogicalDevice() {
+    bool found = findQueueFamilies(m_Context.physical_device);
+
+    assert(found && "Failed to create logical device");
+
+    std::vector<VkDeviceQueueCreateInfo> queue_create_infos{};
+    std::unordered_set<uint32_t>         unique_queue_families{};
+
+    unique_queue_families.insert(m_QueueFamilyIndices.graphics_family.value());
+    unique_queue_families.insert(m_QueueFamilyIndices.present_family.value());
+
+    if (m_QueueFamilyIndices.compute_family)
+        unique_queue_families.insert(*m_QueueFamilyIndices.compute_family);
+
+    if (m_QueueFamilyIndices.transfer_family)
+        unique_queue_families.insert(*m_QueueFamilyIndices.transfer_family);
+
+    float queue_priority = 1.0f;
+    for (uint32_t queue_family : unique_queue_families) {
+        VkDeviceQueueCreateInfo queue_create_info{};
+        queue_create_info.sType            = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+        queue_create_info.queueFamilyIndex = queue_family;
+        queue_create_info.queueCount       = 1;
+        queue_create_info.pQueuePriorities = &queue_priority;
+        queue_create_infos.push_back(queue_create_info);
+    }
+
+    VkPhysicalDeviceFeatures device_features{};
+    device_features.samplerAnisotropy = VK_TRUE; // TODO : CHECK
+
+    VkDeviceCreateInfo create_info{};
+    create_info.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+
+    create_info.queueCreateInfoCount = static_cast<uint32_t>(queue_create_infos.size());
+    create_info.pQueueCreateInfos    = queue_create_infos.data();
+
+    create_info.pEnabledFeatures = &device_features;
+
+    create_info.enabledExtensionCount   = static_cast<uint32_t>(m_EnabledExtensions.device.size());
+    create_info.ppEnabledExtensionNames = m_EnabledExtensions.device.data();
+
+    if (ENABLE_VALIDATION_LAYERS) {
+        create_info.enabledLayerCount   = static_cast<uint32_t>(VALIDATION_LAYERS.size());
+        create_info.ppEnabledLayerNames = VALIDATION_LAYERS.data();
+    }
+    else {
+        create_info.enabledLayerCount = 0;
+    }
+
+    VkResult result = vkCreateDevice(m_Context.physical_device, &create_info, nullptr, &m_Context.device);
+    if (result != VK_SUCCESS) {
+        std::cerr << "ERROR : Failed to create logical device" << std::endl;
+    }
+
+    vkGetDeviceQueue(m_Context.device, m_QueueFamilyIndices.graphics_family.value(), 0, &m_Context.graphics_queue);
+    vkGetDeviceQueue(m_Context.device, m_QueueFamilyIndices.present_family.value(), 0, &m_Context.present_queue);
+}
+
 bool rhi::vulkan::Device::checkValidationLayerSupport() {
     uint32_t layer_count = 0;
     vkEnumerateInstanceLayerProperties(&layer_count, nullptr);
@@ -223,7 +291,9 @@ void rhi::vulkan::Device::populateDebugMessengerCreateInfo(VkDebugUtilsMessenger
     create_info.pfnUserCallback = DebugCallback;
 }
 
-bool rhi::vulkan::Device::checkDeviceExtensionSupport(VkPhysicalDevice device) { // TODO : Add Vulkan functions debug checking
+// TODO : Add Vulkan functions debug checking
+// TODO : Add logic for optional extensions
+bool rhi::vulkan::Device::checkDeviceExtensionSupport(VkPhysicalDevice device) {
     uint32_t extension_count = 0;
     vkEnumerateDeviceExtensionProperties(device, nullptr, &extension_count, nullptr);
 
@@ -258,7 +328,7 @@ bool rhi::vulkan::Device::isDeviceSuitable(VkPhysicalDevice device) {
     VkPhysicalDeviceFeatures supported_features{};
     vkGetPhysicalDeviceFeatures(device, &supported_features);
 
-    return extensions_supported && swapchain_adequate && (supported_features.samplerAnisotropy != 0U);
+    return extensions_supported && swapchain_adequate && (supported_features.samplerAnisotropy != 0U); // TODO : change "supported_features.samplerAnisotropy != 0U"
 }
 
 bool rhi::vulkan::Device::findQueueFamilies(VkPhysicalDevice physical_device) {
@@ -275,31 +345,33 @@ bool rhi::vulkan::Device::findQueueFamilies(VkPhysicalDevice physical_device) {
 
         if (!indices.graphics_family.has_value()) {
             if (queue_family.queueCount > 0 &&
-                (queue_family.queueFlags & VkQueueFlagBits::VK_QUEUE_GRAPHICS_BIT)) {
+                ((queue_family.queueFlags & VkQueueFlagBits::VK_QUEUE_GRAPHICS_BIT) != 0u)) {
                 indices.graphics_family = i;
             }
         }
 
         if (!indices.compute_family.has_value()) {
             if (queue_family.queueCount > 0 &&
-                (queue_family.queueFlags & VkQueueFlagBits::VK_QUEUE_COMPUTE_BIT) &&
-                !(queue_family.queueFlags & VkQueueFlagBits::VK_QUEUE_GRAPHICS_BIT)) {
+                ((queue_family.queueFlags & VkQueueFlagBits::VK_QUEUE_COMPUTE_BIT) != 0u) &&
+                ((queue_family.queueFlags & VkQueueFlagBits::VK_QUEUE_GRAPHICS_BIT) == 0u)) {
                 indices.compute_family = i;
             }
         }
 
         if (!indices.transfer_family.has_value()) {
             if (queue_family.queueCount > 0 &&
-                (queue_family.queueFlags & VkQueueFlagBits::VK_QUEUE_TRANSFER_BIT) &&
-                !(queue_family.queueFlags & VkQueueFlagBits::VK_QUEUE_COMPUTE_BIT) &&
-                !(queue_family.queueFlags & VkQueueFlagBits::VK_QUEUE_GRAPHICS_BIT)) {
+                ((queue_family.queueFlags & VkQueueFlagBits::VK_QUEUE_TRANSFER_BIT) != 0u) &&
+                ((queue_family.queueFlags & VkQueueFlagBits::VK_QUEUE_COMPUTE_BIT) == 0u) &&
+                ((queue_family.queueFlags & VkQueueFlagBits::VK_QUEUE_GRAPHICS_BIT) == 0u)) {
                 indices.transfer_family = i;
             }
         }
 
         if (!indices.present_family.has_value()) {
-            if (queue_family.queueCount > 0 &&
-                glfwGetPhysicalDevicePresentationSupport(m_Context.instance, physical_device, i)) {
+            VkBool32 present_support = VK_FALSE;
+            vkGetPhysicalDeviceSurfaceSupportKHR(physical_device, i, m_Surface, &present_support);
+
+            if (queue_family.queueCount > 0 && (present_support != 0u)) {
                 indices.present_family = i;
             }
         }
@@ -314,8 +386,9 @@ bool rhi::vulkan::Device::findQueueFamilies(VkPhysicalDevice physical_device) {
         // }
         return false;
     }
-    else
-        return true;
+
+    m_QueueFamilyIndices = indices;
+    return true;
 }
 
 rhi::vulkan::Device::SwapChainSupportDetails rhi::vulkan::Device::querySwapChainSupport(VkPhysicalDevice device) {
@@ -342,7 +415,7 @@ rhi::vulkan::Device::SwapChainSupportDetails rhi::vulkan::Device::querySwapChain
     return details;
 }
 
-VkSampleCountFlagBits rhi::vulkan::Device::getMaxUsableSampleCount() {
+VkSampleCountFlagBits rhi::vulkan::Device::getMaxUsableSampleCount() const {
     VkPhysicalDeviceProperties physical_device_properties;
     vkGetPhysicalDeviceProperties(m_Context.physical_device, &physical_device_properties);
 
@@ -375,16 +448,16 @@ VkBool32 VKAPI_CALL rhi::vulkan::Device::DebugCallback(VkDebugUtilsMessageSeveri
                                                        void*                                       user_data) {
     std::cerr << "Validation layer. ";
 
-    if (message_severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT) {
+    if ((message_severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT) != 0) {
         std::cerr << "VERBOSE : ";
     }
-    if (message_severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT) {
+    if ((message_severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT) != 0) {
         std::cerr << "INFO : ";
     }
-    if (message_severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
+    if ((message_severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) != 0) {
         std::cerr << "WARNING : ";
     }
-    if (message_severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) {
+    if ((message_severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) != 0) {
         std::cerr << "ERROR : ";
     }
 
