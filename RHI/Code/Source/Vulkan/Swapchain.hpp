@@ -32,6 +32,10 @@ namespace rhi::vulkan {
         RHI_NODISCARD uint32_t getHeight() const override;
 
     private:
+        void CreateSwapchain();
+        void CreateImageViews();
+
+    private:
         VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& available_formats);
         VkPresentModeKHR   chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& available_present_modes);
         VkExtent2D         chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
@@ -40,10 +44,10 @@ namespace rhi::vulkan {
         rhi::vulkan::Device& m_Device;
 
         VkSwapchainKHR     m_Swapchain;
-        VkSurfaceFormatKHR m_SwapchainFormat;
-        bool               m_SwapchainMutableFormatSupported = false;
+        VkSurfaceFormatKHR m_Format;
+        bool               m_MutableFormatSupported = false;
 
-        struct SwapChainImage {
+        struct SwapchainImage {
             VkImage              image;
             nvrhi::TextureHandle nvrhi_handle;
             rhi::TextureHandle   rhi_handle;
@@ -51,8 +55,19 @@ namespace rhi::vulkan {
 
         uint32_t m_Index = -1;
 
-        std::vector<SwapChainImage> m_Images;
-        VkFormat                    m_SwapchainImageFormat;
-        VkExtent2D                  m_SwapchainExtent{};
+        std::vector<SwapchainImage> m_Images;
+        VkFormat                    m_ImageFormat;
+        VkExtent2D                  m_Extent{};
+
+        std::vector<VkImageView>   m_ImageViews;
+        std::vector<VkFramebuffer> m_Framebuffers;
+
+        VkImage        m_ColorImage{};
+        VkDeviceMemory m_ColorImageMemory{};
+        VkImageView    m_ColorImageView{};
+
+        VkImage        m_DepthImage{};
+        VkDeviceMemory m_DepthImageMemory{};
+        VkImageView    m_DepthImageView{};
     };
 } // namespace rhi::vulkan

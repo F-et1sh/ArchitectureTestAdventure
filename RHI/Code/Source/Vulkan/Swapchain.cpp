@@ -21,7 +21,17 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
-rhi::vulkan::Swapchain::Swapchain(rhi::vulkan::Device& device) : m_Device(device) {
+rhi::vulkan::Swapchain::Swapchain(rhi::vulkan::Device& device)
+    : m_Device(device) {
+
+    this->CreateSwapchain();
+    this->CreateImageViews();
+}
+
+rhi::vulkan::Swapchain::~Swapchain() {
+}
+
+void rhi::vulkan::Swapchain::CreateSwapchain() {
     auto& swapchain_support = m_Device.m_SwapchainSupportDetails;
 
     VkSurfaceFormatKHR surface_format = chooseSwapSurfaceFormat(swapchain_support.formats);
@@ -61,22 +71,26 @@ rhi::vulkan::Swapchain::Swapchain(rhi::vulkan::Device& device) : m_Device(device
     create_info.presentMode    = present_mode;
     create_info.clipped        = VK_TRUE;
 
-
     if (vkCreateSwapchainKHR(m_Device.m_Context.device, &create_info, nullptr, &m_Swapchain) != VK_SUCCESS) {
         std::cerr << "ERROR : Failed to create swapchain" << std::endl;
     }
 
-    std::vector<VkImage> swapchain_images{}; // TODO : Handle this
+    std::vector<VkImage> swapchain_images{}; // TODO : Handle this (m_Images[i])
 
     vkGetSwapchainImagesKHR(m_Device.m_Context.device, m_Swapchain, &image_count, nullptr);
     swapchain_images.resize(image_count);
     vkGetSwapchainImagesKHR(m_Device.m_Context.device, m_Swapchain, &image_count, swapchain_images.data());
 
-    m_SwapchainImageFormat = surface_format.format;
-    m_SwapchainExtent      = extent;
+    m_ImageFormat = surface_format.format;
+    m_Extent      = extent;
 }
 
-rhi::vulkan::Swapchain::~Swapchain() {
+void rhi::vulkan::Swapchain::CreateImageViews() {
+    m_ImageViews.resize(m_Images.size());
+
+    for (uint32_t i = 0; i < m_Images.size(); i++) {
+        m_ImageViews[i] = m_Device.createImageView(m_Images[i].image, m_ImageFormat, VK_IMAGE_ASPECT_COLOR_BIT, 1);
+    }
 }
 
 RHI_NODISCARD rhi::TextureHandle rhi::vulkan::Swapchain::Acquire() {

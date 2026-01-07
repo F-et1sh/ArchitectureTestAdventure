@@ -44,6 +44,7 @@ namespace rhi::vulkan {
         Device();
         ~Device();
 
+        void Initialize(); // TODO : Add initialization by desc
         void InitializeForPresentation(void* window_handle);
 
         RHI_NODISCARD std::unique_ptr<rhi::CommandList> CreateCommandList() override;
@@ -72,6 +73,8 @@ namespace rhi::vulkan {
         bool                            findQueueFamilies(VkPhysicalDevice physical_device);
         void                            findSwapchainSupportDetails(VkPhysicalDevice device);
         VkSampleCountFlagBits           getMaxUsableSampleCount() const;
+
+        VkImageView createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspect_flags, uint32_t mip_levels);
 
         static VkBool32 VKAPI_CALL DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT      message_severity,
                                                  VkDebugUtilsMessageTypeFlagsEXT             message_types,
