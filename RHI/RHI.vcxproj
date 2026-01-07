@@ -28,11 +28,18 @@
     <ClInclude Include="Code\Include\RHI\RHI.hpp" />
     <ClInclude Include="Code\Include\RHI\Swapchain.hpp" />
     <ClInclude Include="Code\Source\Common\Resource.hpp" />
+    <ClInclude Include="Code\Source\Vulkan\CommandList.hpp" />
+    <ClInclude Include="Code\Source\Vulkan\Device.hpp" />
+    <ClInclude Include="Code\Source\Vulkan\Misc.hpp" />
+    <ClInclude Include="Code\Source\Vulkan\Swapchain.hpp" />
     <ClInclude Include="Code\Source\Vulkan\VulkanBackend.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Source\ResourceManager.cpp" />
     <ClCompile Include="Code\Source\DeviceManager.cpp" />
+    <ClCompile Include="Code\Source\Vulkan\CommandList.cpp" />
+    <ClCompile Include="Code\Source\Vulkan\Device.cpp" />
+    <ClCompile Include="Code\Source\Vulkan\Swapchain.cpp" />
     <ClCompile Include="Code\Source\Vulkan\VulkanBackend.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
