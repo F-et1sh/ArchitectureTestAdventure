@@ -14,6 +14,8 @@
 #include "RHI/DeviceManager.hpp"
 #include "Source/Vulkan/VulkanBackend.hpp"
 
+#include "Source/Common/Logging.hpp"
+
 RHI_NODISCARD std::unique_ptr<rhi::Device> rhi::DeviceManager::Create(GraphicsAPI backend, void* window_handle) {
     switch (backend) {
         case GraphicsAPI::VULKAN: {
@@ -23,7 +25,10 @@ RHI_NODISCARD std::unique_ptr<rhi::Device> rhi::DeviceManager::Create(GraphicsAP
             break;
         }
         default:
-            // TODO : ERROR LOGGING
-            return nullptr;
+            rhi::logging::error("Unknown Graphics API : %i \nFallbacks to Vulkan", backend);
+
+            std::unique_ptr<rhi::vulkan::Device> device = std::make_unique<rhi::vulkan::Device>();
+            device->InitializeForPresentation(window_handle);
+            return device;
     }
 }

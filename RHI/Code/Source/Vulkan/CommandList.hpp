@@ -14,7 +14,7 @@
 #pragma once
 
 #include "RHI/CommandList.hpp"
-#include "RHI/Common/Attributes.hpp"
+#include "Common/Attributes.hpp"
 
 #include <nvrhi/vulkan.h>
 

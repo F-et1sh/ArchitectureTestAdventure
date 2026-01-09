@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "RHI/Common/Resource.hpp"
+#include "Common/Resource.hpp"
 
 #include <nvrhi/nvrhi.h>
 

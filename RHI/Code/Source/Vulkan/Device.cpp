@@ -8,12 +8,13 @@
     File : Device.cpp
     
     Content : Implementation of Device. A part of Vulkan backend
+        Based on Donut, MIT License ( https://github.com/NVIDIA-RTX/Donut )
 
 =================================================*/
 
 #include "Device.hpp"
 
-#include "Common/Resource.hpp"
+#include "Source/Common/Resource.hpp"
 
 #include "CommandList.hpp"
 #include "Swapchain.hpp"
