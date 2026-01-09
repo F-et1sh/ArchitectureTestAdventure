@@ -13,7 +13,7 @@
 
 #include "Device.hpp"
 
-#include "Source/Common/Resource.hpp"
+#include "Common/Resource.hpp"
 
 #include "CommandList.hpp"
 #include "Swapchain.hpp"

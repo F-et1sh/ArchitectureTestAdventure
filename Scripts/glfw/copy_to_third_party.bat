@@ -15,6 +15,8 @@
 @echo off
 
 xcopy /y /i /s "..\\..\\External\\glfw\\include" "..\\..\\ThirdParty\\glfw\\include" >nul
-xcopy /y /i /s "..\\..\\External\\glfw\\build\\src\\MinSizeRel" "..\\..\\ThirdParty\\glfw\\win64" >nul
+xcopy /y /i /s "..\\..\\External\\glfw\\build\\src\\Debug" "..\\..\\ThirdParty\\glfw\\win64_debug" >nul
+xcopy /y /i /s "..\\..\\External\\glfw\\build\\src\\Release" "..\\..\\ThirdParty\\glfw\\win64_release" >nul
+xcopy /y /i /s "..\\..\\External\\glfw\\build\\src\\MinSizeRel" "..\\..\\ThirdParty\\glfw\\win64_min_size_rel" >nul
 
 copy "..\\..\\External\\glfw\\LICENSE.md" "..\\..\\ThirdParty\\glfw\\GLFW_LICENSE.md" >nul

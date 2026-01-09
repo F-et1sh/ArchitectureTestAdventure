@@ -9,15 +9,15 @@
 ::   
 ::   Content : Copying includes, binaries and licenses 
 ::		from External\\NVRHI to ThirdParty\\NVRHI.
-::	THE FILE IS CHANGED !!
-::	CHANGE "Debug" TO "MinSizeRel" FIRST
 ::
 ::=================================================
 
 @echo off
 
 xcopy /y /i /s "..\\..\\External\\NVRHI\\include" "..\\..\\ThirdParty\\NVRHI\\include" >nul
-xcopy /y /i /s "..\\..\\External\\NVRHI\\build\\Debug" "..\\..\\ThirdParty\\NVRHI\\win64" >nul
+xcopy /y /i /s "..\\..\\External\\NVRHI\\build\\Debug" "..\\..\\ThirdParty\\NVRHI\\win64_debug" >nul
+xcopy /y /i /s "..\\..\\External\\NVRHI\\build\\Release" "..\\..\\ThirdParty\\NVRHI\\win64_release" >nul
+xcopy /y /i /s "..\\..\\External\\NVRHI\\build\\MinSizeRel" "..\\..\\ThirdParty\\NVRHI\\win64_min_size_rel" >nul
 
 copy "..\\..\\External\\NVRHI\\rtxmu\\LICENSE.txt" "..\\..\\ThirdParty\\NVRHI\\NVRHI_RTXMU_LICENSE.txt" >nul
 copy "..\\..\\External\\NVRHI\\thirdparty\\DirectX-Headers\\LICENSE" "..\\..\\ThirdParty\\NVRHI\\NVRHI_DIRECT_X_LICENSE.txt" >nul

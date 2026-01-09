@@ -1,0 +1,24 @@
+::=================================================
+::
+::   Copyright (C) 2025 Farrakh.  All Rights Reserved.
+::   
+::   This file is a part of ArchitectureTestAdventure.
+::   Check README.md for more information.
+::   
+::   File : rebuild_submodules.bat
+::   
+::   Content : force build aka rebuild NVRHI submodule
+::
+::=================================================
+
+@echo off
+
+pushd "%~dp0\..\..\External\NVRHI"
+
+rmdir /q /s build
+
+popd
+
+call build_submodule_debug.bat
+call build_submodule_release.bat
+call build_submodule_min_size_rel.bat

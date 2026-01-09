@@ -9,7 +9,7 @@
     <ClInclude Include="Code\Include\RHI\Common\Resource.hpp" />
     <ClInclude Include="Code\Include\RHI\ResourceManager.hpp" />
     <ClInclude Include="Code\Include\RHI\Common\Attributes.hpp" />
-    <ClInclude Include="Code\Source\Common\Resource.hpp" />
+    <ClInclude Include="Code\Source\RHI\Common\Resource.hpp" />
     <ClInclude Include="Code\Source\Vulkan\VulkanBackend.hpp" />
     <ClInclude Include="Code\Source\Vulkan\Device.hpp" />
     <ClInclude Include="Code\Source\Vulkan\CommandList.hpp" />
@@ -17,8 +17,8 @@
     <ClInclude Include="Code\Source\Vulkan\Swapchain.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Code\Source\ResourceManager.cpp" />
-    <ClCompile Include="Code\Source\DeviceManager.cpp" />
+    <ClCompile Include="Code\Source\RHI\ResourceManager.cpp" />
+    <ClCompile Include="Code\Source\RHI\DeviceManager.cpp" />
     <ClCompile Include="Code\Source\Vulkan\VulkanBackend.cpp" />
     <ClCompile Include="Code\Source\Vulkan\Device.cpp" />
     <ClCompile Include="Code\Source\Vulkan\CommandList.cpp" />
