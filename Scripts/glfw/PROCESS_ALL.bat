@@ -13,5 +13,5 @@
 
 @echo off
 
-build_submodule.bat
-copy_to_third_party.bat
+call build_submodule.bat
+call copy_to_third_party.bat

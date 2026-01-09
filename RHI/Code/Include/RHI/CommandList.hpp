@@ -38,4 +38,22 @@ namespace rhi {
 
     private:
     };
+
+    /*class TempCommandList final : public CommandList {
+    public:
+        TempCommandList()  = default;
+        ~TempCommandList() = default;
+
+        void BeginFrame()override {}
+        void EndFrame()override {}
+
+        void setPipeline(const Pipeline* pipeline)override {}
+
+        void setVertexBuffer(const Buffer* buffer)override {}
+        void setIndexBuffer(const Buffer* buffer)override {}
+
+        void setRenderTarget(TextureHandle handle)override {}
+
+        void DrawIndexed(uint32_t instance_count, uint32_t first_index, uint32_t first_instance, uint32_t first_vertex, uint32_t vertex_count)override {}
+    };*/
 } // namespace rhi

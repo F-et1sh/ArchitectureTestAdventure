@@ -14,16 +14,10 @@
 
 #pragma once
 
-#include "RHI/Device.hpp"
-
-#include "Misc.hpp"
-
 #include <vector>
 
-#include <nvrhi/vulkan.h>
-#include <nvrhi/validation.h>
-
-#include <vulkan/vulkan.h>
+#include "RHI/Device.hpp"
+#include "Misc.hpp"
 
 namespace rhi::vulkan {
     struct DefaultMessageCallback : public nvrhi::IMessageCallback {

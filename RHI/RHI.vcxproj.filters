@@ -2,7 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="Code\Include\RHI\RHI.hpp" />
-    <ClInclude Include="Code\Source\Vulkan\VulkanBackend.hpp" />
     <ClInclude Include="Code\Include\RHI\DeviceManager.hpp" />
     <ClInclude Include="Code\Include\RHI\Device.hpp" />
     <ClInclude Include="Code\Include\RHI\CommandList.hpp" />
@@ -11,15 +10,16 @@
     <ClInclude Include="Code\Include\RHI\ResourceManager.hpp" />
     <ClInclude Include="Code\Include\RHI\Common\Attributes.hpp" />
     <ClInclude Include="Code\Source\Common\Resource.hpp" />
-    <ClInclude Include="Code\Source\Vulkan\Misc.hpp" />
+    <ClInclude Include="Code\Source\Vulkan\VulkanBackend.hpp" />
     <ClInclude Include="Code\Source\Vulkan\Device.hpp" />
     <ClInclude Include="Code\Source\Vulkan\CommandList.hpp" />
+    <ClInclude Include="Code\Source\Vulkan\Misc.hpp" />
     <ClInclude Include="Code\Source\Vulkan\Swapchain.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Code\Source\Vulkan\VulkanBackend.cpp" />
-    <ClCompile Include="Code\Source\DeviceManager.cpp" />
     <ClCompile Include="Code\Source\ResourceManager.cpp" />
+    <ClCompile Include="Code\Source\DeviceManager.cpp" />
+    <ClCompile Include="Code\Source\Vulkan\VulkanBackend.cpp" />
     <ClCompile Include="Code\Source\Vulkan\Device.cpp" />
     <ClCompile Include="Code\Source\Vulkan\CommandList.cpp" />
     <ClCompile Include="Code\Source\Vulkan\Swapchain.cpp" />

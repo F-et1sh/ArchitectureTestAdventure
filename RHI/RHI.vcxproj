@@ -35,8 +35,8 @@
     <ClInclude Include="Code\Source\Vulkan\VulkanBackend.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Code\Source\ResourceManager.cpp" />
     <ClCompile Include="Code\Source\DeviceManager.cpp" />
+    <ClCompile Include="Code\Source\ResourceManager.cpp" />
     <ClCompile Include="Code\Source\Vulkan\CommandList.cpp" />
     <ClCompile Include="Code\Source\Vulkan\Device.cpp" />
     <ClCompile Include="Code\Source\Vulkan\Swapchain.cpp" />
@@ -130,11 +130,13 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(ProjectDir)Code;$(ProjectDir)Code\PCH;$(ProjectDir)Code\Include;$(SolutionDir)ThirdParty\NVRHI\include;$(SolutionDir)ThirdParty\GLFW\include;$(VULKAN_SDK)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Code;$(ProjectDir)Code\PCH;$(ProjectDir)Code\Include;$(SolutionDir)ThirdParty\GLFW\include;$(SolutionDir)ThirdParty\NVRHI\include;$(VULKAN_SDK)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\glfw\win64;$(SolutionDir)ThirdParty\NVRHI\win64;$(VULKAN_SDK)\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>nvrhi.lib;nvrhi_vk.lib;vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
       <AdditionalDependencies>nvrhi.lib;nvrhi_vk.lib;glfw3.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -153,11 +155,13 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(ProjectDir)Code;$(ProjectDir)Code\PCH;$(ProjectDir)Code\Include;$(SolutionDir)ThirdParty\NVRHI\include;$(SolutionDir)ThirdParty\GLFW\include;$(VULKAN_SDK)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Code;$(ProjectDir)Code\PCH;$(ProjectDir)Code\Include;$(SolutionDir)ThirdParty\GLFW\include;$(SolutionDir)ThirdParty\NVRHI\include;$(VULKAN_SDK)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\glfw\win64;$(SolutionDir)ThirdParty\NVRHI\win64;$(VULKAN_SDK)\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>nvrhi.lib;nvrhi_vk.lib;vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
       <AdditionalDependencies>nvrhi.lib;nvrhi_vk.lib;glfw3.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>

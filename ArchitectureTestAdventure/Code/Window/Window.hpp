@@ -26,8 +26,8 @@ namespace ata {
 
         void Loop();
 
-        //inline ATA_NODISCARD GLFWwindow* getGLFWwindow() const noexcept { return p_GLFWwindow; }
-        inline ATA_NODISCARD void*       getNativeHandle() const noexcept { return p_GLFWwindow; }
+        inline ATA_NODISCARD GLFWwindow* getGLFWwindow() const noexcept { return p_GLFWwindow; }
+        inline ATA_NODISCARD void*       getNativeHandle() const noexcept { return static_cast<void*>(p_GLFWwindow); }
 
     private:
         GLFWwindow* p_GLFWwindow = nullptr;

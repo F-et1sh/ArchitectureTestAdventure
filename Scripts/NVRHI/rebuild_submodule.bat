@@ -19,4 +19,4 @@ rmdir /q /s build
 
 popd
 
-build_submodule.bat
+call build_submodule.bat
