@@ -19,8 +19,6 @@
 #include "RHI/Device.hpp"
 #include "Misc.hpp"
 
-#include "CommandList.hpp"
-
 namespace rhi::vulkan {
     struct DefaultMessageCallback : public nvrhi::IMessageCallback {
         static DefaultMessageCallback& getInstance();
@@ -29,6 +27,7 @@ namespace rhi::vulkan {
 
     /* forward declarations */
     class Swapchain;
+    class CommandList;
 
     class Device final : public rhi::Device {
     private:

@@ -15,11 +15,14 @@
 
 #include "RHI/CommandList.hpp"
 #include "Common/Attributes.hpp"
+#include "Misc.hpp"
 
 #include <nvrhi/nvrhi.h>
 
+#include "Swapchain.hpp"
+
 namespace rhi::vulkan {
-	class CommandList final : public rhi::CommandList {
+    class CommandList final : public rhi::CommandList {
     public:
         explicit CommandList(nvrhi::CommandListHandle handle) : m_NVRHICommandList(handle) {}
         ~CommandList() = default;
@@ -32,13 +35,15 @@ namespace rhi::vulkan {
         void setVertexBuffer(const Buffer* buffer) override;
         void setIndexBuffer(const Buffer* buffer) override;
 
-        void setRenderTarget(TextureHandle handle) override;
+        void setRenderTarget(const RenderTargetSet& render_target) override;
 
         void DrawIndexed(uint32_t instance_count, uint32_t first_index, uint32_t first_instance, uint32_t first_vertex, uint32_t vertex_count) override;
 
         RHI_NODISCARD nvrhi::CommandListHandle getNVRHICommandListHandle() const noexcept { return m_NVRHICommandList; }
 
     private:
+        RenderTargetSet m_CurrentRenderTarget;
+
         nvrhi::CommandListHandle m_NVRHICommandList;
     };
-}
+} // namespace rhi::vulkan

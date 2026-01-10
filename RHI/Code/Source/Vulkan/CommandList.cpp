@@ -30,7 +30,8 @@ void rhi::vulkan::CommandList::setVertexBuffer(const Buffer* buffer) {
 void rhi::vulkan::CommandList::setIndexBuffer(const Buffer* buffer) {
 }
 
-void rhi::vulkan::CommandList::setRenderTarget(TextureHandle handle) {
+void rhi::vulkan::CommandList::setRenderTarget(Swapchain::BackbufferIndex index) {
+
 }
 
 void rhi::vulkan::CommandList::DrawIndexed(uint32_t instance_count, uint32_t first_index, uint32_t first_instance, uint32_t first_vertex, uint32_t vertex_count) {

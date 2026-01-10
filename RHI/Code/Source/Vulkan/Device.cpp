@@ -17,8 +17,8 @@
 #include "Source/Common/Resource.hpp"
 #include "Logging.hpp"
 
-#include "CommandList.hpp"
 #include "Swapchain.hpp"
+#include "CommandList.hpp"
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
