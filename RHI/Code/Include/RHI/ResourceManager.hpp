@@ -13,13 +13,13 @@
 
 #pragma once
 
+#include <cassert>
+#include <vector>
+
 #include "Common/Attributes.hpp"
 #include "Common/Resource.hpp"
 
 #include "Device.hpp"
-
-#include <cassert>
-#include <vector>
 
 namespace rhi {
     class ResourceManager {

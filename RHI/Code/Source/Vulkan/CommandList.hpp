@@ -16,7 +16,7 @@
 #include "RHI/CommandList.hpp"
 #include "Common/Attributes.hpp"
 
-#include <nvrhi/vulkan.h>
+#include <nvrhi/nvrhi.h>
 
 namespace rhi::vulkan {
 	class CommandList final : public rhi::CommandList {

@@ -14,7 +14,6 @@
 #pragma once
 
 #include "RHI/Swapchain.hpp"
-
 #include "Device.hpp"
 
 namespace rhi::vulkan {

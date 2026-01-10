@@ -41,6 +41,7 @@
     <ClInclude Include="Code\Source\Vulkan\Device.hpp" />
     <ClInclude Include="Code\Source\Vulkan\Logging.hpp" />
     <ClInclude Include="Code\Source\Vulkan\Misc.hpp" />
+    <ClInclude Include="Code\Source\Vulkan\Resource.hpp" />
     <ClInclude Include="Code\Source\Vulkan\Swapchain.hpp" />
     <ClInclude Include="Code\Source\Vulkan\VulkanBackend.hpp" />
   </ItemGroup>
@@ -51,7 +52,6 @@
     <ClCompile Include="Code\Source\Vulkan\CommandList.cpp" />
     <ClCompile Include="Code\Source\Vulkan\Device.cpp" />
     <ClCompile Include="Code\Source\Vulkan\Swapchain.cpp" />
-    <ClCompile Include="Code\Source\Vulkan\VulkanBackend.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>

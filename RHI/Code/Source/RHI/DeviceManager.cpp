@@ -12,8 +12,8 @@
 =================================================*/
 
 #include "RHI/DeviceManager.hpp"
-#include "Source/Vulkan/VulkanBackend.hpp"
 
+#include "Source/Vulkan/VulkanBackend.hpp"
 #include "Source/Common/Logging.hpp"
 
 RHI_NODISCARD std::unique_ptr<rhi::Device> rhi::DeviceManager::Create(GraphicsAPI backend, void* window_handle) {

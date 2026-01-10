@@ -13,26 +13,27 @@
 
 #include "Swapchain.hpp"
 
-#include "Source/Common/Resource.hpp"
-#include "Misc.hpp"
-#include "Logging.hpp"
-
 #include <iostream>
 #include <algorithm>
 
+#include "Misc.hpp"
+#include "Logging.hpp"
+
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
+
+#include "Resource.hpp"
 
 rhi::vulkan::Swapchain::Swapchain(rhi::vulkan::Device& device)
     : m_Device(device) {
 
     this->CreateSwapchain();
     this->CreateImageViews();
-    this->CreateColorResources();
-    this->CreateDepthResources();
+    this->CreateNVRHITextures();
 }
 
 rhi::vulkan::Swapchain::~Swapchain() {
+    
 }
 
 void rhi::vulkan::Swapchain::CreateSwapchain() {
@@ -80,7 +81,7 @@ void rhi::vulkan::Swapchain::CreateSwapchain() {
     RHI_VK_CHECK_ERROR(vkCreateSwapchainKHR(device, &create_info, nullptr, &m_Swapchain),
                        "Failed to create swapchain");
 
-    uint32_t image_count = 0;
+    image_count = 0;
     vkGetSwapchainImagesKHR(device, m_Swapchain, &image_count, nullptr);
 
     std::vector<VkImage> images(image_count);

@@ -13,6 +13,6 @@
 
 #pragma once
 
-#include "Device.hpp"
 #include "CommandList.hpp"
+#include "Device.hpp"
 #include "Swapchain.hpp"

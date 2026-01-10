@@ -16,8 +16,8 @@
 #include "Common/Resource.hpp"
 
 #include "CommandList.hpp"
-#include "Device.hpp"
 #include "Swapchain.hpp"
+#include "Device.hpp"
 #include "ResourceManager.hpp"
 
 #include "DeviceManager.hpp"
