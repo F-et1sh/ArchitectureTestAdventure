@@ -18,6 +18,7 @@
 #include <cstdarg>
 #include <iterator>
 #include <mutex>
+#include <print>
 
 #if _WIN32
 #include <Windows.h>
@@ -25,68 +26,58 @@
 
 namespace rhi::logging {
     static constexpr size_t G_MESSAGE_BUFFER_SIZE   = 4096;
-    static std::string      G_ERROR_MESSAGE_CAPTION = "Error";
+    static std::string      G_ERROR_MESSAGE_CAPTION = "Architecture Test Adventure";
 
 #if _WIN32
     static bool G_OUTPUT_TO_MESSAGE_BOX = true;
     static bool G_OUTPUT_TO_DEBUG       = true;
     static bool G_OUTPUT_TO_CONSOLE     = false;
 #else
-    static bool g_OutputToMessageBox = false;
-    static bool g_OutputToDebug      = false;
-    static bool g_OutputToConsole    = true;
+    static bool G_OUTPUT_TO_MESSAGE_BOX = false;
+    static bool G_OUTPUT_TO_DEBUG       = false;
+    static bool G_OUTPUT_TO_CONSOLE     = true;
 #endif
 
     static std::mutex G_LOG_MUTEX;
 
     void DefaultCallback(Severity severity, const char* message) {
         const char* severity_text = "";
+
+        // clang-format off
         switch (severity) {
-            case Severity::Debug:
-                severity_text = "DEBUG";
-                break;
-            case Severity::Info:
-                severity_text = "INFO";
-                break;
-            case Severity::Warning:
-                severity_text = "WARNING";
-                break;
-            case Severity::Error:
-                severity_text = "ERROR";
-                break;
-            case Severity::Fatal:
-                severity_text = "FATAL ERROR";
-                break;
-            default:
-                break;
+            case Severity::Debug  : severity_text = "DEBUG"      ; break;
+            case Severity::Info   : severity_text = "INFO"       ; break;
+            case Severity::Warning: severity_text = "WARNING"    ; break;
+            case Severity::Error  : severity_text = "ERROR"      ; break;
+            case Severity::Fatal  : severity_text = "FATAL ERROR"; break;
+            default: break;
         }
+        // clang-format on
 
         char buf[G_MESSAGE_BUFFER_SIZE];
         snprintf(buf, std::size(buf), "%s : %s", severity_text, message);
 
-        {
-            std::lock_guard<std::mutex> lock_guard(G_LOG_MUTEX);
+        std::lock_guard<std::mutex> lock_guard(G_LOG_MUTEX);
 
 #if _WIN32
-            if (G_OUTPUT_TO_DEBUG) {
-                OutputDebugStringA(buf);
-                OutputDebugStringA("\n");
-            }
+        if (G_OUTPUT_TO_DEBUG) {
+            OutputDebugStringA(buf);
+            OutputDebugStringA("\n\n");
+        }
 
-            if (G_OUTPUT_TO_MESSAGE_BOX) {
-                if (severity == Severity::Error || severity == Severity::Fatal) {
-                    MessageBoxA(0, buf, G_ERROR_MESSAGE_CAPTION.c_str(), MB_ICONERROR);
-                }
+        if (G_OUTPUT_TO_MESSAGE_BOX) {
+            if (severity == Severity::Error || severity == Severity::Fatal) {
+                MessageBoxA(0, buf, G_ERROR_MESSAGE_CAPTION.c_str(), MB_ICONERROR);
             }
+        }
 
 #endif
-            if (G_OUTPUT_TO_CONSOLE) {
-                if (severity == Severity::Error || severity == Severity::Fatal) {
-                    fprintf(stderr, "%s\n", buf);
-                }
-                else {
-                    fprintf(stdout, "%s\n", buf);
-                }
+        if (G_OUTPUT_TO_CONSOLE) {
+            if (severity == Severity::Error || severity == Severity::Fatal) {
+                std::print(stderr, "{}\n\n", buf);
+            }
+            else {
+                std::print(stdout, "{}\n\n", buf);
             }
         }
 
