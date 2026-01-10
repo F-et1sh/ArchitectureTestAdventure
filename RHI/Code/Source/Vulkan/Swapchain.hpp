@@ -23,13 +23,15 @@ namespace rhi::vulkan {
         explicit Swapchain(rhi::vulkan::Device& device);
         ~Swapchain();
 
-        RHI_NODISCARD rhi::TextureHandle Acquire() override;
-        void                             Present() override;
+        RHI_NODISCARD BackbufferIndex Acquire() override;
+        void                          Present() override;
 
         void Resize(uint32_t width, uint32_t height) override;
 
         RHI_NODISCARD uint32_t getWidth() const override;
         RHI_NODISCARD uint32_t getHeight() const override;
+
+        inline RHI_NODISCARD nvrhi::TextureHandle getBackbuffer(BackbufferIndex index) const { return m_Images[index].nvrhi_texture; }
 
     private:
         void CreateSwapchain();

@@ -33,17 +33,4 @@ namespace rhi {
         virtual RHI_NODISCARD void* CreateBackendTexture(const rhi::TextureDesc& desc) = 0;
         virtual void                DestroyBackendTexture(void* backend_handle)        = 0;
     };
-
-    /*class TempDevice final : public Device {
-    public:
-        TempDevice()  = default;
-        ~TempDevice() = default;
-
-        RHI_NODISCARD std::unique_ptr<rhi::CommandList> CreateCommandList() { return std::make_unique<rhi::TempCommandList>(); }
-        RHI_NODISCARD std::unique_ptr<rhi::Swapchain> CreateSwapchain() { return std::make_unique<rhi::TempSwapchain>(); }
-        void                                          Submit(rhi::CommandList* cmd) {}
-
-        RHI_NODISCARD void* CreateBackendTexture(const rhi::TextureDesc& desc) { return nullptr; }
-        void                DestroyBackendTexture(void* backend_handle) {}
-    };*/
 } // namespace rhi

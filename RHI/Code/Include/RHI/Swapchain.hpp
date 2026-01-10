@@ -19,29 +19,18 @@
 namespace rhi {
     class Swapchain {
     public:
+        using BackbufferIndex = uint32_t;
+
+    public:
         Swapchain()          = default;
         virtual ~Swapchain() = default;
 
-        virtual RHI_NODISCARD rhi::TextureHandle Acquire() = 0;
-        virtual void                             Present() = 0;
+        virtual RHI_NODISCARD BackbufferIndex Acquire() = 0;
+        virtual void                          Present() = 0;
 
         virtual void Resize(uint32_t width, uint32_t height) = 0;
 
         virtual RHI_NODISCARD uint32_t getWidth() const  = 0;
         virtual RHI_NODISCARD uint32_t getHeight() const = 0;
     };
-
-    /*class TempSwapchain final : public Swapchain {
-    public:
-        TempSwapchain()          = default;
-        ~TempSwapchain() = default;
-
-        RHI_NODISCARD rhi::TextureHandle Acquire() { return rhi::TextureHandle(0); };
-        void                             Present() {  };
-
-        void Resize(uint32_t width, uint32_t height) {}
-
-        RHI_NODISCARD uint32_t getWidth() const { return 0; };
-        RHI_NODISCARD uint32_t getHeight() const { return 0; };
-    };*/
 } // namespace rhi

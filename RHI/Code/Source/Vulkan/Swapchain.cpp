@@ -126,13 +126,13 @@ void rhi::vulkan::Swapchain::CreateNVRHITextures() {
 }
 
 RHI_NODISCARD rhi::TextureHandle rhi::vulkan::Swapchain::Acquire() {
-    auto& device = m_Device.m_Context.device;
+    auto  device = m_Device.m_Context.device;
     auto& frame  = m_Device.m_Frames[m_Device.m_FrameIndex];
 
     vkWaitForFences(device, 1, &frame.in_flight, VK_TRUE, std::numeric_limits<uint64_t>::max());
     vkResetFences(device, 1, &frame.in_flight);
 
-    VkResult result = vkAcquireNextImageKHR(
+    vkAcquireNextImageKHR(
         device,
         m_Swapchain,
         std::numeric_limits<uint64_t>::max(),
@@ -140,22 +140,19 @@ RHI_NODISCARD rhi::TextureHandle rhi::vulkan::Swapchain::Acquire() {
         VK_NULL_HANDLE,
         &m_ImageIndex);
 
-    assert(result == VK_SUCCESS); // temp
-
     m_Device.m_NVRHIDevice->queueWaitForSemaphore(
         nvrhi::CommandQueue::Graphics,
         frame.image_available,
         0);
 
-    return m_Images[m_ImageIndex].nvrhi_texture;
+    return m_ImageIndex;
 }
 
 void rhi::vulkan::Swapchain::Present() {
-    auto& device = m_Device.m_Context.device;
-
     auto& frame = m_Device.m_Frames[m_Device.m_FrameIndex];
 
     VkPresentInfoKHR info{};
+    info.sType              = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
     info.waitSemaphoreCount = 1;
     info.pWaitSemaphores    = &frame.render_finished;
     info.swapchainCount     = 1;
