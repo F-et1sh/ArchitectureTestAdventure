@@ -27,7 +27,7 @@ namespace rhi::logging {
         Fatal
     };
 
-    typedef std::function<void(Severity, char const*)> Callback;
+    using Callback = std::function<void(Severity, char const*)>;
 
     void     setMinSeverity(Severity severity);
     void     setCallback(Callback func);

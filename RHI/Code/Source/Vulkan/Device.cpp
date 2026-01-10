@@ -15,6 +15,7 @@
 #include "Device.hpp"
 
 #include "Source/Common/Resource.hpp"
+#include "Logging.hpp"
 
 #include "CommandList.hpp"
 #include "Swapchain.hpp"
@@ -40,21 +41,18 @@ namespace rhi::vulkan {
     void DefaultMessageCallback::message(nvrhi::MessageSeverity severity, const char* message_text) {
         switch (severity) {
             case nvrhi::MessageSeverity::Info:
-                std::cerr << "NVRHI INFO : ";
+                rhi::logging::info(message_text);
                 break;
             case nvrhi::MessageSeverity::Warning:
-                std::cerr << "NVRHI WARNING : ";
+                rhi::logging::warning(message_text);
                 break;
             case nvrhi::MessageSeverity::Error:
-                std::cerr << "NVRHI ERROR : ";
+                rhi::logging::error(message_text);
                 break;
             case nvrhi::MessageSeverity::Fatal:
-                std::cerr << "NVRHI FATAL : ";
+                rhi::logging::fatal(message_text);
                 break;
         }
-
-        std::cerr << message_text << std::endl
-                  << std::endl;
     }
 
     VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* p_create_info, const VkAllocationCallbacks* p_allocator, VkDebugUtilsMessengerEXT* p_debug_messenger) {
@@ -138,9 +136,9 @@ void rhi::vulkan::Device::DestroyBackendTexture(void* backend_handle) {
     backend_handle = nullptr;
 }
 
-void rhi::vulkan::Device::CreateInstance() { // TODO : Add normal logging
+void rhi::vulkan::Device::CreateInstance() {
     if (ENABLE_VALIDATION_LAYERS && !checkValidationLayerSupport()) {
-        std::cerr << "ERROR : Validation layers requested, but not available" << std::endl;
+        rhi::logging::warning("Validation layers requested, but not available");
     }
 
     VkApplicationInfo app_info{};
@@ -172,12 +170,11 @@ void rhi::vulkan::Device::CreateInstance() { // TODO : Add normal logging
         create_info.pNext             = nullptr;
     }
 
-    if (vkCreateInstance(&create_info, nullptr, &m_Context.instance) != VK_SUCCESS) {
-        std::cerr << "ERROR : Failed to create instance" << std::endl;
-    }
+    RHI_VK_CHECK_FATAL(vkCreateInstance(&create_info, nullptr, &m_Context.instance),
+                       "Failed to create Vulkan instance")
 }
 
-void rhi::vulkan::Device::SetupDebugMessenger() { // TODO : Add normal logging
+void rhi::vulkan::Device::SetupDebugMessenger() {
     if (!ENABLE_VALIDATION_LAYERS) {
         return;
     }
@@ -185,22 +182,15 @@ void rhi::vulkan::Device::SetupDebugMessenger() { // TODO : Add normal logging
     VkDebugUtilsMessengerCreateInfoEXT create_info;
     populateDebugMessengerCreateInfo(create_info);
 
-    VkResult result = CreateDebugUtilsMessengerEXT(m_Context.instance, &create_info, nullptr, &m_DebugMessenger);
-
-    if (result != VK_SUCCESS) {
-        std::cerr << "ERROR : Failed to set up debug messenger" << std::endl;
-    }
+    RHI_VK_CHECK_ERROR(CreateDebugUtilsMessengerEXT(m_Context.instance, &create_info, nullptr, &m_DebugMessenger),
+                       "Failed to set up debug messenger")
 }
 
 void rhi::vulkan::Device::CreateSurface(void* window_handle) {
     GLFWwindow* glfw_window = static_cast<GLFWwindow*>(window_handle);
 
-    // TODO : Add normal logging
-
-    VkResult result = glfwCreateWindowSurface(m_Context.instance, glfw_window, nullptr, &m_Surface);
-    if (result != VK_SUCCESS) {
-        std::cerr << "ERROR : Surface" << std::endl;
-    }
+    RHI_VK_CHECK_FATAL(glfwCreateWindowSurface(m_Context.instance, glfw_window, nullptr, &m_Surface),
+                       "Failed to create surface");
 
     int width  = 0;
     int height = 0;
@@ -216,7 +206,7 @@ void rhi::vulkan::Device::PickPhysicalDevice() {
     vkEnumeratePhysicalDevices(m_Context.instance, &device_count, nullptr);
 
     if (device_count == 0) {
-        std::cerr << "ERROR : Failed to find GPUs with Vulkan support" << std::endl;
+        rhi::logging::fatal("Failed to find GPUs with Vulkan support");
     }
 
     std::vector<VkPhysicalDevice> devices(device_count);
@@ -231,14 +221,15 @@ void rhi::vulkan::Device::PickPhysicalDevice() {
     }
 
     if (m_Context.physical_device == VK_NULL_HANDLE) {
-        std::cerr << "ERROR : Failed to find a suitable GPU" << std::endl;
+        rhi::logging::fatal("Failed to find a suitable GPU");
     }
 }
 
 void rhi::vulkan::Device::CreateLogicalDevice() {
     bool found = findQueueFamilies(m_Context.physical_device);
-
-    assert(found && "Failed to create logical device");
+    if (!found) {
+        rhi::logging::fatal("Failed to find queue families");
+    }
 
     std::vector<VkDeviceQueueCreateInfo> queue_create_infos{};
     std::unordered_set<uint32_t>         unique_queue_families{};
@@ -284,10 +275,8 @@ void rhi::vulkan::Device::CreateLogicalDevice() {
         create_info.enabledLayerCount = 0;
     }
 
-    VkResult result = vkCreateDevice(m_Context.physical_device, &create_info, nullptr, &m_Context.device);
-    if (result != VK_SUCCESS) {
-        std::cerr << "ERROR : Failed to create logical device" << std::endl;
-    }
+    RHI_VK_CHECK_FATAL(vkCreateDevice(m_Context.physical_device, &create_info, nullptr, &m_Context.device),
+                       "Failed to create logical device")
 
     vkGetDeviceQueue(m_Context.device, m_QueueFamilyIndices.graphics_family.value(), 0, &m_Context.graphics_queue);
     vkGetDeviceQueue(m_Context.device, m_QueueFamilyIndices.present_family.value(), 0, &m_Context.present_queue);
@@ -299,11 +288,8 @@ void rhi::vulkan::Device::CreateCommandPool() {
     pool_info.flags            = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
     pool_info.queueFamilyIndex = m_QueueFamilyIndices.graphics_family.value();
 
-    VkResult result = vkCreateCommandPool(m_Context.device, &pool_info, nullptr, &m_CommandPool);
-
-    if (result != VK_SUCCESS) {
-        std::cerr << "ERROR : Failed to create graphics command pool" << std::endl;
-    }
+    RHI_VK_CHECK_FATAL(vkCreateCommandPool(m_Context.device, &pool_info, nullptr, &m_CommandPool),
+                       "Failed to create graphics command pool")
 }
 
 void rhi::vulkan::Device::CreateCommandBuffers() {
@@ -315,11 +301,8 @@ void rhi::vulkan::Device::CreateCommandBuffers() {
     alloc_info.level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
     alloc_info.commandBufferCount = (uint32_t) m_CommandBuffers.size();
 
-    VkResult result = vkAllocateCommandBuffers(m_Context.device, &alloc_info, m_CommandBuffers.data());
-
-    if (result != VK_SUCCESS) {
-        std::cerr << "ERROR : Failed to allocate command buffers" << std::endl;
-    }
+    RHI_VK_CHECK_FATAL(vkAllocateCommandBuffers(m_Context.device, &alloc_info, m_CommandBuffers.data()),
+                       "Failed to allocate command buffers")
 }
 
 void rhi::vulkan::Device::CreateSyncObjects() {
@@ -332,19 +315,16 @@ void rhi::vulkan::Device::CreateSyncObjects() {
     fence_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
     fence_info.flags = VK_FENCE_CREATE_SIGNALED_BIT;
 
-    for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
-        VkResult image_available_semaphore_result = vkCreateSemaphore(m_Context.device, &semaphore_info, nullptr, &m_Frames[i].image_available);
-        VkResult render_finished_semaphore_result = vkCreateSemaphore(m_Context.device, &semaphore_info, nullptr, &m_Frames[i].render_finished);
-        VkResult in_flight_fence_result           = vkCreateFence(m_Context.device, &fence_info, nullptr, &m_Frames[i].in_flight);
+    for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) { // TODO : Add m_Frames[i].frame_complete creation
 
-        // TODO : Add m_Frames[i].frame_complete creation
+        RHI_VK_CHECK_FATAL(vkCreateSemaphore(m_Context.device, &semaphore_info, nullptr, &m_Frames[i].image_available),
+                           "Failed to create image available semaphore");
 
-        if (image_available_semaphore_result != VK_SUCCESS ||
-            render_finished_semaphore_result != VK_SUCCESS ||
-            in_flight_fence_result != VK_SUCCESS) {
+        RHI_VK_CHECK_FATAL(vkCreateSemaphore(m_Context.device, &semaphore_info, nullptr, &m_Frames[i].render_finished),
+                           "Failed to create render finished semaphore");
 
-            std::cerr << "ERROR : Failed to create synchronization objects for a frame" << std::endl;
-        }
+        RHI_VK_CHECK_FATAL(vkCreateFence(m_Context.device, &fence_info, nullptr, &m_Frames[i].in_flight),
+                           "Failed to create in flight fence");
     }
 }
 
@@ -361,8 +341,8 @@ void rhi::vulkan::Device::CreateNVRHIDevice() {
     m_NVRHIDevice = nvrhi::vulkan::createDevice(device_desc);
 
     if (ENABLE_VALIDATION_LAYERS) {
-        nvrhi::DeviceHandle nvrhiValidationLayer = nvrhi::validation::createValidationLayer(m_NVRHIDevice);
-        m_ValidationLayer                        = nvrhiValidationLayer; // TODO : make the rest of the application go through the validation layer
+        nvrhi::DeviceHandle nvrhi_validation_layer = nvrhi::validation::createValidationLayer(m_NVRHIDevice);
+        m_ValidationLayer                          = nvrhi_validation_layer; // TODO : make the rest of the application go through the validation layer
     }
 }
 
@@ -433,11 +413,7 @@ RHI_NODISCARD bool rhi::vulkan::Device::checkDeviceExtensionSupport(VkPhysicalDe
 
 RHI_NODISCARD bool rhi::vulkan::Device::isDeviceSuitable(VkPhysicalDevice device) {
     bool found = findQueueFamilies(device);
-
-    if (!found) {
-        std::cerr << "ERROR : Failed to find queue families" << std::endl;
-        return false;
-    }
+    if (!found) return false;
 
     bool extensions_supported = checkDeviceExtensionSupport(device);
 
@@ -564,6 +540,7 @@ RHI_NODISCARD VkSampleCountFlagBits rhi::vulkan::Device::getMaxUsableSampleCount
     return VK_SAMPLE_COUNT_1_BIT;
 }
 
+// TODO : Remove this
 RHI_NODISCARD uint32_t rhi::vulkan::Device::findMemoryType(uint32_t type_filter, VkMemoryPropertyFlags properties) {
     VkPhysicalDeviceMemoryProperties memory_properties;
     vkGetPhysicalDeviceMemoryProperties(m_Context.physical_device, &memory_properties);
@@ -675,23 +652,20 @@ VkBool32 VKAPI_CALL rhi::vulkan::Device::DebugCallback(VkDebugUtilsMessageSeveri
                                                        VkDebugUtilsMessageTypeFlagsEXT             message_types,
                                                        const VkDebugUtilsMessengerCallbackDataEXT* callback_data,
                                                        void*                                       user_data) {
-    std::cerr << "Validation layer. ";
 
+    
     if ((message_severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT) != 0) {
-        std::cerr << "VERBOSE : ";
+        rhi::logging::debug("Validation layer\n%s", callback_data->pMessage);
     }
     if ((message_severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT) != 0) {
-        std::cerr << "INFO : ";
+        rhi::logging::info("Validation layer\n%s", callback_data->pMessage);
     }
     if ((message_severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) != 0) {
-        std::cerr << "WARNING : ";
+        rhi::logging::warning("Validation layer\n%s", callback_data->pMessage);
     }
     if ((message_severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) != 0) {
-        std::cerr << "ERROR : ";
+        rhi::logging::error("Validation layer\n%s", callback_data->pMessage);
     }
-
-    std::cerr << callback_data->pMessage << std::endl
-              << std::endl;
 
     return VK_FALSE;
 }

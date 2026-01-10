@@ -22,6 +22,7 @@
 
 #if _WIN32
 #include <Windows.h>
+#include "Logging.hpp"
 #endif
 
 namespace rhi::logging {
@@ -212,4 +213,5 @@ namespace rhi::logging {
 
         va_end(args);
     }
+
 } // namespace rhi::logging
