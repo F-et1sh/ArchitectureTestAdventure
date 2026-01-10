@@ -78,27 +78,6 @@ namespace rhi::vulkan {
         void                                          findSwapchainSupportDetails(VkPhysicalDevice device);
         RHI_NODISCARD VkSampleCountFlagBits           getMaxUsableSampleCount() const;
 
-        RHI_NODISCARD uint32_t findMemoryType(uint32_t type_filter, VkMemoryPropertyFlags properties);
-        RHI_NODISCARD VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
-        RHI_NODISCARD VkFormat findDepthFormat();
-
-        void createImage(uint32_t              width,
-                         uint32_t              height,
-                         uint32_t              mip_levels,
-                         VkSampleCountFlagBits num_samples,
-                         VkFormat              format,
-                         VkImageTiling         tiling,
-                         VkImageUsageFlags     usage,
-                         VkMemoryPropertyFlags properties,
-                         VkImage&              image,
-                         VkDeviceMemory&       image_memory);
-
-        void createImageView(VkImage            image,
-                             VkFormat           format,
-                             VkImageAspectFlags aspect_flags,
-                             uint32_t           mip_levels,
-                             VkImageView&       image_view);
-
         static VkBool32 VKAPI_CALL DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT      message_severity,
                                                  VkDebugUtilsMessageTypeFlagsEXT             message_types,
                                                  const VkDebugUtilsMessengerCallbackDataEXT* callback_data,

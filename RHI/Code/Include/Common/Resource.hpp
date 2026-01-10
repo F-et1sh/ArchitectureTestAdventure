@@ -41,8 +41,7 @@ namespace rhi {
     enum class GraphicsAPI : uint8_t {
         //D3D11,
         //D3D12,
-        VULKAN,
-        SomeOtherGraphicsAPI
+        VK
     };
 
     enum class Format : uint8_t {

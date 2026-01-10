@@ -13,7 +13,9 @@
 
 #include "Swapchain.hpp"
 
+#include "Source/Common/Resource.hpp"
 #include "Misc.hpp"
+#include "Logging.hpp"
 
 #include <iostream>
 #include <algorithm>
@@ -73,60 +75,54 @@ void rhi::vulkan::Swapchain::CreateSwapchain() {
     create_info.presentMode    = present_mode;
     create_info.clipped        = VK_TRUE;
 
-    if (vkCreateSwapchainKHR(m_Device.m_Context.device, &create_info, nullptr, &m_Swapchain) != VK_SUCCESS) {
-        std::cerr << "ERROR : Failed to create swapchain" << std::endl;
+    auto device = m_Device.m_Context.device;
+
+    RHI_VK_CHECK_ERROR(vkCreateSwapchainKHR(device, &create_info, nullptr, &m_Swapchain),
+                       "Failed to create swapchain");
+
+    uint32_t image_count = 0;
+    vkGetSwapchainImagesKHR(device, m_Swapchain, &image_count, nullptr);
+
+    std::vector<VkImage> images(image_count);
+    vkGetSwapchainImagesKHR(device, m_Swapchain, &image_count, images.data());
+
+    m_Images.resize(image_count);
+    for (uint32_t i = 0; i < image_count; i++) {
+        m_Images[i].image = images[i];
     }
-
-    std::vector<VkImage> swapchain_images{}; // TODO : Handle this (m_Images[i])
-
-    vkGetSwapchainImagesKHR(m_Device.m_Context.device, m_Swapchain, &image_count, nullptr);
-    swapchain_images.resize(image_count);
-    vkGetSwapchainImagesKHR(m_Device.m_Context.device, m_Swapchain, &image_count, swapchain_images.data());
 
     m_ImageFormat = surface_format.format;
     m_Extent      = extent;
 }
 
 void rhi::vulkan::Swapchain::CreateImageViews() {
-    m_ImageViews.resize(m_Images.size());
+    auto device = m_Device.m_Context.device;
 
-    for (uint32_t i = 0; i < m_Images.size(); i++) {
-        m_Device.createImageView(m_Images[i].image, m_ImageFormat, VK_IMAGE_ASPECT_COLOR_BIT, 1, m_ImageViews[i]);
+    for (auto& img : m_Images) {
+        VkImageViewCreateInfo info{};
+        info.sType                       = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+        info.image                       = img.image;
+        info.viewType                    = VK_IMAGE_VIEW_TYPE_2D;
+        info.format                      = m_ImageFormat;
+        info.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        info.subresourceRange.levelCount = 1;
+        info.subresourceRange.layerCount = 1;
+
+        vkCreateImageView(device, &info, nullptr, &img.image_view);
     }
 }
 
-void rhi::vulkan::Swapchain::CreateColorResources() {
-    VkFormat color_format = m_ImageFormat;
+void rhi::vulkan::Swapchain::CreateNVRHITextures() {
+    for (auto& image : m_Images) {
+        nvrhi::TextureDesc desc{};
+        desc.width          = m_Extent.width;
+        desc.height         = m_Extent.height;
+        desc.format         = rhi::vulkan::convert_format(m_ImageFormat);
+        desc.isRenderTarget = true;
+        desc.initialState   = nvrhi::ResourceStates::Present;
 
-    m_Device.createImage(m_Extent.width,
-                         m_Extent.height,
-                         1,
-                         m_Device.m_MSAA_Samples,
-                         color_format,
-                         VK_IMAGE_TILING_OPTIMAL,
-                         VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
-                         VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-                         m_ColorImage,
-                         m_ColorImageMemory);
-
-    m_Device.createImageView(m_ColorImage, color_format, VK_IMAGE_ASPECT_COLOR_BIT, 1, m_ColorImageView);
-}
-
-void rhi::vulkan::Swapchain::CreateDepthResources() {
-    VkFormat depth_format = m_Device.findDepthFormat();
-
-    m_Device.createImage(m_Extent.width,
-                         m_Extent.height,
-                         1,
-                         m_Device.m_MSAA_Samples,
-                         depth_format,
-                         VK_IMAGE_TILING_OPTIMAL,
-                         VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
-                         VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-                         m_DepthImage,
-                         m_DepthImageMemory);
-
-    m_Device.createImageView(m_DepthImage, depth_format, VK_IMAGE_ASPECT_DEPTH_BIT, 1, m_DepthImageView);
+        image.nvrhi_texture = m_Device.m_NVRHIDevice->createHandleForNativeTexture(nvrhi::ObjectTypes::VK_Image, image.image, desc);
+    }
 }
 
 RHI_NODISCARD rhi::TextureHandle rhi::vulkan::Swapchain::Acquire() {
@@ -142,16 +138,16 @@ RHI_NODISCARD rhi::TextureHandle rhi::vulkan::Swapchain::Acquire() {
         std::numeric_limits<uint64_t>::max(),
         frame.image_available,
         VK_NULL_HANDLE,
-        &m_Index);
+        &m_ImageIndex);
 
-    assert(result == VK_SUCCESS);
+    assert(result == VK_SUCCESS); // temp
 
     m_Device.m_NVRHIDevice->queueWaitForSemaphore(
         nvrhi::CommandQueue::Graphics,
         frame.image_available,
         0);
 
-    return m_Images[m_Index].rhi_handle;
+    return m_Images[m_ImageIndex].nvrhi_texture;
 }
 
 void rhi::vulkan::Swapchain::Present() {
@@ -164,7 +160,7 @@ void rhi::vulkan::Swapchain::Present() {
     info.pWaitSemaphores    = &frame.render_finished;
     info.swapchainCount     = 1;
     info.pSwapchains        = &m_Swapchain;
-    info.pImageIndices      = &m_Index;
+    info.pImageIndices      = &m_ImageIndex;
 
     vkQueuePresentKHR(m_Device.m_Context.present_queue, &info);
 }
