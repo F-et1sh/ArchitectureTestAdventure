@@ -70,9 +70,4 @@ namespace rhi::vulkan {
         ~SwapchainSupportDetails() = default;
     };
 
-    struct RenderTargetSet {
-        nvrhi::TextureHandle color;
-        nvrhi::TextureHandle depth;
-    };
-
 } // namespace rhi::vulkan

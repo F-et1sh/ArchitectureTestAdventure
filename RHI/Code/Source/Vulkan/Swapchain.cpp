@@ -33,7 +33,6 @@ rhi::vulkan::Swapchain::Swapchain(rhi::vulkan::Device& device)
 }
 
 rhi::vulkan::Swapchain::~Swapchain() {
-    
 }
 
 void rhi::vulkan::Swapchain::CreateSwapchain() {
@@ -126,6 +125,16 @@ void rhi::vulkan::Swapchain::CreateNVRHITextures() {
     }
 }
 
+void rhi::vulkan::Swapchain::CreateNVRHIFramebuffers() {
+    uint32_t i = 0;
+    for (auto& image : m_Images) {
+        nvrhi::FramebufferDesc framebuffer_desc{};
+        framebuffer_desc.addColorAttachment(this->getBackbuffer(i));
+        image.framebuffer = m_Device.m_NVRHIDevice->createFramebuffer(framebuffer_desc);
+        i++;
+    }
+}
+
 RHI_NODISCARD rhi::TextureHandle rhi::vulkan::Swapchain::Acquire() {
     auto  device = m_Device.m_Context.device;
     auto& frame  = m_Device.m_Frames[m_Device.m_FrameIndex];
@@ -151,6 +160,11 @@ RHI_NODISCARD rhi::TextureHandle rhi::vulkan::Swapchain::Acquire() {
 
 void rhi::vulkan::Swapchain::Present() {
     auto& frame = m_Device.m_Frames[m_Device.m_FrameIndex];
+
+    m_Device.m_NVRHIDevice->queueSignalSemaphore(
+        nvrhi::CommandQueue::Graphics,
+        frame.render_finished,
+        0);
 
     VkPresentInfoKHR info{};
     info.sType              = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;

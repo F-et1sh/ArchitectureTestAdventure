@@ -19,6 +19,8 @@
 #include "RHI/Device.hpp"
 #include "Misc.hpp"
 
+#include "Swapchain.hpp" // remove this
+
 namespace rhi::vulkan {
     struct DefaultMessageCallback : public nvrhi::IMessageCallback {
         static DefaultMessageCallback& getInstance();
@@ -56,6 +58,8 @@ namespace rhi::vulkan {
 
         RHI_NODISCARD void* CreateBackendTexture(const rhi::TextureDesc& desc) override;
         void                DestroyBackendTexture(void* backend_handle) override;
+
+        inline RHI_NODISCARD Swapchain::SwapchainImage& getSwapchainImage(uint32_t) {  }
 
     private:
         void CreateInstance();

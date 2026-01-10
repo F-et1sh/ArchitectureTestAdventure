@@ -24,7 +24,8 @@
 namespace rhi::vulkan {
     class CommandList final : public rhi::CommandList {
     public:
-        explicit CommandList(nvrhi::CommandListHandle handle) : m_NVRHICommandList(handle) {}
+        explicit CommandList(rhi::vulkan::Device& device, nvrhi::CommandListHandle handle) 
+            : m_Device(device), m_NVRHICommandList(handle) {}
         ~CommandList() = default;
 
         void BeginFrame() override;
@@ -35,14 +36,14 @@ namespace rhi::vulkan {
         void setVertexBuffer(const Buffer* buffer) override;
         void setIndexBuffer(const Buffer* buffer) override;
 
-        void setRenderTarget(const RenderTargetSet& render_target) override;
+        void setRenderTarget(Swapchain::BackbufferIndex index) override;
 
         void DrawIndexed(uint32_t instance_count, uint32_t first_index, uint32_t first_instance, uint32_t first_vertex, uint32_t vertex_count) override;
 
         RHI_NODISCARD nvrhi::CommandListHandle getNVRHICommandListHandle() const noexcept { return m_NVRHICommandList; }
 
     private:
-        RenderTargetSet m_CurrentRenderTarget;
+        rhi::vulkan::Device& m_Device;
 
         nvrhi::CommandListHandle m_NVRHICommandList;
     };

@@ -19,6 +19,14 @@
 namespace rhi::vulkan {
     class Swapchain final : public rhi::Swapchain {
     public:
+        struct SwapchainImage {
+            VkImage                  image;
+            VkImageView              image_view;
+            nvrhi::TextureHandle     nvrhi_texture;
+            nvrhi::FramebufferHandle framebuffer;
+        };
+
+    public:
         explicit Swapchain(rhi::vulkan::Device& device);
         ~Swapchain();
 
@@ -36,6 +44,7 @@ namespace rhi::vulkan {
         void CreateSwapchain();
         void CreateImageViews();
         void CreateNVRHITextures();
+        void CreateNVRHIFramebuffers();
 
     private:
         VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& available_formats);
@@ -52,11 +61,6 @@ namespace rhi::vulkan {
 
         uint32_t m_ImageIndex = 0;
 
-        struct SwapchainImage {
-            VkImage              image;
-            VkImageView          image_view;
-            nvrhi::TextureHandle nvrhi_texture;
-        };
         std::vector<SwapchainImage> m_Images;
 
         VkSurfaceFormatKHR m_SurfaceFormat;
