@@ -22,11 +22,12 @@
 
 #if _WIN32
 #include <Windows.h>
+#include "Logging.hpp"
 #endif
 
 namespace rhi::logging {
     static constexpr size_t G_MESSAGE_BUFFER_SIZE   = 4096;
-    static std::string      G_ERROR_MESSAGE_CAPTION = "Architecture Test Adventure";
+    static std::string      G_ERROR_MESSAGE_CAPTION = "Architecture Test Adventure : RHI";
 
 #if _WIN32
     static bool G_OUTPUT_TO_MESSAGE_BOX = true;
@@ -212,4 +213,5 @@ namespace rhi::logging {
 
         va_end(args);
     }
+
 } // namespace rhi::logging

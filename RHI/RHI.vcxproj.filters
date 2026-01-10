@@ -16,6 +16,7 @@
     <ClInclude Include="Code\Source\Vulkan\Misc.hpp" />
     <ClInclude Include="Code\Source\Vulkan\Swapchain.hpp" />
     <ClInclude Include="Code\Source\Common\Logging.hpp" />
+    <ClInclude Include="Code\Source\Vulkan\Logging.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Source\RHI\ResourceManager.cpp" />
