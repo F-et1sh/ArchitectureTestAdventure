@@ -33,7 +33,7 @@ namespace rhi {
         virtual void setVertexBuffer(const Buffer* buffer) = 0;
         virtual void setIndexBuffer(const Buffer* buffer)  = 0;
 
-        virtual void setRenderTarget(Swapchain::BackbufferIndex handle) = 0;
+        virtual void setRenderTarget(rhi::Swapchain::BackbufferIndex handle) = 0;
 
         virtual void DrawIndexed(uint32_t instance_count, uint32_t first_index, uint32_t first_instance, uint32_t first_vertex, uint32_t vertex_count) = 0;
 

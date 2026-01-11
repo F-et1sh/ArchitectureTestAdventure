@@ -59,7 +59,7 @@ namespace rhi::vulkan {
         RHI_NODISCARD void* CreateBackendTexture(const rhi::TextureDesc& desc) override;
         void                DestroyBackendTexture(void* backend_handle) override;
 
-        inline RHI_NODISCARD Swapchain::SwapchainImage& getSwapchainImage(uint32_t) {  }
+        inline RHI_NODISCARD Swapchain::SwapchainImage& getSwapchainImage(uint32_t) {  } // TODO : Rewrite
 
     private:
         void CreateInstance();

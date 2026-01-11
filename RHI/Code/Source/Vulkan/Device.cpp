@@ -111,7 +111,7 @@ void rhi::vulkan::Device::Submit(rhi::CommandList* cmd) {
     auto* vk_cmd = static_cast<rhi::vulkan::CommandList*>(cmd);
 
     nvrhi::ICommandList* lists[] = {
-        vk_cmd->getNVRHICommandListHandle()
+        vk_cmd->getNVRHICommandList()
     };
 
     m_NVRHIDevice->executeCommandLists(

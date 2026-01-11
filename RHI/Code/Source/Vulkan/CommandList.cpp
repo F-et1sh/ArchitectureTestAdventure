@@ -31,17 +31,20 @@ void rhi::vulkan::CommandList::setIndexBuffer(const Buffer* buffer) {
 }
 
 void rhi::vulkan::CommandList::setRenderTarget(Swapchain::BackbufferIndex index) {
-    auto& scImage = m_Device.getSwapchainImage(index);
+    auto& image = m_Device.getSwapchainImage(index);
 
     nvrhi::GraphicsState state;
-    state.framebuffer = scImage.framebuffer;
-    state.viewport.addViewportAndScissorRect(
-        scImage.framebuffer->getFramebufferInfo().getViewport());
+    state.setFramebuffer(image.framebuffer);
+    state.viewport.addViewportAndScissorRect(image.framebuffer->getFramebufferInfo().getViewport());
 
     m_NVRHICommandList->setGraphicsState(state);
 }
 
-void rhi::vulkan::CommandList::DrawIndexed(uint32_t instance_count, uint32_t first_index, uint32_t first_instance, uint32_t first_vertex, uint32_t vertex_count) {
+void rhi::vulkan::CommandList::DrawIndexed(uint32_t instance_count,
+                                           uint32_t first_index,
+                                           uint32_t first_instance,
+                                           uint32_t first_vertex,
+                                           uint32_t vertex_count) {
     nvrhi::DrawArguments args{};
     args.setInstanceCount(instance_count);
     args.setStartIndexLocation(first_index);
