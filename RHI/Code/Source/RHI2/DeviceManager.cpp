@@ -5,25 +5,11 @@
     This file is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
-    File : Renderer.cpp
+    File : DeviceManager.cpp
     
-    Content : Renderer aka RenderSystem of the engine
+    Content : second version of RHI,
+        totally based on Donut, MIT License ( https://github.com/NVIDIA-RTX/Donut )
 
 =================================================*/
 
-#include "pch.hpp"
-#include "Renderer.hpp"
-
-void ata::Renderer::Release() {
-
-}
-
-void ata::Renderer::Initialize() {
-    
-
-    this->TestLoop();
-}
-
-void ata::Renderer::TestLoop() {
-    
-}
+#include "RHI2/DeviceManager.hpp"

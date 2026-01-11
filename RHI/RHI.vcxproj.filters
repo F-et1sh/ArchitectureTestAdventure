@@ -18,6 +18,7 @@
     <ClInclude Include="Code\Source\Common\Logging.hpp" />
     <ClInclude Include="Code\Source\Vulkan\Logging.hpp" />
     <ClInclude Include="Code\Source\Vulkan\Resource.hpp" />
+    <ClInclude Include="Code\Include\RHI2\DeviceManager.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Source\RHI\ResourceManager.cpp" />
@@ -26,5 +27,6 @@
     <ClCompile Include="Code\Source\Vulkan\CommandList.cpp" />
     <ClCompile Include="Code\Source\Vulkan\Swapchain.cpp" />
     <ClCompile Include="Code\Source\Common\Logging.cpp" />
+    <ClCompile Include="Code\Source\RHI2\DeviceManager.cpp" />
   </ItemGroup>
 </Project>

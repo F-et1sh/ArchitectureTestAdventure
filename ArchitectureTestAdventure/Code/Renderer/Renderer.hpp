@@ -12,7 +12,7 @@
 =================================================*/
 
 #pragma once
-#include "RHI/RHI.hpp"
+#include "RHI2/DeviceManager.hpp"
 #include "Window/Window.hpp"
 
 namespace ata {
@@ -29,9 +29,6 @@ namespace ata {
     private:
         Window& m_Window;
 
-        std::unique_ptr<rhi::Device>          m_Device{};
-        std::unique_ptr<rhi::Swapchain>       m_Swapchain{};
-        std::unique_ptr<rhi::ResourceManager> m_ResourceManager{};
-        std::unique_ptr<rhi::CommandList>     m_CommandList{};
+        std::unique_ptr<rhi::DeviceManager> m_DeviceManager;
     };
 } // namespace ata

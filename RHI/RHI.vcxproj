@@ -27,6 +27,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\Include\RHI2\DeviceManager.hpp" />
     <ClInclude Include="Code\Include\RHI\CommandList.hpp" />
     <ClInclude Include="Code\Include\Common\Attributes.hpp" />
     <ClInclude Include="Code\Include\Common\Resource.hpp" />
@@ -47,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Source\Common\Logging.cpp" />
+    <ClCompile Include="Code\Source\RHI2\DeviceManager.cpp" />
     <ClCompile Include="Code\Source\RHI\DeviceManager.cpp" />
     <ClCompile Include="Code\Source\RHI\ResourceManager.cpp" />
     <ClCompile Include="Code\Source\Vulkan\CommandList.cpp" />
