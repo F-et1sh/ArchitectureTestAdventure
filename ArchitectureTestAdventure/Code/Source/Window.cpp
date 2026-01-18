@@ -14,25 +14,27 @@
 #include "pch.hpp"
 #include "Window.hpp"
 
+#include <GLFW/glfw3.h>
+
 void ata::Window::Release() {
-    glfwDestroyWindow(p_GLFWwindow);
-    glfwTerminate();
+    //glfwDestroyWindow(p_GLFWwindow);
+    //glfwTerminate();
 }
 
 void ata::Window::Initialize() {
     glfwInit();
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
-    p_GLFWwindow = glfwCreateWindow(800, 600, "ArchitectureTestAdventure", NULL, NULL);
-    if (!p_GLFWwindow) {
+    //p_GLFWwindow = glfwCreateWindow(800, 600, "ArchitectureTestAdventure", NULL, NULL);
+    //if (!p_GLFWwindow) {
         // TODO : Add normal logging
-        std::cout << "ERROR : Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-    }
+        //std::cout << "ERROR : Failed to create GLFW window" << std::endl;
+        //glfwTerminate();
+    //}
 }
 
 void ata::Window::Loop() {
-    while (!glfwWindowShouldClose(p_GLFWwindow)) {
-        glfwPollEvents();
-    }
+    //while (!glfwWindowShouldClose(p_GLFWwindow)) {
+        //glfwPollEvents();
+    //}
 }
