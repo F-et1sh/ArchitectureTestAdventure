@@ -27,33 +27,33 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\Include\RHI2\DeviceManager.hpp" />
-    <ClInclude Include="Code\Include\RHI\CommandList.hpp" />
-    <ClInclude Include="Code\Include\Common\Attributes.hpp" />
-    <ClInclude Include="Code\Include\Common\Resource.hpp" />
-    <ClInclude Include="Code\Include\RHI\Device.hpp" />
-    <ClInclude Include="Code\Include\RHI\DeviceManager.hpp" />
-    <ClInclude Include="Code\Include\RHI\ResourceManager.hpp" />
-    <ClInclude Include="Code\Include\RHI\RHI.hpp" />
-    <ClInclude Include="Code\Include\RHI\Swapchain.hpp" />
-    <ClInclude Include="Code\Source\Common\Logging.hpp" />
-    <ClInclude Include="Code\Source\Common\Resource.hpp" />
-    <ClInclude Include="Code\Source\Vulkan\CommandList.hpp" />
-    <ClInclude Include="Code\Source\Vulkan\Device.hpp" />
-    <ClInclude Include="Code\Source\Vulkan\Logging.hpp" />
-    <ClInclude Include="Code\Source\Vulkan\Misc.hpp" />
-    <ClInclude Include="Code\Source\Vulkan\Resource.hpp" />
-    <ClInclude Include="Code\Source\Vulkan\Swapchain.hpp" />
-    <ClInclude Include="Code\Source\Vulkan\VulkanBackend.hpp" />
+    <None Include="Code\Include\RHI2\DeviceManager.hpp" />
+    <None Include="Code\Include\RHI\CommandList.hpp" />
+    <None Include="Code\Include\Common\Attributes.hpp" />
+    <None Include="Code\Include\Common\Resource.hpp" />
+    <None Include="Code\Include\RHI\Device.hpp" />
+    <None Include="Code\Include\RHI\DeviceManager.hpp" />
+    <None Include="Code\Include\RHI\ResourceManager.hpp" />
+    <None Include="Code\Include\RHI\RHI.hpp" />
+    <None Include="Code\Include\RHI\Swapchain.hpp" />
+    <None Include="Code\Source\Common\Logging.hpp" />
+    <None Include="Code\Source\Common\Resource.hpp" />
+    <None Include="Code\Source\Vulkan\CommandList.hpp" />
+    <None Include="Code\Source\Vulkan\Device.hpp" />
+    <None Include="Code\Source\Vulkan\Logging.hpp" />
+    <None Include="Code\Source\Vulkan\Misc.hpp" />
+    <None Include="Code\Source\Vulkan\Resource.hpp" />
+    <None Include="Code\Source\Vulkan\Swapchain.hpp" />
+    <None Include="Code\Source\Vulkan\VulkanBackend.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Code\Source\Common\Logging.cpp" />
-    <ClCompile Include="Code\Source\RHI2\DeviceManager.cpp" />
-    <ClCompile Include="Code\Source\RHI\DeviceManager.cpp" />
-    <ClCompile Include="Code\Source\RHI\ResourceManager.cpp" />
-    <ClCompile Include="Code\Source\Vulkan\CommandList.cpp" />
-    <ClCompile Include="Code\Source\Vulkan\Device.cpp" />
-    <ClCompile Include="Code\Source\Vulkan\Swapchain.cpp" />
+    <None Include="Code\Source\Common\Logging.cpp" />
+    <None Include="Code\Source\RHI2\DeviceManager.cpp" />
+    <None Include="Code\Source\RHI\DeviceManager.cpp" />
+    <None Include="Code\Source\RHI\ResourceManager.cpp" />
+    <None Include="Code\Source\Vulkan\CommandList.cpp" />
+    <None Include="Code\Source\Vulkan\Device.cpp" />
+    <None Include="Code\Source\Vulkan\Swapchain.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
