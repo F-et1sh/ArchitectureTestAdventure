@@ -13,21 +13,23 @@
 
 #pragma once
 
+#include "Core/attributes.hpp"
+
+#include <string>
 #include <functional>
 
 namespace ata {
-    struct WindowSpecification {
+    struct WindowDesc {
         std::string title;
-        uint32_t    width         = 1280;
-        uint32_t    height        = 720;
-        bool        is_resizeable = true;
-        bool        vsync         = true;
+        uint32_t    width  = 1280;
+        uint32_t    height = 720;
+        int         vsync  = true;
 
         //using EventCallbackFunc = std::function<void(Event&)>;
         //EventCallbackFunc EventCallback;
 
-        WindowSpecification()  = default;
-        ~WindowSpecification() = default;
+        WindowDesc()  = default;
+        ~WindowDesc() = default;
     };
 
     class Window {
@@ -36,7 +38,7 @@ namespace ata {
         ~Window();
 
         void Release();
-        void Initialize();
+        void Initialize(const WindowDesc& desc);
 
         void Loop();
 

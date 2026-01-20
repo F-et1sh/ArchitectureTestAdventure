@@ -33,16 +33,21 @@ void ata::Window::Release() {
     glfwTerminate();
 }
 
-void ata::Window::Initialize() {
+void ata::Window::Initialize(const WindowDesc& desc) {
     glfwInit();
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
-    m_Impl->p_GLFWwindow = glfwCreateWindow(800, 600, "ArchitectureTestAdventure", NULL, NULL);
+    m_Impl->p_GLFWwindow = glfwCreateWindow(desc.width, desc.height, desc.title.c_str(), NULL, NULL);
     if (!m_Impl->p_GLFWwindow) {
         // TODO : Add normal logging
         std::cout << "ERROR : Failed to create GLFW window" << std::endl;
+
+        
         glfwTerminate();
     }
+
+    glfwMakeContextCurrent(m_Impl->p_GLFWwindow); // if opengl
+    glfwSwapInterval(desc.vsync);
 }
 
 void ata::Window::Loop() {
