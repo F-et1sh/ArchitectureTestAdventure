@@ -16,25 +16,41 @@
 
 #include <GLFW/glfw3.h>
 
+struct ata::Window::Impl {
+    GLFWwindow* p_GLFWwindow = nullptr;
+};
+
+ata::Window::Window() {
+    m_Impl = new Impl();
+}
+
+ata::Window::~Window() {
+    delete m_Impl;
+}
+
 void ata::Window::Release() {
-    //glfwDestroyWindow(p_GLFWwindow);
-    //glfwTerminate();
+    glfwDestroyWindow(m_Impl->p_GLFWwindow);
+    glfwTerminate();
 }
 
 void ata::Window::Initialize() {
     glfwInit();
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
-    //p_GLFWwindow = glfwCreateWindow(800, 600, "ArchitectureTestAdventure", NULL, NULL);
-    //if (!p_GLFWwindow) {
+    m_Impl->p_GLFWwindow = glfwCreateWindow(800, 600, "ArchitectureTestAdventure", NULL, NULL);
+    if (!m_Impl->p_GLFWwindow) {
         // TODO : Add normal logging
-        //std::cout << "ERROR : Failed to create GLFW window" << std::endl;
-        //glfwTerminate();
-    //}
+        std::cout << "ERROR : Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+    }
 }
 
 void ata::Window::Loop() {
-    //while (!glfwWindowShouldClose(p_GLFWwindow)) {
-        //glfwPollEvents();
-    //}
+    while (!glfwWindowShouldClose(m_Impl->p_GLFWwindow)) {
+        glfwPollEvents();
+    }
+}
+
+ATA_NODISCARD void* ata::Window::getNativeHandle() const noexcept {
+    return static_cast<void*>(m_Impl->p_GLFWwindow);
 }

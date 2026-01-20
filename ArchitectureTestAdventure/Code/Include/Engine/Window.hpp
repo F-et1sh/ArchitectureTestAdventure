@@ -17,30 +17,33 @@
 
 namespace ata {
     struct WindowSpecification {
-        std::string Title;
-        uint32_t    Width        = 1280;
-        uint32_t    Height       = 720;
-        bool        IsResizeable = true;
-        bool        VSync        = true;
+        std::string title;
+        uint32_t    width         = 1280;
+        uint32_t    height        = 720;
+        bool        is_resizeable = true;
+        bool        vsync         = true;
 
         //using EventCallbackFunc = std::function<void(Event&)>;
         //EventCallbackFunc EventCallback;
+
+        WindowSpecification()  = default;
+        ~WindowSpecification() = default;
     };
 
     class Window {
     public:
-        Window() = default;
-        ~Window() { this->Release(); }
+        Window();
+        ~Window();
 
         void Release();
         void Initialize();
 
         void Loop();
 
-        //inline ATA_NODISCARD GLFWwindow* getGLFWwindow() const noexcept { return p_GLFWwindow; }
-        //inline ATA_NODISCARD void*       getNativeHandle() const noexcept { return static_cast<void*>(p_GLFWwindow); }
+        inline ATA_NODISCARD void* getNativeHandle() const noexcept;
 
     private:
-        //GLFWwindow* p_GLFWwindow = nullptr;
+        struct Impl;
+        Impl* m_Impl = nullptr;
     };
 } // namespace ata
