@@ -13,7 +13,20 @@
 
 #pragma once
 
+#include <functional>
+
 namespace ata {
+    struct WindowSpecification {
+        std::string Title;
+        uint32_t    Width        = 1280;
+        uint32_t    Height       = 720;
+        bool        IsResizeable = true;
+        bool        VSync        = true;
+
+        //using EventCallbackFunc = std::function<void(Event&)>;
+        //EventCallbackFunc EventCallback;
+    };
+
     class Window {
     public:
         Window() = default;

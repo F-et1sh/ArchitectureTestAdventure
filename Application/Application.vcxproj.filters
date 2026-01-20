@@ -3,4 +3,7 @@
   <ItemGroup>
     <ClCompile Include="Code\main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Code\Layers\ApplicationLayer.hpp" />
+  </ItemGroup>
 </Project>
