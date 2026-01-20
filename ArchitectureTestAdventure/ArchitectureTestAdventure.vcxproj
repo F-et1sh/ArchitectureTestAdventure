@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Code\Source\Layer.cpp" />
+    <ClCompile Include="Code\Source\logging.cpp" />
     <ClCompile Include="Code\Source\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.hpp</PrecompiledHeaderFile>
@@ -158,6 +159,7 @@
     <ClInclude Include="Code\Include\Engine\Core\attributes.hpp" />
     <ClInclude Include="Code\Include\Engine\Core\pointer.hpp" />
     <ClInclude Include="Code\Include\Engine\Layer.hpp" />
+    <ClInclude Include="Code\Include\Engine\Core\logging.hpp" />
     <ClInclude Include="Code\Include\Engine\pch.hpp" />
     <ClInclude Include="Code\Include\Engine\Renderer.hpp" />
     <ClInclude Include="Code\Include\Engine\ResourceManager.hpp" />

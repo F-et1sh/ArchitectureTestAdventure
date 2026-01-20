@@ -39,11 +39,9 @@ void ata::Window::Initialize(const WindowDesc& desc) {
 
     m_Impl->p_GLFWwindow = glfwCreateWindow(desc.width, desc.height, desc.title.c_str(), NULL, NULL);
     if (!m_Impl->p_GLFWwindow) {
-        // TODO : Add normal logging
-        std::cout << "ERROR : Failed to create GLFW window" << std::endl;
-
-        
+        ata::logging::error("Failed to create GLFW window");
         glfwTerminate();
+        return;
     }
 
     glfwMakeContextCurrent(m_Impl->p_GLFWwindow); // if opengl

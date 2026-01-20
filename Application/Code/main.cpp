@@ -2,6 +2,7 @@
 
 int main() {
     ata::WindowDesc desc{};
+    desc.title  = "Architecture Test Adventure";
     desc.width  = 1920;
     desc.height = 1080;
     desc.vsync  = 1;

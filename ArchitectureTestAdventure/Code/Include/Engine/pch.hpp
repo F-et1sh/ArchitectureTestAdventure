@@ -17,3 +17,4 @@
 
 #include "Core/attributes.hpp"
 #include "Core/pointer.hpp"
+#include "Core/logging.hpp"
