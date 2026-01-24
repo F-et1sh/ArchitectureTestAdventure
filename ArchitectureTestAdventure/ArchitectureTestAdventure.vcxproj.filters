@@ -7,6 +7,7 @@
     <ClCompile Include="Code\Source\Window.cpp" />
     <ClCompile Include="Code\Source\Layer.cpp" />
     <ClCompile Include="Code\Source\logging.cpp" />
+    <ClCompile Include="Code\Source\Application.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Include\Engine\pch.hpp" />
@@ -17,5 +18,6 @@
     <ClInclude Include="Code\Include\Engine\Core\attributes.hpp" />
     <ClInclude Include="Code\Include\Engine\Layer.hpp" />
     <ClInclude Include="Code\Include\Engine\Core\logging.hpp" />
+    <ClInclude Include="Code\Include\Engine\Application.hpp" />
   </ItemGroup>
 </Project>
