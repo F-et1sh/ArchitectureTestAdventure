@@ -159,6 +159,7 @@
   <ItemGroup>
     <ClInclude Include="Code\Include\Engine\Application.hpp" />
     <ClInclude Include="Code\Include\Engine\Core\attributes.hpp" />
+    <ClInclude Include="Code\Include\Engine\Core\custom_allocators.hpp" />
     <ClInclude Include="Code\Include\Engine\Core\pointer.hpp" />
     <ClInclude Include="Code\Include\Engine\Layer.hpp" />
     <ClInclude Include="Code\Include\Engine\Core\logging.hpp" />

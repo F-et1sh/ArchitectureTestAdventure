@@ -1,11 +1,11 @@
 /*=================================================
 
-    Copyright (C) 2025 Farrakh. All Rights Reserved.
+    Copyright (C) 2026 Farrakh. All Rights Reserved.
     
-    This file is a part of ArchitectureTestAdventure.
+    This file is a part of farrakhfattahov_gmail-com\solution
     Check README.md for more information.
     
-    File : Logging.hpp
+    File : logging.hpp
     
     Content : util for logging info to console.
         Based on Donut, MIT License ( https://github.com/NVIDIA-RTX/Donut )

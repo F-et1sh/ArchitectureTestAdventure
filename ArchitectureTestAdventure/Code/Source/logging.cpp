@@ -5,7 +5,7 @@
     This file is a part of ArchitectureTestAdventure.
     Check README.md for more information.
     
-    File : Logging.cpp
+    File : logging.cpp
     
     Content : util for logging info to console.
         Based on Donut, MIT License ( https://github.com/NVIDIA-RTX/Donut )

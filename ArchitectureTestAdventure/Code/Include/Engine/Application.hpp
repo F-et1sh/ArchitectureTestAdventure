@@ -12,6 +12,7 @@
 =================================================*/
 
 #pragma once
+#include "Window.hpp"
 
 namespace ata {
     class Application {
@@ -20,6 +21,6 @@ namespace ata {
         ~Application() = default;
 
     private:
-
+        
     };
 }
