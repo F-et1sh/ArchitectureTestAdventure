@@ -27,10 +27,10 @@ namespace ata {
     using handle_t = uint64_t; // can be replaced by uint32_t
 
     template <typename _Ty>
-    concept is_storable_v =
+    concept storable_t =
         (!std::is_void_v<_Ty>) &&
         (!std::is_reference_v<_Ty>) &&
-        std::is_move_constructible_v<_Ty> &&
+        (std::is_move_constructible_v<_Ty>) &&
         (!std::is_abstract_v<_Ty>) &&
         (!std::is_array_v<_Ty>);
 
@@ -55,11 +55,11 @@ namespace ata {
         handle_t m_index{ std::numeric_limits<handle_t>::max() };
         handle_t m_generation{ 0 };
 
-        template <is_storable_v>
+        template <storable_t>
         friend class typed_pointer_storage;
     };
 
-    template <is_storable_v _Ty>
+    template <storable_t _Ty>
     class typed_pointer_storage {
     public:
         using pointer_t = pointer<_Ty>;
@@ -71,9 +71,9 @@ namespace ata {
             std::unique_lock lock(m_mutex);
 
             handle_t index{};
-            if (!m_freeList.empty()) {
-                index = m_freeList.back();
-                m_freeList.pop_back();
+            if (!m_free_list.empty()) {
+                index = m_free_list.back();
+                m_free_list.pop_back();
 
                 m_slots[index].object = std::move(value);
                 m_slots[index].alive  = true;
@@ -100,7 +100,7 @@ namespace ata {
             m_slots[handle.m_index].object.~_Ty();
             m_slots[handle.m_index].alive = false;
 
-            m_freeList.push_back(handle.m_index);
+            m_free_list.push_back(handle.m_index);
         }
 
         _Ty* get(pointer_t handle) noexcept {
@@ -122,7 +122,7 @@ namespace ata {
 
         size_t live_count() const noexcept {
             std::shared_lock lock(m_mutex);
-            return m_slots.size() - m_freeList.size();
+            return m_slots.size() - m_free_list.size();
         }
 
     private:
@@ -145,7 +145,7 @@ namespace ata {
         };
 
         std::vector<_MySlot>  m_slots;
-        std::vector<handle_t> m_freeList;
+        std::vector<handle_t> m_free_list;
 
         mutable std::shared_mutex m_mutex;
     };
@@ -154,7 +154,7 @@ namespace ata {
         virtual ~base_storage() = default;
     };
 
-    template <is_storable_v _Ty>
+    template <storable_t _Ty>
     struct derived_storage : base_storage {
         typed_pointer_storage<_Ty> storage;
     };
@@ -164,9 +164,9 @@ namespace ata {
         pointer_storage()  = default;
         ~pointer_storage() = default;
 
-        template <is_storable_v _Ty>
+        template <storable_t _Ty>
         typed_pointer_storage<_Ty>& get_storage() {
-            std::unique_lock lock(m_registryMutex);
+            std::unique_lock lock(m_registry_mutex);
 
             std::type_index id = std::type_index(typeid(_Ty));
             auto            it = m_storages.find(id);
@@ -183,7 +183,7 @@ namespace ata {
     private:
         std::unordered_map<std::type_index, std::unique_ptr<base_storage>> m_storages;
 
-        mutable std::shared_mutex m_registryMutex;
+        mutable std::shared_mutex m_registry_mutex;
     };
 
 } // namespace ata
