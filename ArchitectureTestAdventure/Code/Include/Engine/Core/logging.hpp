@@ -2,7 +2,7 @@
 
     Copyright (C) 2026 Farrakh. All Rights Reserved.
     
-    This file is a part of farrakhfattahov_gmail-com\solution
+    This file is a part of ArchitectureTestAdventure
     Check README.md for more information.
     
     File : logging.hpp
