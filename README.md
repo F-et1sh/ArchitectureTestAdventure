@@ -11,9 +11,9 @@
 
 ## Licenses
 
-This project is under MIT License.\
+This project is under the MIT License - see the [LICENSE](LICENSE) file for more details.\
 Licenses for third-party libraries used in this project are included in the `build` directory next to the executable ( `.exe` ).
 
 ---
 
-© 2026 Farrah Fattah. All rights reserved.
+Copyright (c) 2026 Farrah Fattah
